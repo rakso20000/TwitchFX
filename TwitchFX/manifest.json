@@ -1,0 +1,13 @@
+﻿{
+	"$schema": "https://raw.githubusercontent.com/beat-saber-modding-group/BSIPA-MetadataFileSchema/master/Schema.json",
+	"id": "TwitchFX",
+	"name": "TwitchFX",
+	"author": "",
+	"version": "1.0.0",
+	"description": "",
+	"gameVersion": "1.11.0",
+	"dependsOn": {
+		
+	},
+	"features": []
+}
