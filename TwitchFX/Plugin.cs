@@ -9,6 +9,8 @@ namespace TwitchFX {
 	[Plugin(RuntimeOptions.SingleStartInit)]
 	public class Plugin {
 		
+		public static Chat chat;
+		
 		internal static Plugin instance { get; private set; }
 		internal static string Name => "TwitchFX";
 		
@@ -26,6 +28,8 @@ namespace TwitchFX {
 			
 			Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
 			Logger.log.Debug("Config loaded");
+			
+			chat = new Chat();
 			
 		}
 		
