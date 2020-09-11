@@ -24,8 +24,19 @@ namespace TwitchFX {
 				
 				int nameLength = message.Message.IndexOf(' ');
 				
-				string name = message.Message.Substring(1, nameLength - 1);
-				string args = message.Message.Substring(nameLength + 1);
+				string name, args;
+				
+				if (nameLength == -1) {
+					
+					name = message.Message.Substring(1);
+					args = "";
+					
+				} else {
+					
+					name = message.Message.Substring(1, nameLength - 1);
+					args = message.Message.Substring(nameLength + 1);
+					
+				}
 				
 				Command.GetCommand(name)?.Execute(args);
 				
