@@ -20,10 +20,16 @@ namespace TwitchFX {
 		
 		private void OnMessage(IChatService service, IChatMessage message) {
 			
-			Logger.log.Info(message.Sender.DisplayName + " said " + message.Message);
-			
-			//message for test purposes
-			Send("Hello " + message.Sender.DisplayName);
+			if (message.Message.StartsWith("!")) {
+				
+				int nameLength = message.Message.IndexOf(' ');
+				
+				string name = message.Message.Substring(1, nameLength - 1);
+				string args = message.Message.Substring(nameLength + 1);
+				
+				Command.GetCommand(name)?.Execute(args);
+				
+			}
 			
 		}
 		

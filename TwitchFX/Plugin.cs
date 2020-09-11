@@ -1,6 +1,7 @@
 ﻿using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
+using TwitchFX.Commands;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
@@ -29,7 +30,15 @@ namespace TwitchFX {
 			Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
 			Logger.log.Debug("Config loaded");
 			
+			InitCommands();
+			
 			chat = new Chat();
+			
+		}
+		
+		private void InitCommands() {
+			
+			new CommandTest();
 			
 		}
 		
