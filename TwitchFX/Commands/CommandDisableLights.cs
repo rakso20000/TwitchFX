@@ -16,10 +16,7 @@
 				
 			}
 			
-			LightController.instance.colorLeft.SetMode(ColorMode.Disabled);
-			LightController.instance.colorRight.SetMode(ColorMode.Disabled);
-			LightController.instance.highlightcolorLeft.SetMode(ColorMode.Disabled);
-			LightController.instance.highlightcolorRight.SetMode(ColorMode.Disabled);
+			LightController.instance.UpdateLights(ColorMode.Disabled);
 			
 		}
 		

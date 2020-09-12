@@ -8,10 +8,7 @@
 			
 			ParseArgs(args, 0);
 			
-			LightController.instance.colorLeft?.SetMode(ColorMode.Default);
-			LightController.instance.colorRight?.SetMode(ColorMode.Default);
-			LightController.instance.highlightcolorLeft?.SetMode(ColorMode.Default);
-			LightController.instance.highlightcolorRight?.SetMode(ColorMode.Default);
+			LightController.instance?.UpdateLights(ColorMode.Default);
 			
 		}
 		

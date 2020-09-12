@@ -6,12 +6,14 @@ namespace TwitchFX {
 		
 		public static LightController instance { get; private set; }
 		
-		public ConfigurableColorSO colorLeft;
-		public ConfigurableColorSO colorRight;
-		public ConfigurableColorSO highlightcolorLeft;
-		public ConfigurableColorSO highlightcolorRight;
-		
 		public float disableOn = -1f;
+		
+		private ConfigurableColorSO colorLeft;
+		private ConfigurableColorSO colorRight;
+		private ConfigurableColorSO highlightcolorLeft;
+		private ConfigurableColorSO highlightcolorRight;
+		
+		private LightSwitchEventEffect[] lights;
 		
 		private void Awake() {
 			
@@ -31,7 +33,7 @@ namespace TwitchFX {
 		
 		private void Start() {
 			
-			LightSwitchEventEffect[] lights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
+			lights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
 			
 			LightSwitchEventEffect ligt = lights[0];
 			
@@ -53,6 +55,58 @@ namespace TwitchFX {
 				Helper.SetValue<ColorSO>(light, "_lightColor1", colorLeft);
 				Helper.SetValue<ColorSO>(light, "_highlightColor0", highlightcolorRight);
 				Helper.SetValue<ColorSO>(light, "_highlightColor1", highlightcolorLeft);
+				
+			}
+			
+		}
+		
+		public void SetLeftColor(Color color) {
+			
+			colorLeft.SetColor(color);
+			highlightcolorLeft.SetColor(color);
+			
+		}
+		
+		public void SetRightColor(Color color) {
+			
+			colorRight.SetColor(color);
+			highlightcolorRight.SetColor(color);
+			
+		}
+		
+		public void UpdateLights(ColorMode mode) {
+			
+			colorLeft.SetMode(mode);
+			colorRight.SetMode(mode);
+			highlightcolorLeft.SetMode(mode);
+			highlightcolorRight.SetMode(mode);
+			
+			foreach (LightSwitchEventEffect light in lights) {
+				
+				int oldEventData = Helper.GetValue<int>(light, "_prevLightSwitchBeatmapEventDataValue");
+				int newEventData;
+				
+				switch (oldEventData) {
+				case 0: //off
+					return;
+				case 1: //on
+				case 5: //on
+					newEventData = oldEventData;
+					break;
+				case 2: //flash
+				case 6: //flash
+					newEventData = oldEventData - 1;
+					break;
+				case 3: //fade
+				case 7: //fade
+				case -1: //fade
+					newEventData = 0;
+					break;
+				default:
+					return;
+				}
+				
+				light.ProcessLightSwitchEvent(newEventData, false);
 				
 			}
 			
