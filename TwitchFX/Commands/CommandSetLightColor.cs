@@ -7,11 +7,12 @@ namespace TwitchFX.Commands {
 		public override void Execute(string argsStr) {
 			
 			SetUsage("!setlightcolor <color> OR\n" +
-			"!setlightcolor <left color> <right color>");
+			"!setlightcolor <left color> <right color> OR\n" +
+			"!setlightcolor <left color> <right color> <duration in seconds>");
 			
 			string[] args = ParseArgs(argsStr);
 			
-			if (args.Length < 1 || args.Length > 2) {
+			if (args.Length < 1 || args.Length > 3) {
 				
 				PrintUsage();
 				
@@ -23,6 +24,16 @@ namespace TwitchFX.Commands {
 			Color? rightColorNullable = args.Length > 1 ? ParseColor(args[1]) : leftColorNullable;
 			
 			if (leftColorNullable == null || rightColorNullable == null) {
+				
+				PrintUsage();
+				
+				return;
+				
+			}
+			
+			float duration = 0f;
+			
+			if(args.Length >= 3 && !float.TryParse(args[2], out duration)) {
 				
 				PrintUsage();
 				
@@ -48,6 +59,9 @@ namespace TwitchFX.Commands {
 			LightController.instance.colorRight.Enable();
 			LightController.instance.highlightcolorLeft.Enable();
 			LightController.instance.highlightcolorRight.Enable();
+			
+			if (args.Length >= 3)
+				LightController.instance.disableOn = Time.time + duration;
 			
 		}
 		

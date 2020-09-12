@@ -11,6 +11,8 @@ namespace TwitchFX {
 		public ConfigurableColorSO highlightcolorLeft;
 		public ConfigurableColorSO highlightcolorRight;
 		
+		public float disableOn = -1f;
+		
 		private void Awake() {
 			
 			if (instance != null) {
@@ -49,6 +51,21 @@ namespace TwitchFX {
 				Helper.SetValue<ColorSO>(light, "_lightColor1", colorLeft);
 				Helper.SetValue<ColorSO>(light, "_highlightColor0", highlightcolorRight);
 				Helper.SetValue<ColorSO>(light, "_highlightColor1", highlightcolorLeft);
+				
+			}
+			
+		}
+		
+		private void Update() {
+			
+			if (disableOn != -1f && Time.time > disableOn) {
+				
+				disableOn = -1f;
+				
+				colorLeft.Disable();
+				colorRight.Disable();
+				highlightcolorLeft.Disable();
+				highlightcolorRight.Disable();
 				
 			}
 			
