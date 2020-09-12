@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BuildTargets.targets" />
+    <Compile Include="Commands\CommandRestoreLightColor.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

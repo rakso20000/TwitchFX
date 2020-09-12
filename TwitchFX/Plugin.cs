@@ -41,6 +41,7 @@ namespace TwitchFX {
 			
 			new CommandTest();
 			new CommandSetLightColor();
+			new CommandRestoreLightColor();
 			
 		}
 		
