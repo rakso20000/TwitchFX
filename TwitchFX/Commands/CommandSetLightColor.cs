@@ -57,10 +57,10 @@ namespace TwitchFX.Commands {
 			LightController.instance.highlightcolorLeft.SetColor(leftColor);
 			LightController.instance.highlightcolorRight.SetColor(rightColor);
 			
-			LightController.instance.colorLeft.Enable();
-			LightController.instance.colorRight.Enable();
-			LightController.instance.highlightcolorLeft.Enable();
-			LightController.instance.highlightcolorRight.Enable();
+			LightController.instance.colorLeft.SetMode(ColorMode.Custom);
+			LightController.instance.colorRight.SetMode(ColorMode.Custom);
+			LightController.instance.highlightcolorLeft.SetMode(ColorMode.Custom);
+			LightController.instance.highlightcolorRight.SetMode(ColorMode.Custom);
 			
 			if (args.Length >= 3)
 				LightController.instance.disableOn = Time.time + duration;

@@ -40,10 +40,12 @@ namespace TwitchFX {
 			highlightcolorRight = ScriptableObject.CreateInstance<ConfigurableColorSO>();
 			highlightcolorLeft = ScriptableObject.CreateInstance<ConfigurableColorSO>();
 			
-			colorRight.Init(Helper.GetValue<ColorSO>(ligt, "_lightColor0"));
-			colorLeft.Init(Helper.GetValue<ColorSO>(ligt, "_lightColor1"));
-			highlightcolorRight.Init(Helper.GetValue<ColorSO>(ligt, "_highlightColor0"));
-			highlightcolorLeft.Init(Helper.GetValue<ColorSO>(ligt, "_highlightColor1"));
+			Color offColor = Helper.GetValue<Color>(ligt, "_offColor");
+			
+			colorRight.Init(Helper.GetValue<ColorSO>(ligt, "_lightColor0"), offColor);
+			colorLeft.Init(Helper.GetValue<ColorSO>(ligt, "_lightColor1"), offColor);
+			highlightcolorRight.Init(Helper.GetValue<ColorSO>(ligt, "_highlightColor0"), offColor);
+			highlightcolorLeft.Init(Helper.GetValue<ColorSO>(ligt, "_highlightColor1"), offColor);
 			
 			foreach(LightSwitchEventEffect light in lights) {
 				
@@ -62,10 +64,10 @@ namespace TwitchFX {
 				
 				disableOn = -1f;
 				
-				colorLeft.Disable();
-				colorRight.Disable();
-				highlightcolorLeft.Disable();
-				highlightcolorRight.Disable();
+				colorLeft.SetMode(ColorMode.Default);
+				colorRight.SetMode(ColorMode.Default);
+				highlightcolorLeft.SetMode(ColorMode.Default);
+				highlightcolorRight.SetMode(ColorMode.Default);
 				
 			}
 			

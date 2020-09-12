@@ -2,30 +2,34 @@
 
 namespace TwitchFX {
 	
+	public enum ColorMode {
+		
+		Default,
+		Custom,
+		Disabled
+		
+	}
+	
 	class ConfigurableColorSO : ColorSO {
 		
 		private ColorSO baseColorSO;
+		private Color offColor;
 		
-		private bool enabled = false;
+		private ColorMode mode = ColorMode.Default;
 		
 		private Color customColor;
 		
-		public void Init(ColorSO baseColorSO) {
+		public void Init(ColorSO baseColorSO, Color offColor) {
 			
 			this.baseColorSO = baseColorSO;
+			this.offColor = offColor;
 			customColor = baseColorSO;
 			
 		}
 		
-		public void Enable() {
+		public void SetMode(ColorMode mode) {
 			
-			enabled = true;
-			
-		}
-		
-		public void Disable() {
-			
-			enabled = false;
+			this.mode = mode;
 			
 		}
 		
@@ -39,10 +43,15 @@ namespace TwitchFX {
 			
 			get {
 				
-				if (enabled)
+				switch (mode) {
+				case ColorMode.Disabled:
+					return offColor;
+				case ColorMode.Custom:
 					return customColor;
-				
-				return baseColorSO.color;
+				case ColorMode.Default:
+				default:
+					return baseColorSO;
+				}
 				
 			}
 			
