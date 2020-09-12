@@ -1,6 +1,6 @@
 ﻿namespace TwitchFX.Commands {
 	
-	class CommandRestoreLightColor : Command {
+	class CommandRestoreLights : Command {
 		
 		public override void Execute(string args) {
 			

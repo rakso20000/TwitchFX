@@ -35,7 +35,7 @@ namespace TwitchFX {
 		private void InitCommands() {
 			
 			new CommandSetLightColor();
-			new CommandRestoreLightColor();
+			new CommandRestoreLights();
 			new CommandDisableLights();
 			
 		}
