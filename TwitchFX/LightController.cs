@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using SongCore.Data;
+using System.Linq;
 
 namespace TwitchFX {
 	
@@ -32,6 +34,28 @@ namespace TwitchFX {
 		}
 		
 		private void Start() {
+
+
+			IDifficultyBeatmap difficultyBeatmap = BS_Utils.Plugin.LevelData.GameplayCoreSceneSetupData.difficultyBeatmap;
+			ExtraSongData.DifficultyData difficultyData = SongCore.Collections.RetrieveDifficultyData(difficultyBeatmap);
+			
+			if (
+				IPA.Loader.PluginManager.EnabledPlugins.Any(x => x.Id == "Chroma") &&
+				difficultyData != null &&
+				(difficultyData.additionalDifficultyData._requirements.Contains("Chroma") ||
+				difficultyData.additionalDifficultyData._suggestions.Contains("Chroma") ||
+				difficultyBeatmap.beatmapData.beatmapEventData.Any(n => n.value >= 2000000000))
+			) {
+				
+				Logger.log.Info("Map is using Chroma, disabling TwitchFX lighting effects.");
+				
+				instance = null;
+				
+				Destroy(this);
+				
+				return;
+				
+			}
 			
 			lights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
 			

@@ -43,11 +43,17 @@
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BS_Utils">
+      <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Plugins\BS_Utils.dll</HintPath>
+    </Reference>
     <Reference Include="ChatCore">
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Libs\ChatCore.dll</HintPath>
     </Reference>
     <Reference Include="Colors">
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\Colors.dll</HintPath>
+    </Reference>
+    <Reference Include="SongCore">
+      <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Plugins\SongCore.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
