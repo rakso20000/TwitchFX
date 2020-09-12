@@ -4,13 +4,13 @@ namespace TwitchFX {
 	
 	class ConfigurableColorSO : ColorSO {
 		
-		private readonly ColorSO baseColorSO;
+		private ColorSO baseColorSO;
 		
 		private bool enabled = false;
 		
 		private Color customColor;
 		
-		public ConfigurableColorSO(ColorSO baseColorSO) {
+		public void Init(ColorSO baseColorSO) {
 			
 			this.baseColorSO = baseColorSO;
 			customColor = baseColorSO;
