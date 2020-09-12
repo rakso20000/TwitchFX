@@ -104,14 +104,12 @@
     <Compile Include="Chat.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />
-    <Compile Include="Commands\CommandTest.cs" />
     <Compile Include="ConfigurableColorSO.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LightController.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="TwitchFXController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

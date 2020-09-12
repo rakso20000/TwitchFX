@@ -17,11 +17,6 @@ namespace TwitchFX {
 		internal static string Name => "TwitchFX";
 		
 		[Init]
-		/// <summary>
-		/// Called when the plugin is first loaded by IPA (either when the game starts or when the plugin is enabled if it starts disabled).
-		/// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
-		/// Only use [Init] with one Constructor.
-		/// </summary>
 		public void Init(IPALogger logger, Config conf) {
 			
 			instance = this;
@@ -39,24 +34,8 @@ namespace TwitchFX {
 		
 		private void InitCommands() {
 			
-			new CommandTest();
 			new CommandSetLightColor();
 			new CommandRestoreLightColor();
-			
-		}
-		
-		[OnStart]
-		public void OnApplicationStart() {
-			
-			Logger.log.Debug("OnApplicationStart");
-			new GameObject("TwitchFXController").AddComponent<TwitchFXController>();
-			
-		}
-		
-		[OnExit]
-		public void OnApplicationQuit() {
-			
-			Logger.log.Debug("OnApplicationQuit");
 			
 		}
 		
