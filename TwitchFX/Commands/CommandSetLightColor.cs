@@ -45,6 +45,8 @@ namespace TwitchFX.Commands {
 				
 				Plugin.chat.Send("Please use this command during a song");
 				
+				return;
+				
 			}
 			
 			Color leftColor = (Color) leftColorNullable;
