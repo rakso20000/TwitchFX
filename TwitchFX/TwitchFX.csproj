@@ -101,6 +101,7 @@
     <Compile Include="Chat.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommandTest.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
