@@ -32,7 +32,12 @@ namespace TwitchFX {
 		
 		protected void PrintUsage() {
 			
-			Plugin.chat.Send("Usage: " + usage);
+			string[] lines = usage.Split('\n');
+			
+			Plugin.chat.Send("Usage: " + lines[0]);
+			
+			for (int i = 1; i < lines.Length; i++)
+				Plugin.chat.Send(lines[i]);
 			
 		}
 		

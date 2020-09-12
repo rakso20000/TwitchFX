@@ -6,15 +6,21 @@ namespace TwitchFX.Commands {
 		
 		public override void Execute(string argsStr) {
 			
-			SetUsage("!setlightcolor <left color> <right color>");
+			SetUsage("!setlightcolor <color> OR\n" +
+			"!setlightcolor <left color> <right color>");
 			
-			string[] args = ParseArgs(argsStr, 2);
+			string[] args = ParseArgs(argsStr);
 			
-			if (args == null)
+			if (args.Length < 1 || args.Length > 2) {
+				
+				PrintUsage();
+				
 				return;
+				
+			}
 			
 			Color? leftColorNullable = ParseColor(args[0]);
-			Color? rightColorNullable = ParseColor(args[1]);
+			Color? rightColorNullable = args.Length > 1 ? ParseColor(args[1]) : leftColorNullable;
 			
 			if (leftColorNullable == null || rightColorNullable == null) {
 				
