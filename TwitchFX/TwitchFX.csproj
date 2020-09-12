@@ -46,6 +46,9 @@
     <Reference Include="ChatCore">
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Libs\ChatCore.dll</HintPath>
     </Reference>
+    <Reference Include="Colors">
+      <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\Colors.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -101,7 +104,9 @@
     <Compile Include="Chat.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommandTest.cs" />
+    <Compile Include="ConfigurableColorSO.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="LightController.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
