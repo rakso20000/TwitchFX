@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace TwitchFX {
 	
@@ -10,7 +11,9 @@ namespace TwitchFX {
 		
 	}
 	
-	class ConfigurableColorSO : ColorSO {
+	//make chroma happy by using MultipliedColorSO instead of ColorSO
+	
+	class ConfigurableColorSO : MultipliedColorSO {
 		
 		private ColorSO baseColorSO;
 		private Color offColor;
@@ -24,6 +27,11 @@ namespace TwitchFX {
 			this.baseColorSO = baseColorSO;
 			this.offColor = offColor;
 			customColor = baseColorSO;
+			
+			//make chroma happy
+			
+			Helper.SetValue<MultipliedColorSO, SimpleColorSO>(this, "_baseColor", Helper.GetValue<MultipliedColorSO, SimpleColorSO>(baseColorSO, "_baseColor"));
+			Helper.SetValue<MultipliedColorSO, Color>(this, "_multiplierColor", Helper.GetValue<MultipliedColorSO, Color>(baseColorSO, "_multiplierColor"));
 			
 		}
 		
