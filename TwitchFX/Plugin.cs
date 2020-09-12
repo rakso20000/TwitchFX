@@ -40,6 +40,7 @@ namespace TwitchFX {
 		private void InitCommands() {
 			
 			new CommandTest();
+			new CommandSetLightColor();
 			
 		}
 		
