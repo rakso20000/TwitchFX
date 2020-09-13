@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace TwitchFX {
 	
@@ -12,7 +13,8 @@ namespace TwitchFX {
 		
 		private LightWithIdManagerWrapper managerWrapper;
 		
-		private LightSwitchEventEffect[] lights;
+		private LightSwitchEventEffect[] defaultLights;
+		private LightEffectController[] customLights;
 		
 		private void Awake() {
 			
@@ -32,28 +34,54 @@ namespace TwitchFX {
 		
 		private void Start() {
 			
-			lights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
+			defaultLights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
+			customLights = new LightEffectController[defaultLights.Length];
 			
-			LightSwitchEventEffect ligt = lights[0];
+			LightSwitchEventEffect ligt = defaultLights[0];
+			
 			managerWrapper = new LightWithIdManagerWrapper(Helper.GetValue<LightWithIdManager>(ligt, "_lightManager"));
 			
-			foreach(LightSwitchEventEffect light in lights) {
+			BeatmapObjectCallbackController beatmapObjectCallbackController;
+			beatmapObjectCallbackController = Helper.GetValue<BeatmapObjectCallbackController>(ligt, "_beatmapObjectCallbackController");
+			
+			for (int i = 0; i < defaultLights.Length; i++) {
+				
+				LightSwitchEventEffect light = defaultLights[i];
 				
 				Helper.SetValue<LightWithIdManagerWrapper>(light, "_lightManager", managerWrapper);
+				
+				int id = Helper.GetValue<int>(light, "_lightsID");
+				BeatmapEventType eventTypeForThisLight = Helper.GetValue<BeatmapEventType>(light, "_event");
+				
+				customLights[i] = LightEffectController.CreateLightEffectController(managerWrapper, id, eventTypeForThisLight, beatmapObjectCallbackController);
 				
 			}
 			
 		}
 		
-		public void SetLeftColor(Color color) {
+		public void SetColors(Color leftColor, Color rightColor) {
 			
-		}
-		
-		public void SetRightColor(Color color) {
+			foreach (LightEffectController light in customLights)
+				light.SetColors(leftColor, rightColor);
 			
 		}
 		
 		public void UpdateLights(ColorMode mode) {
+			
+			foreach (LightEffectController light in customLights)
+				light.UpdateColors(mode);
+			
+			if (mode == ColorMode.Default) {
+				
+				foreach (LightSwitchEventEffect light in defaultLights) {
+					
+					int prevEventData = Helper.GetValue<int>(light, "_prevLightSwitchBeatmapEventDataValue");
+					
+					light.ProcessLightSwitchEvent(prevEventData, true);
+					
+				}
+				
+			}
 			
 			overrideLights = mode != ColorMode.Default;
 			
@@ -62,6 +90,8 @@ namespace TwitchFX {
 		private void Update() {
 			
 			if (disableOn != -1f && Time.time > disableOn) {
+				
+				UpdateLights(ColorMode.Default);
 				
 				disableOn = -1f;
 				

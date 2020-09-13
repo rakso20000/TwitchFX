@@ -64,6 +64,17 @@ namespace TwitchFX {
 			
 		}
 		
+		public void SetColors(Color leftColor, Color rightColor) {
+			
+			colorLeft = leftColor;
+			colorRight = rightColor;
+			
+			//for not highlight colors are the same as regular colors
+			highlightcolorLeft = leftColor;
+			highlightcolorRight = rightColor;
+			
+		}
+		
 		public void UpdateColors(ColorMode mode) {
 			
 			this.mode = mode;
@@ -159,7 +170,7 @@ namespace TwitchFX {
 				lightManager.SetCustomColorForId(id, color);
 				break;
 			case ColorMode.Disabled:
-				lightManager.SetCustomColorForId(id, color);
+				lightManager.SetCustomColorForId(id, offColor);
 				break;
 			}
 			
