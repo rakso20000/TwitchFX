@@ -6,7 +6,11 @@ namespace TwitchFX {
 		
 		public static LightController instance { get; private set; }
 		
+		public bool overrideLights { get; private set; }
+		
 		public float disableOn = -1f;
+		
+		private LightWithIdManagerWrapper managerWrapper;
 		
 		private ConfigurableColorSO colorLeft;
 		private ConfigurableColorSO colorRight;
@@ -36,6 +40,7 @@ namespace TwitchFX {
 			lights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
 			
 			LightSwitchEventEffect ligt = lights[0];
+			managerWrapper = new LightWithIdManagerWrapper(Helper.GetValue<LightWithIdManager>(ligt, "_lightManager"));
 			
 			colorRight = ScriptableObject.CreateInstance<ConfigurableColorSO>();
 			colorLeft = ScriptableObject.CreateInstance<ConfigurableColorSO>();
@@ -50,6 +55,8 @@ namespace TwitchFX {
 			highlightcolorLeft.Init(Helper.GetValue<ColorSO>(ligt, "_highlightColor1"), offColor);
 			
 			foreach(LightSwitchEventEffect light in lights) {
+				
+				Helper.SetValue<LightWithIdManagerWrapper>(light, "_lightManager", managerWrapper);
 				
 				Helper.SetValue<ColorSO>(light, "_lightColor0", colorRight);
 				Helper.SetValue<ColorSO>(light, "_lightColor1", colorLeft);
@@ -75,6 +82,8 @@ namespace TwitchFX {
 		}
 		
 		public void UpdateLights(ColorMode mode) {
+			
+			overrideLights = mode != ColorMode.Default;
 			
 			colorLeft.SetMode(mode);
 			colorRight.SetMode(mode);
