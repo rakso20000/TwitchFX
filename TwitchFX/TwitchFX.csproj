@@ -112,6 +112,7 @@
     <Compile Include="ConfigurableColorSO.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LightController.cs" />
+    <Compile Include="LightEffectController.cs" />
     <Compile Include="LightWithIdManagerWrapper.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
