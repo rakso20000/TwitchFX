@@ -52,9 +52,7 @@ namespace TwitchFX.Commands {
 			Color leftColor = (Color) leftColorNullable;
 			Color rightColor = (Color) rightColorNullable;
 			
-			LightController.instance.SetLeftColor(leftColor);
-			LightController.instance.SetRightColor(rightColor);
-			
+			LightController.instance.SetColors(leftColor, rightColor);
 			LightController.instance.UpdateLights(ColorMode.Custom);
 			
 			if (args.Length >= 3) {

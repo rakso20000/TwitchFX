@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using SongCore.Data;
-using System.Linq;
+using System;
+using UnityEngine;
 
 namespace TwitchFX {
 	
@@ -8,14 +7,14 @@ namespace TwitchFX {
 		
 		public static LightController instance { get; private set; }
 		
-		private ConfigurableColorSO colorLeft;
-		private ConfigurableColorSO colorRight;
-		private ConfigurableColorSO highlightcolorLeft;
-		private ConfigurableColorSO highlightcolorRight;
-		
-		private LightSwitchEventEffect[] lights;
+		public bool overrideLights { get; private set; }
 		
 		private float disableOn = -1f;
+		
+		private LightWithIdManagerWrapper managerWrapper;
+		
+		private LightSwitchEventEffect[] defaultLights;
+		private LightEffectController[] customLights;
 		
 		private void Awake() {
 			
@@ -35,49 +34,26 @@ namespace TwitchFX {
 		
 		private void Start() {
 			
-			IDifficultyBeatmap difficultyBeatmap = BS_Utils.Plugin.LevelData.GameplayCoreSceneSetupData.difficultyBeatmap;
-			ExtraSongData.DifficultyData difficultyData = SongCore.Collections.RetrieveDifficultyData(difficultyBeatmap);
+			defaultLights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
+			customLights = new LightEffectController[defaultLights.Length];
 			
-			if (
-				IPA.Loader.PluginManager.EnabledPlugins.Any(x => x.Id == "Chroma") &&
-				difficultyData != null &&
-				(difficultyData.additionalDifficultyData._requirements.Contains("Chroma") ||
-				difficultyData.additionalDifficultyData._suggestions.Contains("Chroma") ||
-				difficultyBeatmap.beatmapData.beatmapEventData.Any(n => n.value >= 2000000000))
-			) {
+			LightSwitchEventEffect ligt = defaultLights[0];
+			
+			managerWrapper = new LightWithIdManagerWrapper(Helper.GetValue<LightWithIdManager>(ligt, "_lightManager"));
+			
+			BeatmapObjectCallbackController beatmapObjectCallbackController;
+			beatmapObjectCallbackController = Helper.GetValue<BeatmapObjectCallbackController>(ligt, "_beatmapObjectCallbackController");
+			
+			for (int i = 0; i < defaultLights.Length; i++) {
 				
-				Logger.log.Info("Map is using Chroma, disabling TwitchFX lighting effects.");
+				LightSwitchEventEffect light = defaultLights[i];
 				
-				instance = null;
+				Helper.SetValue<LightWithIdManagerWrapper>(light, "_lightManager", managerWrapper);
 				
-				Destroy(this);
+				int id = Helper.GetValue<int>(light, "_lightsID");
+				BeatmapEventType eventTypeForThisLight = Helper.GetValue<BeatmapEventType>(light, "_event");
 				
-				return;
-				
-			}
-			
-			lights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
-			
-			LightSwitchEventEffect ligt = lights[0];
-			
-			colorRight = ScriptableObject.CreateInstance<ConfigurableColorSO>();
-			colorLeft = ScriptableObject.CreateInstance<ConfigurableColorSO>();
-			highlightcolorRight = ScriptableObject.CreateInstance<ConfigurableColorSO>();
-			highlightcolorLeft = ScriptableObject.CreateInstance<ConfigurableColorSO>();
-			
-			Color offColor = Helper.GetValue<Color>(ligt, "_offColor");
-			
-			colorRight.Init(Helper.GetValue<ColorSO>(ligt, "_lightColor0"), offColor);
-			colorLeft.Init(Helper.GetValue<ColorSO>(ligt, "_lightColor1"), offColor);
-			highlightcolorRight.Init(Helper.GetValue<ColorSO>(ligt, "_highlightColor0"), offColor);
-			highlightcolorLeft.Init(Helper.GetValue<ColorSO>(ligt, "_highlightColor1"), offColor);
-			
-			foreach(LightSwitchEventEffect light in lights) {
-				
-				Helper.SetValue<ColorSO>(light, "_lightColor0", colorRight);
-				Helper.SetValue<ColorSO>(light, "_lightColor1", colorLeft);
-				Helper.SetValue<ColorSO>(light, "_highlightColor0", highlightcolorRight);
-				Helper.SetValue<ColorSO>(light, "_highlightColor1", highlightcolorLeft);
+				customLights[i] = LightEffectController.CreateLightEffectController(managerWrapper, id, eventTypeForThisLight, beatmapObjectCallbackController);
 				
 			}
 			
@@ -94,56 +70,31 @@ namespace TwitchFX {
 			disableOn = -1;
 			
 		}
-		
-		public void SetLeftColor(Color color) {
+		public void SetColors(Color leftColor, Color rightColor) {
 			
-			colorLeft.SetColor(color);
-			highlightcolorLeft.SetColor(color);
-			
-		}
-		
-		public void SetRightColor(Color color) {
-			
-			colorRight.SetColor(color);
-			highlightcolorRight.SetColor(color);
+			foreach (LightEffectController light in customLights)
+				light.SetColors(leftColor, rightColor);
 			
 		}
 		
 		public void UpdateLights(ColorMode mode) {
 			
-			colorLeft.SetMode(mode);
-			colorRight.SetMode(mode);
-			highlightcolorLeft.SetMode(mode);
-			highlightcolorRight.SetMode(mode);
+			foreach (LightEffectController light in customLights)
+				light.UpdateColors(mode);
 			
-			foreach (LightSwitchEventEffect light in lights) {
+			if (mode == ColorMode.Default) {
 				
-				int oldEventData = Helper.GetValue<int>(light, "_prevLightSwitchBeatmapEventDataValue");
-				int newEventData;
-				
-				switch (oldEventData) {
-				case 0: //off
-					return;
-				case 1: //on
-				case 5: //on
-					newEventData = oldEventData;
-					break;
-				case 2: //flash
-				case 6: //flash
-					newEventData = oldEventData - 1;
-					break;
-				case 3: //fade
-				case 7: //fade
-				case -1: //fade
-					newEventData = 0;
-					break;
-				default:
-					return;
+				foreach (LightSwitchEventEffect light in defaultLights) {
+					
+					int prevEventData = Helper.GetValue<int>(light, "_prevLightSwitchBeatmapEventDataValue");
+					
+					light.ProcessLightSwitchEvent(prevEventData, true);
+					
 				}
 				
-				light.ProcessLightSwitchEvent(newEventData, false);
-				
 			}
+			
+			overrideLights = mode != ColorMode.Default;
 			
 		}
 		
@@ -151,12 +102,9 @@ namespace TwitchFX {
 			
 			if (disableOn != -1f && Time.time > disableOn) {
 				
-				disableOn = -1f;
+				UpdateLights(ColorMode.Default);
 				
-				colorLeft.SetMode(ColorMode.Default);
-				colorRight.SetMode(ColorMode.Default);
-				highlightcolorLeft.SetMode(ColorMode.Default);
-				highlightcolorRight.SetMode(ColorMode.Default);
+				disableOn = -1f;
 				
 			}
 			
