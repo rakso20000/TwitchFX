@@ -8,14 +8,14 @@ namespace TwitchFX {
 		
 		public static LightController instance { get; private set; }
 		
-		public float disableOn = -1f;
-		
 		private ConfigurableColorSO colorLeft;
 		private ConfigurableColorSO colorRight;
 		private ConfigurableColorSO highlightcolorLeft;
 		private ConfigurableColorSO highlightcolorRight;
 		
 		private LightSwitchEventEffect[] lights;
+		
+		private float disableOn = -1f;
 		
 		private void Awake() {
 			
@@ -80,6 +80,18 @@ namespace TwitchFX {
 				Helper.SetValue<ColorSO>(light, "_highlightColor1", highlightcolorLeft);
 				
 			}
+			
+		}
+		
+		public void DisableIn(float duration) {
+			
+			disableOn = Time.time + duration;
+			
+		}
+		
+		public void CancelDisable() {
+			
+			disableOn = -1;
 			
 		}
 		

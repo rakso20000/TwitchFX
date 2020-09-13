@@ -57,8 +57,15 @@ namespace TwitchFX.Commands {
 			
 			LightController.instance.UpdateLights(ColorMode.Custom);
 			
-			if (args.Length >= 3)
-				LightController.instance.disableOn = Time.time + duration;
+			if (args.Length >= 3) {
+				
+				LightController.instance.DisableIn(duration);
+				
+			} else {
+				
+				LightController.instance.CancelDisable();
+				
+			}
 			
 		}
 		
