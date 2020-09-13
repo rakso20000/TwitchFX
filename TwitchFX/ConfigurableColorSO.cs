@@ -10,7 +10,7 @@ namespace TwitchFX {
 		
 	}
 	
-	class ConfigurableColorSO : ColorSO {
+	public class ConfigurableColorSO : ColorSO {
 		
 		private ColorSO baseColorSO;
 		private Color offColor;

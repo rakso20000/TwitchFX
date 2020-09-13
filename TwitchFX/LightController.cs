@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TwitchFX {
 	
-	class LightController : MonoBehaviour {
+	public class LightController : MonoBehaviour {
 		
 		public static LightController instance { get; private set; }
 		

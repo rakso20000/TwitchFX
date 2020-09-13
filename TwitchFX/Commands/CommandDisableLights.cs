@@ -1,6 +1,6 @@
 ﻿namespace TwitchFX.Commands {
 	
-	class CommandDisableLights : Command {
+	public class CommandDisableLights : Command {
 		
 		public override void Execute(string args) {
 			

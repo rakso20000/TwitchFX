@@ -2,7 +2,7 @@
 
 namespace TwitchFX {
 	
-	class Helper {
+	public class Helper {
 		
 		public static T GetValue<T>(object obj, string name) {
 			
