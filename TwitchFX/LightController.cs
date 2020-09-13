@@ -34,8 +34,7 @@ namespace TwitchFX {
 		}
 		
 		private void Start() {
-
-
+			
 			IDifficultyBeatmap difficultyBeatmap = BS_Utils.Plugin.LevelData.GameplayCoreSceneSetupData.difficultyBeatmap;
 			ExtraSongData.DifficultyData difficultyData = SongCore.Collections.RetrieveDifficultyData(difficultyBeatmap);
 			
