@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chat.cs" />
+    <Compile Include="ColorMode.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommandDisableLights.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />

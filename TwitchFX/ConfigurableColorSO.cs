@@ -3,16 +3,7 @@ using UnityEngine;
 
 namespace TwitchFX {
 	
-	public enum ColorMode {
-		
-		Default,
-		Custom,
-		Disabled
-		
-	}
-	
 	//make chroma happy by using MultipliedColorSO instead of ColorSO
-	
 	class ConfigurableColorSO : MultipliedColorSO {
 		
 		private ColorSO baseColorSO;
