@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TwitchFX.Configuration;
 using UnityEngine;
 
 namespace TwitchFX {
@@ -14,11 +15,17 @@ namespace TwitchFX {
 			
 		}
 		
-		private string usage = null;
+		private string name;
+		private string usage = "";
 		
 		protected Command() {
 			
-			string name = this.GetType().Name.Substring(7, this.GetType().Name.Length - 7).ToLower();
+			string command = this.GetType().Name.Substring(7, this.GetType().Name.Length - 7).ToLower();
+			
+			if (!PluginConfig.Instance.commands.ContainsKey(command))
+				PluginConfig.Instance.commands[command] = command;
+			
+			name = PluginConfig.Instance.commands[command];
 			
 			commands[name.ToLower()] = this;
 			
@@ -34,10 +41,10 @@ namespace TwitchFX {
 			
 			string[] lines = usage.Split('\n');
 			
-			Plugin.chat.Send("Usage: " + lines[0]);
+			Plugin.chat.Send("Usage: !" + name + " " + lines[0]);
 			
 			for (int i = 1; i < lines.Length; i++)
-				Plugin.chat.Send(lines[i]);
+				Plugin.chat.Send("!" + name + " " + lines[i]);
 			
 		}
 		

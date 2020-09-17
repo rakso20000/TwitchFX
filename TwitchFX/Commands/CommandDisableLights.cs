@@ -4,8 +4,6 @@
 		
 		public override void Execute(string args) {
 			
-			SetUsage("!disablelights");
-			
 			ParseArgs(args, 0);
 			
 			if (LightController.instance == null) {

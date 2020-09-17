@@ -1,7 +1,9 @@
-﻿using IPA;
+﻿using System.Collections.Generic;
+using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using TwitchFX.Commands;
+using TwitchFX.Configuration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
@@ -23,8 +25,11 @@ namespace TwitchFX {
 			Logger.log = logger;
 			Logger.log.Debug("Logger initialized.");
 			
-			Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
+			PluginConfig.Instance = conf.Generated<PluginConfig>();
 			Logger.log.Debug("Config loaded");
+			
+			if (PluginConfig.Instance.commands == null)
+				PluginConfig.Instance.commands = new Dictionary<string, string>();
 			
 			InitCommands();
 			

@@ -6,9 +6,9 @@ namespace TwitchFX.Commands {
 		
 		public override void Execute(string argsStr) {
 			
-			SetUsage("!setlightcolor <color> OR\n" +
-			"!setlightcolor <left color> <right color> OR\n" +
-			"!setlightcolor <left color> <right color> <duration in seconds>");
+			SetUsage("<color> OR\n" +
+			"<left color> <right color> OR\n" +
+			"<left color> <right color> <duration in seconds>");
 			
 			string[] args = ParseArgs(argsStr);
 			

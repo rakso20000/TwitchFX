@@ -1,5 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using IPA.Config.Stores;
+using IPA.Config.Stores.Attributes;
+using IPA.Config.Stores.Converters;
 
 [assembly: InternalsVisibleTo(GeneratedStore.AssemblyVisibilityTarget)]
 namespace TwitchFX.Configuration {
@@ -7,7 +10,9 @@ namespace TwitchFX.Configuration {
 	internal class PluginConfig {
 		
 		public static PluginConfig Instance { get; set; }
-		public virtual int IntValue { get; set; } = 1337;
+		
+		[UseConverter(typeof(DictionaryConverter<string>))]
+		public virtual Dictionary<string, string> commands { get; set; } = new Dictionary<string, string>();
 		
 	}
 	
