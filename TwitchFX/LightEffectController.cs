@@ -2,7 +2,7 @@
 
 namespace TwitchFX {
 	
-	class LightEffectController : MonoBehaviour {
+	public class LightEffectController : MonoBehaviour {
 		
 		private const float FADE_SPEED = 2f;
 		
