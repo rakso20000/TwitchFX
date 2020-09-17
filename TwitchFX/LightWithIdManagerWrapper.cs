@@ -30,6 +30,9 @@ namespace TwitchFX {
 		
 		public void SetCustomColorForId(int id, Color color) {
 			
+			if (LightController.instance.boostColors)
+				color = color.ColorWithAlpha(color.a > 0.5f ? 1 : color.a * 2f);
+			
 			manager.SetColorForId(id, color);
 			
 			_lastColorChangeFrameNum = manager.lastColorChangeFrameNum;
@@ -38,8 +41,11 @@ namespace TwitchFX {
 		
 		public override void SetColorForId(int id, Color color) {
 			
-			if (LightController.instance.overrideLights)
+			if (LightController.instance.mode != ColorMode.Default)
 				return;
+			
+			if (LightController.instance.boostColors)
+				color = color.ColorWithAlpha(color.a > 0.5f ? 1 : color.a * 2f);
 			
 			manager.SetColorForId(id, color);
 			

@@ -54,7 +54,7 @@
     </Reference>
     <Reference Include="HMRendering">
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\HMRendering.dll</HintPath>
-	</Reference>
+    </Reference>
     <Reference Include="SongCore">
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Plugins\SongCore.dll</HintPath>
     </Reference>
@@ -113,6 +113,7 @@
     <Compile Include="Chat.cs" />
     <Compile Include="ColorMode.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Commands\CommandBoostLights.cs" />
     <Compile Include="Commands\CommandDisableLights.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />
     <Compile Include="Helper.cs" />

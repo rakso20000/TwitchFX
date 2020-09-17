@@ -6,9 +6,11 @@ namespace TwitchFX {
 		
 		public static LightController instance { get; private set; }
 		
-		public bool overrideLights { get; private set; } = false;
+		public ColorMode mode { get; private set; } = ColorMode.Default;
+		public bool boostColors { get; private set; } = false;
 		
 		private float disableOn = -1f;
+		private float disableBoostOn = -1f;
 		
 		private LightWithIdManagerWrapper managerWrapper;
 		
@@ -69,6 +71,17 @@ namespace TwitchFX {
 			disableOn = -1f;
 			
 		}
+		
+		public void BoostLights(float duration) {
+			
+			boostColors = true;
+			
+			disableBoostOn = Time.time + duration;
+			
+			UpdateLights(mode);
+			
+		}
+		
 		public void SetColors(Color leftColor, Color rightColor) {
 			
 			foreach (LightEffectController light in customLights)
@@ -77,6 +90,8 @@ namespace TwitchFX {
 		}
 		
 		public void UpdateLights(ColorMode mode) {
+			
+			this.mode = mode;
 			
 			foreach (LightEffectController light in customLights)
 				light.UpdateColors(mode);
@@ -93,8 +108,6 @@ namespace TwitchFX {
 				
 			}
 			
-			overrideLights = mode != ColorMode.Default;
-			
 		}
 		
 		private void Update() {
@@ -104,6 +117,16 @@ namespace TwitchFX {
 				UpdateLights(ColorMode.Default);
 				
 				disableOn = -1f;
+				
+			}
+			
+			if (disableBoostOn != -1f && Time.time > disableBoostOn) {
+				
+				boostColors = false;
+				
+				disableBoostOn = -1f;
+				
+				UpdateLights(mode);
 				
 			}
 			
