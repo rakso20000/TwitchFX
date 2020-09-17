@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
-using TwitchFX.Commands;
 using TwitchFX.Configuration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -31,17 +32,11 @@ namespace TwitchFX {
 			if (PluginConfig.Instance.commands == null)
 				PluginConfig.Instance.commands = new Dictionary<string, string>();
 			
-			InitCommands();
+			foreach (Type type in Assembly.GetAssembly(typeof(Command)).GetTypes())
+				if (type.IsSubclassOf(typeof(Command)))
+					Activator.CreateInstance(type);
 			
 			chat = new Chat();
-			
-		}
-		
-		private void InitCommands() {
-			
-			new CommandSetLightColor();
-			new CommandRestoreLights();
-			new CommandDisableLights();
 			
 		}
 		
