@@ -66,12 +66,11 @@ namespace TwitchFX {
 		
 		public void SetColors(Color leftColor, Color rightColor) {
 			
-			colorLeft = leftColor;
-			colorRight = rightColor;
+			colorLeft = leftColor.ColorWithAlpha(0.5490196f);
+			colorRight = rightColor.ColorWithAlpha(0.5490196f);
 			
-			//for not highlight colors are the same as regular colors
-			highlightcolorLeft = leftColor;
-			highlightcolorRight = rightColor;
+			highlightcolorLeft = leftColor.ColorWithAlpha(0.7529412f);
+			highlightcolorRight = rightColor.ColorWithAlpha(0.7529412f);
 			
 		}
 		
