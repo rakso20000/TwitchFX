@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace TwitchFX {
@@ -7,7 +6,7 @@ namespace TwitchFX {
 		
 		public static LightController instance { get; private set; }
 		
-		public bool overrideLights { get; private set; }
+		public bool overrideLights { get; private set; } = false;
 		
 		private float disableOn = -1f;
 		
@@ -67,7 +66,7 @@ namespace TwitchFX {
 		
 		public void CancelDisable() {
 			
-			disableOn = -1;
+			disableOn = -1f;
 			
 		}
 		public void SetColors(Color leftColor, Color rightColor) {

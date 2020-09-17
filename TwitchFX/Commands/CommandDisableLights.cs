@@ -2,9 +2,9 @@
 	
 	public class CommandDisableLights : Command {
 		
-		public override void Execute(string args) {
+		public override void Execute(string argsStr) {
 			
-			ParseArgs(args, 0);
+			ParseArgs(argsStr, 0);
 			
 			if (LightController.instance == null) {
 				
