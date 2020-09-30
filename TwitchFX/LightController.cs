@@ -64,17 +64,24 @@ namespace TwitchFX {
 				
 			}
 			
+			enabled = false;
+			
 		}
 		
 		public void DisableIn(float duration) {
 			
 			disableOn = Time.time + duration;
 			
+			enabled = true;
+			
 		}
 		
 		public void CancelDisable() {
 			
 			disableOn = -1f;
+			
+			if (disableBoostOn == -1f)
+				enabled = false;
 			
 		}
 		
@@ -85,6 +92,8 @@ namespace TwitchFX {
 			disableBoostOn = Time.time + duration;
 			
 			UpdateLights(mode);
+			
+			enabled = true;
 			
 		}
 		
@@ -140,6 +149,9 @@ namespace TwitchFX {
 				
 				disableOn = -1f;
 				
+				if (disableBoostOn == -1f)
+					enabled = false;
+				
 			}
 			
 			if (disableBoostOn != -1f && Time.time > disableBoostOn) {
@@ -149,6 +161,9 @@ namespace TwitchFX {
 				disableBoostOn = -1f;
 				
 				UpdateLights(mode);
+				
+				if (disableOn == -1f)
+					enabled = false;
 				
 			}
 			
