@@ -133,8 +133,6 @@ namespace TwitchFX {
 			
 			if (prevMode == ColorMode.Disabled) {
 				
-				Logger.log.Info("Setting duration to " + defaultBeatEffectDuration);
-				
 				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", defaultBeatEffectDuration);
 				
 			}
