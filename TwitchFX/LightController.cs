@@ -20,7 +20,7 @@ namespace TwitchFX {
 		private LightSwitchEventEffect[] defaultLights;
 		private LightEffectController[] customLights;
 		
-		private void Awake() {
+		public void Awake() {
 			
 			if (instance != null) {
 				
@@ -36,7 +36,7 @@ namespace TwitchFX {
 			
 		}
 		
-		private void Start() {
+		public void Start() {
 			
 			beatEffectSpawner = Resources.FindObjectsOfTypeAll<BeatEffectSpawner>()[0];
 			defaultBeatEffectDuration = Helper.GetValue<float>(beatEffectSpawner, "_effectDuration");
@@ -141,7 +141,7 @@ namespace TwitchFX {
 			
 		}
 		
-		private void Update() {
+		public void Update() {
 			
 			if (disableOn != -1f && Time.time > disableOn) {
 				
@@ -169,7 +169,7 @@ namespace TwitchFX {
 			
 		}
 		
-		private void OnDestroy() {
+		public void OnDestroy() {
 			
 			if (instance == this)
 				instance = null;
