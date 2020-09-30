@@ -13,6 +13,9 @@ namespace TwitchFX {
 		private float disableBoostOn = -1f;
 		
 		private LightWithIdManagerWrapper managerWrapper;
+		private BeatEffectSpawner beatEffectSpawner;
+		
+		private float defaultBeatEffectDuration;
 		
 		private LightSwitchEventEffect[] defaultLights;
 		private LightEffectController[] customLights;
@@ -34,6 +37,9 @@ namespace TwitchFX {
 		}
 		
 		private void Start() {
+			
+			beatEffectSpawner = Resources.FindObjectsOfTypeAll<BeatEffectSpawner>()[0];
+			defaultBeatEffectDuration = Helper.GetValue<float>(beatEffectSpawner, "_effectDuration");
 			
 			defaultLights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
 			customLights = new LightEffectController[defaultLights.Length];
@@ -91,10 +97,14 @@ namespace TwitchFX {
 		
 		public void UpdateLights(ColorMode mode) {
 			
+			ColorMode prevMode = this.mode;
 			this.mode = mode;
 			
 			foreach (LightEffectController light in customLights)
 				light.UpdateColors(mode);
+			
+			if (mode == prevMode)
+				return;
 			
 			if (mode == ColorMode.Default) {
 				
@@ -105,6 +115,18 @@ namespace TwitchFX {
 					light.ProcessLightSwitchEvent(prevEventData, true);
 					
 				}
+				
+			} else if (mode == ColorMode.Disabled) {
+				
+				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", 0f);
+				
+			}
+			
+			if (prevMode == ColorMode.Disabled) {
+				
+				Logger.log.Info("Setting duration to " + defaultBeatEffectDuration);
+				
+				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", defaultBeatEffectDuration);
 				
 			}
 			
