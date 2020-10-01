@@ -48,6 +48,7 @@ namespace TwitchFX {
 		public void Start() {
 			
 			beatmapObjectCallbackController.beatmapEventDidTriggerEvent += OnEvent;
+			LightController.instance.onCustomEventTriggered += OnCustomEvent;
 			
 			enabled = false;
 			
@@ -56,10 +57,18 @@ namespace TwitchFX {
 		public void OnDestroy() {
 			
 			beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= OnEvent;
+			LightController.instance.onCustomEventTriggered -= OnCustomEvent;
 			
 		}
 		
 		private void OnEvent(BeatmapEventData eventData) {
+			
+			if (mode == ColorMode.Custom && eventData.type == eventTypeForThisLight)
+				HandleEvent(eventData.value, true);
+			
+		}
+		
+		private void OnCustomEvent(BeatmapEventData eventData) {
 			
 			if (eventData.type == eventTypeForThisLight)
 				HandleEvent(eventData.value, true);
@@ -76,11 +85,12 @@ namespace TwitchFX {
 			
 		}
 		
-		public void UpdateColors(ColorMode mode) {
+		public void UpdateColorMode(ColorMode mode) {
 			
 			this.mode = mode;
 			
-			HandleEvent(lastEventValue, false);
+			if (mode == ColorMode.Custom);
+				HandleEvent(lastEventValue, false);
 			
 		}
 		
@@ -166,14 +176,7 @@ namespace TwitchFX {
 		
 		private void SetColor(Color color) {
 			
-			switch (mode) {
-			case ColorMode.Custom:
-				lightManager.SetCustomColorForId(id, color);
-				break;
-			case ColorMode.Disabled:
-				lightManager.SetCustomColorForId(id, offColor);
-				break;
-			}
+			lightManager.SetCustomColorForId(id, color);
 			
 		}
 		

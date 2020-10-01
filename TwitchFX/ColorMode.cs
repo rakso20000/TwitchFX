@@ -4,7 +4,8 @@
 		
 		Default,
 		Custom,
-		Disabled
+		Disabled,
+		CustomLightshow
 		
 	}
 	

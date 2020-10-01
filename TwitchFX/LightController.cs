@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace TwitchFX {
@@ -5,6 +6,10 @@ namespace TwitchFX {
 	public class LightController : MonoBehaviour {
 		
 		public static LightController instance { get; private set; }
+		
+		public event Action<BeatmapEventData> onCustomEventTriggered;
+		
+		public ColorManager colorManager;
 		
 		public ColorMode mode { get; private set; } = ColorMode.Default;
 		public bool boostColors { get; private set; } = false;
@@ -14,6 +19,7 @@ namespace TwitchFX {
 		
 		private LightWithIdManagerWrapper managerWrapper;
 		private BeatEffectSpawner beatEffectSpawner;
+		private IAudioTimeSource timeSource;
 		
 		private float defaultBeatEffectDuration;
 		
@@ -38,8 +44,13 @@ namespace TwitchFX {
 		
 		public void Start() {
 			
+			colorManager = Resources.FindObjectsOfTypeAll<ColorManager>()[0];
+			
 			beatEffectSpawner = Resources.FindObjectsOfTypeAll<BeatEffectSpawner>()[0];
 			defaultBeatEffectDuration = Helper.GetValue<float>(beatEffectSpawner, "_effectDuration");
+			
+			BeatmapObjectCallbackController bocc = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>()[0];
+			timeSource = Helper.GetValue<IAudioTimeSource>(bocc, "_audioTimeSource");
 			
 			defaultLights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
 			customLights = new LightEffectController[defaultLights.Length];
@@ -104,13 +115,53 @@ namespace TwitchFX {
 			
 		}
 		
+		public void ShowCustomLightshow() {
+			
+			CustomLightshowController.instance?.Destroy();
+			
+			ColorMode prevMode = this.mode;
+			
+			UpdateLights(ColorMode.CustomLightshow);
+			
+			//test data
+			BeatmapEventData[] events = {
+				new BeatmapEventData(0f, BeatmapEventType.Event0, 3),
+				new BeatmapEventData(0f, BeatmapEventType.Event1, 7),
+				new BeatmapEventData(4f, BeatmapEventType.Event2, 2),
+				new BeatmapEventData(4f, BeatmapEventType.Event3, 6),
+				new BeatmapEventData(5f, BeatmapEventType.Event2, 0),
+				new BeatmapEventData(5.5f, BeatmapEventType.Event3, 0),
+				new BeatmapEventData(10f, BeatmapEventType.Event0, 3),
+				new BeatmapEventData(10f, BeatmapEventType.Event1, 7),
+				new BeatmapEventData(14f, BeatmapEventType.Event2, 2),
+				new BeatmapEventData(14f, BeatmapEventType.Event3, 6),
+				new BeatmapEventData(15f, BeatmapEventType.Event2, 0),
+				new BeatmapEventData(15.5f, BeatmapEventType.Event3, 0)
+			};
+			
+			CustomLightshowController.CreateCustomLightshowController(timeSource, events, prevMode);
+			
+		}
+		
 		public void UpdateLights(ColorMode mode) {
 			
 			ColorMode prevMode = this.mode;
 			this.mode = mode;
 			
 			foreach (LightEffectController light in customLights)
-				light.UpdateColors(mode);
+				light.UpdateColorMode(mode);
+			
+			if (mode == ColorMode.Disabled || mode == ColorMode.CustomLightshow) {
+				
+				for (int i = 0; i < 16; i++) {
+					
+					BeatmapEventData eventData = new BeatmapEventData(0f, (BeatmapEventType) i, 0);
+					
+					HandleCustomEvent(eventData);
+					
+				}
+				
+			}
 			
 			if (mode == prevMode)
 				return;
@@ -136,6 +187,12 @@ namespace TwitchFX {
 				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", defaultBeatEffectDuration);
 				
 			}
+			
+		}
+		
+		public void HandleCustomEvent(BeatmapEventData eventData) {
+			
+			onCustomEventTriggered?.Invoke(eventData);
 			
 		}
 		
