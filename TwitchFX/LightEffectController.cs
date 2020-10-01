@@ -49,6 +49,8 @@ namespace TwitchFX {
 			
 			beatmapObjectCallbackController.beatmapEventDidTriggerEvent += OnEvent;
 			
+			enabled = false;
+			
 		}
 		
 		public void OnDestroy() {
