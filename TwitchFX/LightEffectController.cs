@@ -57,7 +57,9 @@ namespace TwitchFX {
 		public void OnDestroy() {
 			
 			beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= OnEvent;
-			LightController.instance.onCustomEventTriggered -= OnCustomEvent;
+			
+			if (LightController.instance != null) //will currently never be true, but is safer for future-proofing
+				LightController.instance.onCustomEventTriggered -= OnCustomEvent;
 			
 		}
 		
