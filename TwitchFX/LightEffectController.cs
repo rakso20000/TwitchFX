@@ -91,7 +91,7 @@ namespace TwitchFX {
 			
 			this.mode = mode;
 			
-			if (mode == ColorMode.Custom);
+			if (mode == ColorMode.Custom)
 				HandleEvent(lastEventValue, false);
 			
 		}
