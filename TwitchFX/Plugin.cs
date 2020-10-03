@@ -57,7 +57,7 @@ namespace TwitchFX {
 				
 				string name = Path.GetFileName(lightshowFilePath);
 				
-				if (!name.EndsWith(".json"))
+				if (!name.EndsWith(".json") && !name.EndsWith(".dat"))
 					continue;
 				
 				name = name.Substring(0, name.Length - 5);
