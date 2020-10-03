@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq.Expressions;
 using System.Reflection;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
+using IPA.Utilities;
 using TwitchFX.Configuration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,6 +40,43 @@ namespace TwitchFX {
 					Activator.CreateInstance(type);
 			
 			chat = new Chat();
+			
+		}
+		
+		[OnStart]
+		public void OnStart() {
+			
+			string lightshowFolderPath = UnityGame.UserDataPath + "\\TwitchFX\\Lightshows";
+			
+			if (!Directory.Exists(lightshowFolderPath))
+				Directory.CreateDirectory(lightshowFolderPath);
+			
+			string[] lightshowFilePaths = Directory.GetFiles(lightshowFolderPath);
+			
+			foreach (string lightshowFilePath in lightshowFilePaths) {
+				
+				string name = Path.GetFileName(lightshowFilePath);
+				
+				if (!name.EndsWith(".json"))
+					continue;
+				
+				name = name.Substring(0, name.Length - 5);
+				
+				CustomLightshowData lightshow = CustomLightshowData.LoadLightshowDataFromFile(lightshowFilePath);
+				
+				if (lightshow == null) {
+					
+					Logger.log.Error("Failed loading lightshow: " + name);
+					
+					continue;
+					
+				}
+				
+				CustomLightshowData.SetLightshowData(name, lightshow);
+				
+			}
+			
+			Logger.log.Info(CustomLightshowData.GetLightshowDataCount() + " lightshows loaded from " + lightshowFolderPath);
 			
 		}
 		

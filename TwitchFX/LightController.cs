@@ -115,7 +115,12 @@ namespace TwitchFX {
 			
 		}
 		
-		public void ShowCustomLightshow() {
+		public bool ShowCustomLightshow(string name) {
+			
+			CustomLightshowData lightshowData = CustomLightshowData.GetLightshowData(name);
+			
+			if (lightshowData == null)
+				return false;
 			
 			CustomLightshowController.instance?.Destroy();
 			
@@ -123,23 +128,9 @@ namespace TwitchFX {
 			
 			UpdateLights(ColorMode.CustomLightshow);
 			
-			//test data
-			BeatmapEventData[] events = {
-				new BeatmapEventData(0f, BeatmapEventType.Event0, 3),
-				new BeatmapEventData(0f, BeatmapEventType.Event1, 7),
-				new BeatmapEventData(4f, BeatmapEventType.Event2, 2),
-				new BeatmapEventData(4f, BeatmapEventType.Event3, 6),
-				new BeatmapEventData(5f, BeatmapEventType.Event2, 0),
-				new BeatmapEventData(5.5f, BeatmapEventType.Event3, 0),
-				new BeatmapEventData(10f, BeatmapEventType.Event0, 3),
-				new BeatmapEventData(10f, BeatmapEventType.Event1, 7),
-				new BeatmapEventData(14f, BeatmapEventType.Event2, 2),
-				new BeatmapEventData(14f, BeatmapEventType.Event3, 6),
-				new BeatmapEventData(15f, BeatmapEventType.Event2, 0),
-				new BeatmapEventData(15.5f, BeatmapEventType.Event3, 0)
-			};
+			CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode);
 			
-			CustomLightshowController.CreateCustomLightshowController(timeSource, events, prevMode);
+			return true;
 			
 		}
 		

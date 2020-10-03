@@ -111,6 +111,7 @@
     <Compile Include="Commands\CommandDisableLights.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />
     <Compile Include="CustomLightshowController.cs" />
+    <Compile Include="CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="LightController.cs" />
     <Compile Include="LightEffectController.cs" />

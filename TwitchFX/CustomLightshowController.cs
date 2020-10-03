@@ -7,15 +7,15 @@ namespace TwitchFX {
 		public static CustomLightshowController instance;
 		
 		public static CustomLightshowController CreateCustomLightshowController(
+			CustomLightshowData lightshowData,
 			IAudioTimeSource timeSource,
-			BeatmapEventData[] events,
 			ColorMode prevMode
 		) {
 			
 			CustomLightshowController controller = new GameObject("TwitchFXCustomLightshowController").AddComponent<CustomLightshowController>();
 			
+			controller.lightshowData = lightshowData;
 			controller.timeSource = timeSource;
-			controller.events = events;
 			controller.prevMode = prevMode;
 			
 			instance = controller;
@@ -24,8 +24,8 @@ namespace TwitchFX {
 			
 		}
 		
+		private CustomLightshowData lightshowData;
 		private IAudioTimeSource timeSource;
-		private BeatmapEventData[] events;
 		private ColorMode prevMode;
 		
 		private float startTime;
@@ -56,9 +56,9 @@ namespace TwitchFX {
 				
 			}
 			
-			for (; eventIndex < events.Length; eventIndex++) {
+			for (; eventIndex < lightshowData.Length; eventIndex++) {
 				
-				BeatmapEventData eventData = events[eventIndex];
+				BeatmapEventData eventData = lightshowData[eventIndex];
 				
 				if (eventData.time > timeSource.songTime - startTime)
 					break;
@@ -67,7 +67,7 @@ namespace TwitchFX {
 				
 			}
 			
-			if (eventIndex >= events.Length)
+			if (eventIndex >= lightshowData.Length)
 				Destroy();
 			
 		}
