@@ -109,6 +109,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommandBoostLights.cs" />
     <Compile Include="Commands\CommandDisableLights.cs" />
+    <Compile Include="Commands\CommandLightshow.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />
