@@ -43,6 +43,9 @@
     <DisableZipRelease>True</DisableZipRelease>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Libs\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="ChatCore">
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Libs\ChatCore.dll</HintPath>
     </Reference>
@@ -111,9 +114,12 @@
     <Compile Include="Commands\CommandDisableLights.cs" />
     <Compile Include="Commands\CommandLightshow.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />
+    <Compile Include="Commands\CommandSetNoteColor.cs" />
+    <Compile Include="ColorController.cs" />
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Hooks\ColorManager.cs" />
     <Compile Include="LightController.cs" />
     <Compile Include="LightEffectController.cs" />
     <Compile Include="LightWithIdManagerWrapper.cs" />
