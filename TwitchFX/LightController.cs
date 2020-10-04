@@ -195,23 +195,20 @@ namespace TwitchFX {
 				
 				disableOn = -1f;
 				
-				if (disableBoostOn == -1f)
-					enabled = false;
-				
 			}
 			
 			if (disableBoostOn != -1f && Time.time > disableBoostOn) {
 				
 				boostColors = false;
 				
-				disableBoostOn = -1f;
-				
 				UpdateLights(mode);
 				
-				if (disableOn == -1f)
-					enabled = false;
+				disableBoostOn = -1f;
 				
 			}
+			
+			if (disableOn == -1f && disableBoostOn == -1f)
+				enabled = false;
 			
 		}
 		

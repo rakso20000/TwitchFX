@@ -20,10 +20,10 @@ namespace TwitchFX.Commands {
 				
 			}
 			
-			Color? leftColorNullable = ParseColor(args[0]);
-			Color? rightColorNullable = args.Length > 1 ? ParseColor(args[1]) : leftColorNullable;
+			Color? leftColor = ParseColor(args[0]);
+			Color? rightColor = args.Length > 1 ? ParseColor(args[1]) : leftColor;
 			
-			if (leftColorNullable == null || rightColorNullable == null) {
+			if (!leftColor.HasValue || !rightColor.HasValue) {
 				
 				PrintUsage();
 				
@@ -49,10 +49,7 @@ namespace TwitchFX.Commands {
 				
 			}
 			
-			Color leftColor = (Color) leftColorNullable;
-			Color rightColor = (Color) rightColorNullable;
-			
-			LightController.instance.SetColors(leftColor, rightColor);
+			LightController.instance.SetColors(leftColor.Value, rightColor.Value);
 			LightController.instance.UpdateLights(ColorMode.Custom);
 			
 			if (args.Length >= 3) {
