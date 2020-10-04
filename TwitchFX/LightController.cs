@@ -87,15 +87,6 @@ namespace TwitchFX {
 			
 		}
 		
-		public void CancelDisable() {
-			
-			disableOn = -1f;
-			
-			if (disableBoostOn == -1f)
-				enabled = false;
-			
-		}
-		
 		public void BoostLights(float duration) {
 			
 			boostColors = true;
@@ -135,6 +126,15 @@ namespace TwitchFX {
 		}
 		
 		public void UpdateLights(ColorMode mode) {
+			
+			if (enabled) {
+				
+				disableOn = -1;
+				
+				if (disableBoostOn == -1)
+					enabled = false;
+				
+			}
 			
 			ColorMode prevMode = this.mode;
 			this.mode = mode;

@@ -56,10 +56,6 @@ namespace TwitchFX.Commands {
 				
 				LightController.instance.DisableIn(duration);
 				
-			} else {
-				
-				LightController.instance.CancelDisable();
-				
 			}
 			
 		}

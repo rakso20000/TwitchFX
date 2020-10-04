@@ -6,7 +6,6 @@
 			
 			ParseArgs(argsStr, 0);
 			
-			LightController.instance?.CancelDisable();
 			LightController.instance?.UpdateLights(ColorMode.Default);
 			
 		}
