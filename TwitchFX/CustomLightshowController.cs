@@ -9,7 +9,8 @@ namespace TwitchFX {
 		public static CustomLightshowController CreateCustomLightshowController(
 			CustomLightshowData lightshowData,
 			IAudioTimeSource timeSource,
-			ColorMode prevMode
+			ColorMode prevMode,
+			float restoreLightsAfter
 		) {
 			
 			CustomLightshowController controller = new GameObject("TwitchFXCustomLightshowController").AddComponent<CustomLightshowController>();
@@ -17,6 +18,7 @@ namespace TwitchFX {
 			controller.lightshowData = lightshowData;
 			controller.timeSource = timeSource;
 			controller.prevMode = prevMode;
+			controller.restoreLightsAfter = restoreLightsAfter;
 			
 			instance = controller;
 			
@@ -27,6 +29,7 @@ namespace TwitchFX {
 		private CustomLightshowData lightshowData;
 		private IAudioTimeSource timeSource;
 		private ColorMode prevMode;
+		private float restoreLightsAfter;
 		
 		private float startTime;
 		private bool initialized = false;
@@ -74,7 +77,18 @@ namespace TwitchFX {
 		
 		public void Destroy() {
 			
-			LightController.instance.UpdateLights(prevMode);
+			if (restoreLightsAfter != -1 && Time.time > restoreLightsAfter) {
+				
+				LightController.instance.UpdateLights(ColorMode.Default);
+				
+			} else {
+				
+				LightController.instance.UpdateLights(prevMode);
+				
+				if (restoreLightsAfter != -1)
+					LightController.instance.DisableIn(restoreLightsAfter - Time.time);
+				
+			}
 			
 			instance = null;
 			

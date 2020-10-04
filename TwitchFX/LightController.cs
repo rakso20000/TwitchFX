@@ -115,11 +115,12 @@ namespace TwitchFX {
 			
 			CustomLightshowController.instance?.Destroy();
 			
-			ColorMode prevMode = this.mode;
+			ColorMode prevMode = mode;
+			float disableOn = this.disableOn;
 			
 			UpdateLights(ColorMode.CustomLightshow);
 			
-			CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode);
+			CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode, disableOn);
 			
 			return true;
 			
