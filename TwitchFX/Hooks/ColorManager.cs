@@ -20,6 +20,8 @@ namespace TwitchFX.Hooks {
 			case NoteType.NoteB:
 				__result = ColorController.instance.noteColorRight;
 				break;
+			default:
+				return true;
 			}
 			
 			return false;
