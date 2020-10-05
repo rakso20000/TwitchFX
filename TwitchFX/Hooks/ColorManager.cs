@@ -10,7 +10,7 @@ namespace TwitchFX.Hooks {
 		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
 		public static bool Prefix(NoteType type, ref Color __result) {
 			
-			if (!ColorController.instance.useCustomNoteColors)
+			if (ColorController.instance == null || !ColorController.instance.useCustomNoteColors)
 				return true;
 			
 			switch (type) {
