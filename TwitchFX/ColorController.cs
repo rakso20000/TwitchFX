@@ -47,6 +47,12 @@ namespace TwitchFX {
 			
 		}
 		
+		public void DisableNoteColors() {
+			
+			useCustomNoteColors = false;
+			
+		}
+		
 		public void Update() {
 			
 			if (disableNoteColorsOn != -1f && Time.time > disableNoteColorsOn) {
