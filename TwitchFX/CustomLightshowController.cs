@@ -77,7 +77,7 @@ namespace TwitchFX {
 		
 		public void Destroy() {
 			
-			if (restoreLightsAfter != -1 && Time.time > restoreLightsAfter) {
+			if (restoreLightsAfter != -1f && Time.time > restoreLightsAfter) {
 				
 				LightController.instance.UpdateLights(ColorMode.Default);
 				
@@ -85,7 +85,7 @@ namespace TwitchFX {
 				
 				LightController.instance.UpdateLights(prevMode);
 				
-				if (restoreLightsAfter != -1)
+				if (restoreLightsAfter != -1f)
 					LightController.instance.DisableIn(restoreLightsAfter - Time.time);
 				
 			}

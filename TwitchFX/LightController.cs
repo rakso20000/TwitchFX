@@ -130,9 +130,9 @@ namespace TwitchFX {
 			
 			if (enabled) {
 				
-				disableOn = -1;
+				disableOn = -1f;
 				
-				if (disableBoostOn == -1)
+				if (disableBoostOn == -1f)
 					enabled = false;
 				
 			}
