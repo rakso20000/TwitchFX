@@ -1,6 +1,7 @@
 ﻿using ChatCore;
 using ChatCore.Interfaces;
 using ChatCore.Services.Twitch;
+using System;
 
 namespace TwitchFX {
 	
@@ -38,7 +39,17 @@ namespace TwitchFX {
 					
 				}
 				
-				Command.GetCommand(name)?.Execute(args);
+				try {
+					
+					Command.GetCommand(name)?.Execute(args);
+					
+				} catch (Exception e) {
+					
+					Logger.log.Error("Error whilst trying to execute: " + message.Message);
+					Logger.log.Error(e.GetType().Name + ": " + e.Message);
+					Logger.log.Error(e.StackTrace);
+					
+				}
 				
 			}
 			
