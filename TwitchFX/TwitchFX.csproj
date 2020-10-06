@@ -89,6 +89,9 @@
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>D:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
@@ -117,6 +120,7 @@
     <Compile Include="Commands\CommandSetLightColor.cs" />
     <Compile Include="Commands\CommandSetNoteColor.cs" />
     <Compile Include="ColorController.cs" />
+    <Compile Include="Commands\CommandSetSaberColor.cs" />
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
