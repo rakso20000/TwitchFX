@@ -66,6 +66,14 @@ namespace TwitchFX {
 			
 		}
 		
+		public void DisableSaberColors() {
+			
+			useCustomSaberColors = false;
+			
+			UpdateSaberColors(colorManager.ColorForSaberType(SaberType.SaberA), colorManager.ColorForSaberType(SaberType.SaberB));
+			
+		}
+		
 		private void UpdateSaberColors(Color leftColor, Color rightColor) {
 			
 			foreach (BasicSaberModelController saber in sabers) {
