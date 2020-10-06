@@ -49,6 +49,15 @@ namespace TwitchFX {
 		
 		public void SetSaberColors(Color leftColor, Color rightColor) {
 			
+			if (enabled) {
+				
+				disableSaberColorsOn = -1f;
+				
+				if (disableNoteColorsOn == -1f)
+					enabled = false;
+				
+			}
+			
 			saberColorLeft = leftColor;
 			saberColorRight = rightColor;
 			
@@ -67,6 +76,15 @@ namespace TwitchFX {
 		}
 		
 		public void DisableSaberColors() {
+			
+			if (enabled) {
+				
+				disableSaberColorsOn = -1f;
+				
+				if (disableNoteColorsOn == -1f)
+					enabled = false;
+				
+			}
 			
 			useCustomSaberColors = false;
 			
@@ -217,6 +235,15 @@ namespace TwitchFX {
 		
 		public void SetNoteColors(Color leftColor, Color rightColor) {
 			
+			if (enabled) {
+				
+				disableNoteColorsOn = -1f;
+				
+				if (disableSaberColorsOn == -1f)
+					enabled = false;
+				
+			}
+			
 			noteColorLeft = leftColor;
 			noteColorRight = rightColor;
 			
@@ -233,6 +260,15 @@ namespace TwitchFX {
 		}
 		
 		public void DisableNoteColors() {
+			
+			if (enabled) {
+				
+				disableNoteColorsOn = -1f;
+				
+				if (disableSaberColorsOn == -1f)
+					enabled = false;
+				
+			}
 			
 			useCustomNoteColors = false;
 			
