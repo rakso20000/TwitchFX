@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq.Expressions;
 using System.Reflection;
 using IPA;
 using IPA.Config;
@@ -10,6 +9,7 @@ using IPA.Utilities;
 using TwitchFX.Configuration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using HarmonyLib;
 using IPALogger = IPA.Logging.Logger;
 
 namespace TwitchFX {
@@ -45,6 +45,10 @@ namespace TwitchFX {
 		
 		[OnStart]
 		public void OnStart() {
+			
+			Harmony harmony = new Harmony("com.rakso20000.beatsaber.twitchfx");
+			
+			harmony.PatchAll();
 			
 			string lightshowFolderPath = UnityGame.UserDataPath + "\\TwitchFX\\Lightshows";
 			
@@ -99,7 +103,8 @@ namespace TwitchFX {
 			if (nextScene.name == "GameCore") {
 				
 				new GameObject("TwitchFXLightController").AddComponent<LightController>();
-				
+				new GameObject("TwitchFXColorController").AddComponent<ColorController>();
+
 			}
 			
 		}
