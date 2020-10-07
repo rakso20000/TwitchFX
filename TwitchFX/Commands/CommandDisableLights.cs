@@ -14,7 +14,7 @@
 				
 			}
 			
-			LightController.instance.UpdateLights(ColorMode.Disabled);
+			LightController.instance.SetColorMode(ColorMode.Disabled);
 			
 		}
 		

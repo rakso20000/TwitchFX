@@ -66,11 +66,11 @@ namespace TwitchFX {
 			
 			if (restoreLightsAfter != -1f && Time.time > restoreLightsAfter) {
 				
-				LightController.instance.UpdateLights(ColorMode.Default);
+				LightController.instance.SetColorMode(ColorMode.Default);
 				
 			} else {
 				
-				LightController.instance.UpdateLights(prevMode);
+				LightController.instance.SetColorMode(prevMode);
 				
 				if (restoreLightsAfter != -1f)
 					LightController.instance.DisableIn(restoreLightsAfter - Time.time);

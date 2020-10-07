@@ -6,7 +6,7 @@
 			
 			ParseArgs(argsStr, 0);
 			
-			LightController.instance?.UpdateLights(ColorMode.Default);
+			LightController.instance?.SetColorMode(ColorMode.Default);
 			
 		}
 		

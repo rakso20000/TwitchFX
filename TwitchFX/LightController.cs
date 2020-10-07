@@ -109,7 +109,7 @@ namespace TwitchFX {
 			
 			disableBoostOn = Time.time + duration;
 			
-			UpdateLights(mode);
+			UpdateColorMode();
 			
 			enabled = true;
 			
@@ -157,7 +157,7 @@ namespace TwitchFX {
 				break;
 			}
 			
-			UpdateLights(ColorMode.CustomLightshow);
+			SetColorMode(ColorMode.CustomLightshow);
 			
 			CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode, disableOn);
 			
@@ -165,7 +165,7 @@ namespace TwitchFX {
 			
 		}
 		
-		public void UpdateLights(ColorMode mode) {
+		public void SetColorMode(ColorMode mode) {
 			
 			if (enabled) {
 				
@@ -179,13 +179,29 @@ namespace TwitchFX {
 			ColorMode prevMode = this.mode;
 			this.mode = mode;
 			
-			onColorModeUpdated?.Invoke(mode);
+			UpdateColorMode();
 			
 			if (mode == ColorMode.Disabled || mode == ColorMode.CustomLightshow)
 				managerWrapper.ClearLights();
 			
 			if (mode == prevMode)
 				return;
+			
+			if (mode == ColorMode.Disabled) {
+				
+				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", 0f);
+				
+			} else if (prevMode == ColorMode.Disabled) {
+				
+				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", defaultBeatEffectDuration);
+				
+			}
+			
+		}
+		
+		private void UpdateColorMode() {
+			
+			onColorModeUpdated?.Invoke(mode);
 			
 			if (mode == ColorMode.Default) {
 				
@@ -196,16 +212,6 @@ namespace TwitchFX {
 					light.ProcessLightSwitchEvent(prevEventData, true);
 					
 				}
-				
-			} else if (mode == ColorMode.Disabled) {
-				
-				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", 0f);
-				
-			}
-			
-			if (prevMode == ColorMode.Disabled) {
-				
-				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", defaultBeatEffectDuration);
 				
 			}
 			
@@ -221,7 +227,7 @@ namespace TwitchFX {
 			
 			if (disableOn != -1f && Time.time > disableOn) {
 				
-				UpdateLights(ColorMode.Default);
+				SetColorMode(ColorMode.Default);
 				
 				disableOn = -1f;
 				
@@ -231,7 +237,7 @@ namespace TwitchFX {
 				
 				boostColors = false;
 				
-				UpdateLights(mode);
+				UpdateColorMode();
 				
 				disableBoostOn = -1f;
 				

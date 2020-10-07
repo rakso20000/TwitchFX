@@ -32,7 +32,7 @@ namespace TwitchFX.Commands {
 			}
 			
 			LightController.instance.SetColors(leftColor, rightColor);
-			LightController.instance.UpdateLights(ColorMode.Custom);
+			LightController.instance.SetColorMode(ColorMode.Custom);
 			
 			if (args.Length >= 3) {
 				
