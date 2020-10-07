@@ -4,23 +4,19 @@ namespace TwitchFX {
 	
 	public class CustomLightshowController : MonoBehaviour {
 		
-		public static CustomLightshowController instance;
-		
 		public static CustomLightshowController CreateCustomLightshowController(
 			CustomLightshowData lightshowData,
 			IAudioTimeSource timeSource,
-			ColorMode prevMode,
-			float restoreLightsAfter
+			ColorMode restoreMode,
+			float restoreDefaultLightsAfter
 		) {
 			
 			CustomLightshowController controller = new GameObject("TwitchFXCustomLightshowController").AddComponent<CustomLightshowController>();
 			
 			controller.lightshowData = lightshowData;
 			controller.timeSource = timeSource;
-			controller.prevMode = prevMode;
-			controller.restoreLightsAfter = restoreLightsAfter;
-			
-			instance = controller;
+			controller.restoreMode = restoreMode;
+			controller.restoreDefaultLightsAfter = restoreDefaultLightsAfter;
 			
 			return controller;
 			
@@ -28,13 +24,22 @@ namespace TwitchFX {
 		
 		private CustomLightshowData lightshowData;
 		private IAudioTimeSource timeSource;
-		private ColorMode prevMode;
-		private float restoreLightsAfter;
+		private ColorMode restoreMode;
+		private float restoreDefaultLightsAfter;
 		
 		private float startTime;
 		private bool initialized = false;
 		
 		private int eventIndex = 0;
+		
+		public void RestoreTo(ColorMode? mode, float disableOn) {
+			
+			if (mode.HasValue)
+				restoreMode = mode.Value;
+			
+			restoreDefaultLightsAfter = disableOn;
+			
+		}
 		
 		public void LateUpdate() {
 			
@@ -58,28 +63,37 @@ namespace TwitchFX {
 			}
 			
 			if (eventIndex >= lightshowData.Length)
-				Destroy();
+				Destroy(null);
 			
 		}
 		
-		public void Destroy() {
+		public void Destroy(CustomLightshowController nextLightshowController) {
 			
-			if (restoreLightsAfter != -1f && Time.time > restoreLightsAfter) {
+			if (LightController.instance.lightshowController == this)
+				LightController.instance.lightshowController = null;
+			
+			if (nextLightshowController == null) {
 				
-				LightController.instance.SetColorMode(ColorMode.Default);
+				if (restoreDefaultLightsAfter != -1f && Time.time > restoreDefaultLightsAfter) {
+					
+					LightController.instance.SetColorMode(ColorMode.Default);
+					
+				} else {
+					
+					LightController.instance.SetColorMode(restoreMode);
+					
+					if (restoreDefaultLightsAfter != -1f)
+						LightController.instance.DisableIn(restoreDefaultLightsAfter - Time.time);
+					
+				}
 				
 			} else {
 				
-				LightController.instance.SetColorMode(prevMode);
-				
-				if (restoreLightsAfter != -1f)
-					LightController.instance.DisableIn(restoreLightsAfter - Time.time);
+				nextLightshowController.RestoreTo(restoreMode, restoreDefaultLightsAfter);
 				
 			}
 			
-			instance = null;
-			
-			Destroy(this);
+			Object.Destroy(this);
 			
 		}
 		

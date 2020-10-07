@@ -10,6 +10,7 @@ namespace TwitchFX {
 		public event Action<BeatmapEventData> onCustomEventTriggered;
 		public event Action<ColorMode> onColorModeUpdated;
 		
+		public CustomLightshowController lightshowController;
 		public ColorManager colorManager;
 		
 		public ColorMode mode { get; private set; } = ColorMode.Default;
@@ -97,6 +98,14 @@ namespace TwitchFX {
 		
 		public void DisableIn(float duration) {
 			
+			if (mode == ColorMode.CustomLightshow) {
+				
+				lightshowController.RestoreTo(null, Time.time + duration);
+				
+				return;
+				
+			}
+			
 			disableOn = Time.time + duration;
 			
 			enabled = true;
@@ -132,8 +141,6 @@ namespace TwitchFX {
 			if (lightshowData == null)
 				return false;
 			
-			CustomLightshowController.instance?.Destroy();
-			
 			ColorMode prevMode = mode;
 			float disableOn = this.disableOn;
 			
@@ -157,9 +164,12 @@ namespace TwitchFX {
 				break;
 			}
 			
+			CustomLightshowController lightshowController = CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode, disableOn);
+			this.lightshowController?.Destroy(lightshowController);
+			
 			SetColorMode(ColorMode.CustomLightshow);
 			
-			CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode, disableOn);
+			this.lightshowController = lightshowController;
 			
 			return true;
 			
@@ -173,6 +183,23 @@ namespace TwitchFX {
 				
 				if (disableBoostOn == -1f)
 					enabled = false;
+				
+			}
+			
+			if (this.mode == ColorMode.CustomLightshow && lightshowController != null) {
+				
+				if (mode == ColorMode.Custom) {
+					
+					foreach (LightEffectController lightshowLightEffectController in lightshowLights)
+						lightshowLightEffectController.SetColors(customColorLeft, customColorRight);
+					
+					UpdateColorMode();
+					
+				}
+				
+				lightshowController.RestoreTo(mode, -1f);
+				
+				return;
 				
 			}
 			
