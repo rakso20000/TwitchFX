@@ -32,11 +32,8 @@ namespace TwitchFX.Commands {
 			
 			ColorController.instance.SetNoteColors(leftColor, rightColor);
 			
-			if (args.Length >= 3) {
-				
+			if (args.Length >= 3)
 				ColorController.instance.DisableNoteColorsIn(duration);
-				
-			}
 			
 		}
 		

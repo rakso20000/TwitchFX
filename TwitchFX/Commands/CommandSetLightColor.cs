@@ -34,11 +34,8 @@ namespace TwitchFX.Commands {
 			LightController.instance.SetColors(leftColor, rightColor);
 			LightController.instance.SetColorMode(ColorMode.Custom);
 			
-			if (args.Length >= 3) {
-				
+			if (args.Length >= 3)
 				LightController.instance.DisableIn(duration);
-				
-			}
 			
 		}
 		

@@ -31,11 +31,8 @@ namespace TwitchFX.Commands {
 			
 			ColorController.instance.SetWallColor(color);
 			
-			if (args.Length >= 2) {
-				
+			if (args.Length >= 2)
 				ColorController.instance.DisableWallColorIn(duration);
-				
-			}
 			
 		}
 		
