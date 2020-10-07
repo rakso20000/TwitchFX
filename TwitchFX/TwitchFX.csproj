@@ -121,9 +121,11 @@
     <Compile Include="Commands\CommandSetNoteColor.cs" />
     <Compile Include="ColorController.cs" />
     <Compile Include="Commands\CommandSetSaberColor.cs" />
+    <Compile Include="Commands\CommandSetWallColor.cs" />
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Hooks\ObstacleController.cs" />
     <Compile Include="Hooks\ColorManager.cs" />
     <Compile Include="LightController.cs" />
     <Compile Include="LightEffectController.cs" />

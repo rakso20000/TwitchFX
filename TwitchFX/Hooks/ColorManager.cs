@@ -90,4 +90,25 @@ namespace TwitchFX.Hooks {
 		
 	}
 	
+	[HarmonyPatch(typeof(ColorManager))]
+	[HarmonyPatch("GetObstacleEffectColor")]
+	public class ColorManager_GetObstacleEffectColor {
+		
+		public static bool Prefix(ref Color __result) {
+			
+			if (ColorController.instance == null || !ColorController.instance.useCustomWallColor)
+				return true;
+			
+			Color color = ColorController.instance.customWallColor;
+			
+			Color.RGBToHSV(color, out float h, out float s, out float v);
+			
+			__result = Color.HSVToRGB(h, s, 1f);
+			
+			return false;
+			
+		}
+		
+	}
+	
 }

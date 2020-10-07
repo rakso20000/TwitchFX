@@ -15,11 +15,16 @@ namespace TwitchFX {
 		public Color noteColorLeft { get; private set; }
 		public Color noteColorRight { get; private set; }
 		
+		public bool useCustomWallColor { get; private set; } = false;
+		public Color customWallColor { get; private set; }
+		
 		private ColorManager colorManager;
+		private ColorScheme colorScheme;
 		private BasicSaberModelController[] sabers;
 		
 		private float disableSaberColorsOn = -1f;
 		private float disableNoteColorsOn = -1f;
+		private float disableWallColorOn = -1f;
 		
 		public void Awake() {
 			
@@ -42,6 +47,7 @@ namespace TwitchFX {
 			sabers = Resources.FindObjectsOfTypeAll<BasicSaberModelController>();
 			
 			colorManager = Helper.GetValue<ColorManager>(sabers[0], "_colorManager");
+			colorScheme = Helper.GetValue<ColorScheme>(colorManager, "_colorScheme");
 			
 			enabled = false;
 			
@@ -53,7 +59,7 @@ namespace TwitchFX {
 				
 				disableSaberColorsOn = -1f;
 				
-				if (disableNoteColorsOn == -1f)
+				if (disableNoteColorsOn == -1f && disableWallColorOn == -1f)
 					enabled = false;
 				
 			}
@@ -81,7 +87,7 @@ namespace TwitchFX {
 				
 				disableSaberColorsOn = -1f;
 				
-				if (disableNoteColorsOn == -1f)
+				if (disableNoteColorsOn == -1f && disableWallColorOn == -1f)
 					enabled = false;
 				
 			}
@@ -239,7 +245,7 @@ namespace TwitchFX {
 				
 				disableNoteColorsOn = -1f;
 				
-				if (disableSaberColorsOn == -1f)
+				if (disableSaberColorsOn == -1f && disableWallColorOn == -1f)
 					enabled = false;
 				
 			}
@@ -265,12 +271,55 @@ namespace TwitchFX {
 				
 				disableNoteColorsOn = -1f;
 				
-				if (disableSaberColorsOn == -1f)
+				if (disableSaberColorsOn == -1f && disableWallColorOn == -1f)
 					enabled = false;
 				
 			}
 			
 			useCustomNoteColors = false;
+			
+		}
+		
+		public void SetWallColor(Color color) {
+			
+			if (enabled) {
+				
+				disableWallColorOn = -1f;
+				
+				if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f)
+					enabled = false;
+				
+			}
+			
+			customWallColor = color;
+			
+			useCustomWallColor = true;
+			
+			UpdateWallColor(color);
+			
+		}
+		
+		public void DisableWallColorIn(float duration) {
+			
+			disableWallColorOn = Time.time + duration;
+			
+			enabled = true;
+			
+		}
+		
+		private void UpdateWallColor(Color color) {
+			
+			ObstacleController[] walls = Resources.FindObjectsOfTypeAll<ObstacleController>();
+			
+			foreach (ObstacleController wall in walls) {
+				
+				StretchableObstacle stretchable = Helper.GetValue<StretchableObstacle>(wall, "_stretchableObstacle");
+				
+				ParametricBoxFrameController frame = Helper.GetValue<ParametricBoxFrameController>(stretchable, "_obstacleFrame");
+				
+				stretchable.SetSizeAndColor(frame.width, frame.height, frame.length, color);
+				
+			}
 			
 		}
 		
@@ -294,7 +343,17 @@ namespace TwitchFX {
 				
 			}
 			
-			if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f)
+			if (disableWallColorOn != -1f && Time.time > disableWallColorOn) {
+				
+				useCustomWallColor = false;
+				
+				UpdateWallColor(colorScheme.obstaclesColor);
+				
+				disableWallColorOn = -1f;
+				
+			}
+			
+			if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f && disableWallColorOn == -1f)
 				enabled = false;
 			
 		}
