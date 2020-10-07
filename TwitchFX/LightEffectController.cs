@@ -10,17 +10,17 @@ namespace TwitchFX {
 		
 		public static LightEffectController CreateLightEffectController(
 			LightWithIdManagerWrapper lightManager,
+			ColorMode activeOnMode,
 			int id,
-			BeatmapEventType eventTypeForThisLight,
-			BeatmapObjectCallbackController beatmapObjectCallbackController
+			BeatmapEventType eventTypeForThisLight
 		) {
 			
 			LightEffectController controller = new GameObject("TwitchFXLightEffectController").AddComponent<LightEffectController>();
 			
 			controller.lightManager = lightManager;
+			controller.activeOnMode = activeOnMode;
 			controller.id = id;
 			controller.eventTypeForThisLight = eventTypeForThisLight;
-			controller.beatmapObjectCallbackController = beatmapObjectCallbackController;
 			
 			return controller;
 			
@@ -28,9 +28,9 @@ namespace TwitchFX {
 		
 		private LightWithIdManagerWrapper lightManager;
 		
+		private ColorMode activeOnMode;
 		private int id;
 		private BeatmapEventType eventTypeForThisLight;
-		private BeatmapObjectCallbackController beatmapObjectCallbackController;
 		
 		private ColorMode mode = ColorMode.Default;
 		
@@ -45,32 +45,13 @@ namespace TwitchFX {
 		private int lastEventValue;
 		private float transitionValue;
 		
-		public void Start() {
-			
-			beatmapObjectCallbackController.beatmapEventDidTriggerEvent += OnEvent;
-			LightController.instance.onCustomEventTriggered += OnCustomEvent;
+		public void Awake() {
 			
 			enabled = false;
 			
 		}
 		
-		public void OnDestroy() {
-			
-			beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= OnEvent;
-			
-			if (LightController.instance != null) //will currently never be true, but is safer for future-proofing
-				LightController.instance.onCustomEventTriggered -= OnCustomEvent;
-			
-		}
-		
-		private void OnEvent(BeatmapEventData eventData) {
-			
-			if (mode == ColorMode.Custom && eventData.type == eventTypeForThisLight)
-				HandleEvent(eventData.value, true);
-			
-		}
-		
-		private void OnCustomEvent(BeatmapEventData eventData) {
+		public void OnEvent(BeatmapEventData eventData) {
 			
 			if (eventData.type == eventTypeForThisLight)
 				HandleEvent(eventData.value, true);
@@ -91,8 +72,7 @@ namespace TwitchFX {
 			
 			this.mode = mode;
 			
-			if (mode == ColorMode.Custom)
-				HandleEvent(lastEventValue, false);
+			HandleEvent(lastEventValue, false);
 			
 		}
 		
@@ -177,6 +157,9 @@ namespace TwitchFX {
 		}
 		
 		private void SetColor(Color color) {
+			
+			if (mode != activeOnMode)
+				return;
 			
 			lightManager.SetCustomColorForId(id, color);
 			

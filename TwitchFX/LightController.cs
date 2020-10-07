@@ -8,6 +8,7 @@ namespace TwitchFX {
 		public static LightController instance { get; private set; }
 		
 		public event Action<BeatmapEventData> onCustomEventTriggered;
+		public event Action<ColorMode> onColorModeUpdated;
 		
 		public ColorManager colorManager;
 		
@@ -18,6 +19,7 @@ namespace TwitchFX {
 		private float disableBoostOn = -1f;
 		
 		private LightWithIdManagerWrapper managerWrapper;
+		private BeatmapObjectCallbackController beatmapObjectCallbackController;
 		private BeatEffectSpawner beatEffectSpawner;
 		private IAudioTimeSource timeSource;
 		
@@ -25,6 +27,10 @@ namespace TwitchFX {
 		
 		private LightSwitchEventEffect[] defaultLights;
 		private LightEffectController[] customLights;
+		private LightEffectController[] lightshowLights;
+		
+		private Color customColorLeft;
+		private Color customColorRight;
 		
 		public void Awake() {
 			
@@ -54,12 +60,12 @@ namespace TwitchFX {
 			
 			defaultLights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
 			customLights = new LightEffectController[defaultLights.Length];
+			lightshowLights = new LightEffectController[defaultLights.Length];
 			
 			LightSwitchEventEffect ligt = defaultLights[0];
 			
 			managerWrapper = new LightWithIdManagerWrapper(Helper.GetValue<LightWithIdManager>(ligt, "_lightManager"));
 			
-			BeatmapObjectCallbackController beatmapObjectCallbackController;
 			beatmapObjectCallbackController = Helper.GetValue<BeatmapObjectCallbackController>(ligt, "_beatmapObjectCallbackController");
 			
 			for (int i = 0; i < defaultLights.Length; i++) {
@@ -71,7 +77,17 @@ namespace TwitchFX {
 				int id = Helper.GetValue<int>(light, "_lightsID");
 				BeatmapEventType eventTypeForThisLight = Helper.GetValue<BeatmapEventType>(light, "_event");
 				
-				customLights[i] = LightEffectController.CreateLightEffectController(managerWrapper, id, eventTypeForThisLight, beatmapObjectCallbackController);
+				LightEffectController customLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, ColorMode.Custom, id, eventTypeForThisLight);
+				LightEffectController lightshowLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, ColorMode.CustomLightshow, id, eventTypeForThisLight);
+				
+				beatmapObjectCallbackController.beatmapEventDidTriggerEvent += customLightEffectController.OnEvent;
+				onColorModeUpdated += customLightEffectController.UpdateColorMode;
+				
+				onCustomEventTriggered += lightshowLightEffectController.OnEvent;
+				onColorModeUpdated += lightshowLightEffectController.UpdateColorMode;
+				
+				customLights[i] = customLightEffectController;
+				lightshowLights[i] = lightshowLightEffectController;
 				
 			}
 			
@@ -101,6 +117,9 @@ namespace TwitchFX {
 		
 		public void SetColors(Color leftColor, Color rightColor) {
 			
+			customColorLeft = leftColor;
+			customColorRight = rightColor;
+			
 			foreach (LightEffectController light in customLights)
 				light.SetColors(leftColor, rightColor);
 			
@@ -117,6 +136,26 @@ namespace TwitchFX {
 			
 			ColorMode prevMode = mode;
 			float disableOn = this.disableOn;
+			
+			switch (prevMode) {
+			case ColorMode.CustomLightshow:
+				break;
+			case ColorMode.Custom:
+				
+				foreach (LightEffectController lightshowLightEffectController in lightshowLights)
+					lightshowLightEffectController.SetColors(customColorLeft, customColorRight);
+				
+				break;
+			default:
+				
+				Color leftColor = Helper.GetValue<SimpleColorSO>(colorManager, "_environmentColor0").color;
+				Color rightColor = Helper.GetValue<SimpleColorSO>(colorManager, "_environmentColor1").color;
+				
+				foreach (LightEffectController lightshowLightEffectController in lightshowLights)
+					lightshowLightEffectController.SetColors(leftColor, rightColor);
+				
+				break;
+			}
 			
 			UpdateLights(ColorMode.CustomLightshow);
 			
@@ -140,20 +179,10 @@ namespace TwitchFX {
 			ColorMode prevMode = this.mode;
 			this.mode = mode;
 			
-			foreach (LightEffectController light in customLights)
-				light.UpdateColorMode(mode);
+			onColorModeUpdated?.Invoke(mode);
 			
-			if (mode == ColorMode.Disabled || mode == ColorMode.CustomLightshow) {
-				
-				for (int i = 0; i < 16; i++) {
-					
-					BeatmapEventData eventData = new BeatmapEventData(0f, (BeatmapEventType) i, 0);
-					
-					HandleCustomEvent(eventData);
-					
-				}
-				
-			}
+			if (mode == ColorMode.Disabled || mode == ColorMode.CustomLightshow)
+				managerWrapper.ClearLights();
 			
 			if (mode == prevMode)
 				return;
@@ -214,6 +243,9 @@ namespace TwitchFX {
 		}
 		
 		public void OnDestroy() {
+			
+			foreach (LightEffectController customLightEffectController in customLights)
+				beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= customLightEffectController.OnEvent;
 			
 			if (instance == this)
 				instance = null;

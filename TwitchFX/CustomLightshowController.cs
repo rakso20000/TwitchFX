@@ -36,19 +36,6 @@ namespace TwitchFX {
 		
 		private int eventIndex = 0;
 		
-		public void Start() {
-			
-			if (prevMode == ColorMode.Default || prevMode == ColorMode.Disabled) {
-				
-				Color colorLeft = Helper.GetValue<SimpleColorSO>(LightController.instance.colorManager, "_environmentColor0").color;
-				Color colorRight = Helper.GetValue<SimpleColorSO>(LightController.instance.colorManager, "_environmentColor1").color;
-				
-				LightController.instance.SetColors(colorLeft, colorRight);
-				
-			}
-			
-		}
-		
 		public void LateUpdate() {
 			
 			if (!initialized) {

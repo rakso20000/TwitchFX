@@ -8,14 +8,18 @@ namespace TwitchFX {
 		
 		private readonly LightWithIdManager manager;
 		
+		private readonly Color offColor;
+		
 		public LightWithIdManagerWrapper(LightWithIdManager manager) {
 			
 			this.manager = manager;
 			
+			offColor = new Color(0f, 0f, 0f, 0f);
+			
 			//accessible via colors
 			_colors = manager.colors;
-			
-			//accessed by chroma
+
+			//accessed by chroma and ClearLights
 			_lights = Helper.GetValue<List<LightWithId>[]>(manager, "_lights");
 			
 			manager.didSetColorForIdEvent += OnDidSetColorForIdEvent;
@@ -25,6 +29,13 @@ namespace TwitchFX {
 		~LightWithIdManagerWrapper() {
 			
 			manager.didSetColorForIdEvent -= OnDidSetColorForIdEvent;
+			
+		}
+		
+		public void ClearLights() {
+			
+			for (int i = 0; i < _lights.Length; i++)
+				manager.SetColorForId(i, offColor);
 			
 		}
 		
