@@ -10,13 +10,8 @@
 			
 			float duration;
 			
-			if (!float.TryParse(args[0], out duration)) {
-				
-				PrintUsage();
-				
-				return;
-				
-			}
+			if (!float.TryParse(args[0], out duration))
+				throw CreateInvalidArgs();
 			
 			if (LightController.instance == null) {
 				

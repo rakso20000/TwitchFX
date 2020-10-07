@@ -114,6 +114,7 @@
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="InvalidCommandArgumentsException.cs" />
     <Compile Include="LightController.cs" />
     <Compile Include="LightEffectController.cs" />
     <Compile Include="LightWithIdManagerWrapper.cs" />

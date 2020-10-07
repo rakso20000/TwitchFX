@@ -12,34 +12,16 @@ namespace TwitchFX.Commands {
 			
 			string[] args = ParseArgs(argsStr);
 			
-			if (args.Length < 1 || args.Length > 3) {
-				
-				PrintUsage();
-				
-				return;
-				
-			}
+			if (args.Length < 1 || args.Length > 3)
+				throw CreateInvalidArgs();
 			
-			Color? leftColor = ParseColor(args[0]);
-			Color? rightColor = args.Length > 1 ? ParseColor(args[1]) : leftColor;
-			
-			if (!leftColor.HasValue || !rightColor.HasValue) {
-				
-				PrintUsage();
-				
-				return;
-				
-			}
+			Color leftColor = ParseColor(args[0]);
+			Color rightColor = args.Length > 1 ? ParseColor(args[1]) : leftColor;
 			
 			float duration = 0f;
 			
-			if(args.Length >= 3 && !float.TryParse(args[2], out duration)) {
-				
-				PrintUsage();
-				
-				return;
-				
-			}
+			if(args.Length >= 3 && !float.TryParse(args[2], out duration))
+				throw CreateInvalidArgs();
 			
 			if (LightController.instance == null) {
 				
@@ -49,7 +31,7 @@ namespace TwitchFX.Commands {
 				
 			}
 			
-			LightController.instance.SetColors(leftColor.Value, rightColor.Value);
+			LightController.instance.SetColors(leftColor, rightColor);
 			LightController.instance.UpdateLights(ColorMode.Custom);
 			
 			if (args.Length >= 3) {

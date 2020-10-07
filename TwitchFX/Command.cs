@@ -37,14 +37,14 @@ namespace TwitchFX {
 			
 		}
 		
-		protected void PrintUsage() {
+		protected InvalidCommandArgumentsException CreateInvalidArgs() {
 			
 			string[] lines = usage.Split('\n');
 			
-			Plugin.chat.Send("Usage: !" + name + " " + lines[0]);
+			for (int i = 0; i < lines.Length; i++)
+				lines[i] = "!" + name + " " + lines[i];
 			
-			for (int i = 1; i < lines.Length; i++)
-				Plugin.chat.Send("!" + name + " " + lines[i]);
+			throw new InvalidCommandArgumentsException(lines);
 			
 		}
 		
@@ -52,19 +52,14 @@ namespace TwitchFX {
 			
 			string[] args = argsStr.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
 			
-			if (expected >= 0 && args.Length != expected) {
-				
-				PrintUsage();
-				
-				return null;
-				
-			}
+			if (expected >= 0 && args.Length != expected)
+				throw CreateInvalidArgs();
 			
 			return args;
 			
 		}
 		
-		protected Color? ParseColor(string colorStr) {
+		protected Color ParseColor(string colorStr) {
 			
 			if (colorStr.StartsWith("#")) { //hex color code
 				
@@ -128,7 +123,7 @@ namespace TwitchFX {
 				return Color.yellow;
 			}
 			
-			return null;
+			throw CreateInvalidArgs();
 			
 		}
 		
