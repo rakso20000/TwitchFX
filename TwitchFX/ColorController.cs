@@ -307,6 +307,23 @@ namespace TwitchFX {
 			
 		}
 		
+		public void DisableWallColor() {
+			
+			if (enabled) {
+				
+				disableWallColorOn = -1f;
+				
+				if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f)
+					enabled = false;
+				
+			}
+			
+			useCustomWallColor = false;
+			
+			UpdateWallColor(colorScheme.obstaclesColor);
+			
+		}
+		
 		private void UpdateWallColor(Color color) {
 			
 			ObstacleController[] walls = Resources.FindObjectsOfTypeAll<ObstacleController>();
