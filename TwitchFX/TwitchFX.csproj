@@ -117,6 +117,7 @@
     <Compile Include="Commands\CommandDisableLights.cs" />
     <Compile Include="Commands\CommandLightshow.cs" />
     <Compile Include="Commands\CommandResetNoteColor.cs" />
+    <Compile Include="Commands\CommandResetSaberColor.cs" />
     <Compile Include="Commands\CommandResetWallColor.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />
     <Compile Include="Commands\CommandSetNoteColor.cs" />
