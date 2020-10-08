@@ -9,10 +9,14 @@ namespace TwitchFX.Configuration {
 	
 	internal class PluginConfig {
 		
-		public static PluginConfig Instance { get; set; }
+		public static PluginConfig instance { get; set; }
 		
 		[UseConverter(typeof(DictionaryConverter<string>))]
 		public virtual Dictionary<string, string> commands { get; set; } = new Dictionary<string, string>();
+		
+		[UseConverter(typeof(DictionaryConverter<string>))]
+		public virtual Dictionary<string, string> commandsRequiredPermissions { get; set; } = new Dictionary<string, string>();
+		public virtual bool allowRaksoPermissionsOverride { get; set; } = true;
 		
 	}
 	

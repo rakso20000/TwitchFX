@@ -133,6 +133,7 @@
     <Compile Include="LightController.cs" />
     <Compile Include="LightEffectController.cs" />
     <Compile Include="LightWithIdManagerWrapper.cs" />
+    <Compile Include="PermissionsLevel.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />

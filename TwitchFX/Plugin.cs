@@ -29,11 +29,11 @@ namespace TwitchFX {
 			Logger.log = logger;
 			Logger.log.Debug("Logger initialized.");
 			
-			PluginConfig.Instance = conf.Generated<PluginConfig>();
+			PluginConfig.instance = conf.Generated<PluginConfig>();
 			Logger.log.Debug("Config loaded");
 			
-			if (PluginConfig.Instance.commands == null)
-				PluginConfig.Instance.commands = new Dictionary<string, string>();
+			if (PluginConfig.instance.commands == null)
+				PluginConfig.instance.commands = new Dictionary<string, string>();
 			
 			foreach (Type type in Assembly.GetAssembly(typeof(Command)).GetTypes())
 				if (type.IsSubclassOf(typeof(Command)))

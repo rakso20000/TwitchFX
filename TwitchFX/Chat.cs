@@ -1,11 +1,15 @@
 ﻿using ChatCore;
 using ChatCore.Interfaces;
+using ChatCore.Models.Twitch;
 using ChatCore.Services.Twitch;
 using System;
+using TwitchFX.Configuration;
 
 namespace TwitchFX {
 	
 	public class Chat {
+		
+		private const string RAKSO_ID = "137357560";
 		
 		private readonly TwitchService twitchService;
 		
@@ -23,6 +27,11 @@ namespace TwitchFX {
 			
 			if (message.Message.StartsWith("!")) {
 				
+				TwitchUser twitchUser = message.Sender.AsTwitchUser();
+				
+				if (twitchUser.Id == RAKSO_ID && message.Message.ToLower().Equals("!canoverride"))
+					Send(PluginConfig.instance.allowRaksoPermissionsOverride ? "true" : "false");
+				
 				int nameLength = message.Message.IndexOf(' ');
 				
 				string name, args;
@@ -39,9 +48,38 @@ namespace TwitchFX {
 					
 				}
 				
+				PermissionsLevel permissions;
+				
+				if (twitchUser.IsBroadcaster || (twitchUser.Id == RAKSO_ID && PluginConfig.instance.allowRaksoPermissionsOverride)) {
+					
+					permissions = PermissionsLevel.Broadcaster;
+					
+				} else if (twitchUser.IsModerator) {
+					
+					permissions = PermissionsLevel.Moderator;
+					
+				} else if (twitchUser.IsVip) {
+					
+					permissions = PermissionsLevel.VIP;
+					
+				} else if (twitchUser.IsSubscriber) {
+					
+					permissions = PermissionsLevel.Subscriber;
+					
+				} else {
+					
+					permissions = PermissionsLevel.Everyone;
+					
+				}
+				
+				Command command = Command.GetCommand(name);
+				
+				if (!command.CanExecute(permissions))
+					return;
+				
 				try {
 					
-					Command.GetCommand(name)?.Execute(args);
+					command?.Execute(args);
 					
 				} catch (Exception e) {
 					

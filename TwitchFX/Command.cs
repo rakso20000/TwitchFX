@@ -15,6 +15,8 @@ namespace TwitchFX {
 			
 		}
 		
+		private readonly PermissionsLevel requiredPermissions;
+		
 		private string name;
 		private string usage = "";
 		
@@ -22,12 +24,43 @@ namespace TwitchFX {
 			
 			string command = this.GetType().Name.Substring(7, this.GetType().Name.Length - 7).ToLower();
 			
-			if (!PluginConfig.Instance.commands.ContainsKey(command))
-				PluginConfig.Instance.commands[command] = command;
+			if (!PluginConfig.instance.commands.ContainsKey(command))
+				PluginConfig.instance.commands[command] = command;
 			
-			name = PluginConfig.Instance.commands[command];
+			name = PluginConfig.instance.commands[command];
 			
 			commands[name.ToLower()] = this;
+			
+			if (!PluginConfig.instance.commandsRequiredPermissions.ContainsKey(command))
+				PluginConfig.instance.commandsRequiredPermissions[command] = "everyone";
+			
+			switch (PluginConfig.instance.commandsRequiredPermissions[command].ToLower()) {
+			case "broadcaster":
+				requiredPermissions = PermissionsLevel.Broadcaster;
+				break;
+			case "moderator":
+				requiredPermissions = PermissionsLevel.Moderator;
+				break;
+			case "vip":
+				requiredPermissions = PermissionsLevel.VIP;
+				break;
+			case "subscriber":
+				requiredPermissions = PermissionsLevel.Subscriber;
+				break;
+			case "everyone":
+				requiredPermissions = PermissionsLevel.Everyone;
+				break;
+			default:
+				PluginConfig.instance.commandsRequiredPermissions[command] = "everyone";
+				requiredPermissions = PermissionsLevel.Everyone;
+				break;
+			}
+			
+		}
+		
+		public bool CanExecute(PermissionsLevel permissions) {
+			
+			return permissions >= requiredPermissions;
 			
 		}
 		
