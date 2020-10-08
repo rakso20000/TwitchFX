@@ -104,7 +104,7 @@ namespace TwitchFX {
 				
 				new GameObject("TwitchFXLightController").AddComponent<LightController>();
 				new GameObject("TwitchFXColorController").AddComponent<ColorController>();
-
+				
 			}
 			
 		}
