@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using IPA.Loader;
+using System;
+using System.Reflection;
+using UnityEngine;
 using Xft;
 
 namespace TwitchFX {
@@ -21,6 +24,11 @@ namespace TwitchFX {
 		private ColorManager colorManager;
 		private ColorScheme colorScheme;
 		private BasicSaberModelController[] sabers;
+		
+		private MethodInfo customSabersApplyColorsMethod;
+		private object customSabersSaberScript;
+		
+		private bool updateCustomSabers;
 		
 		private float disableSaberColorsOn = -1f;
 		private float disableNoteColorsOn = -1f;
@@ -49,7 +57,34 @@ namespace TwitchFX {
 			colorManager = Helper.GetValue<ColorManager>(sabers[0], "_colorManager");
 			colorScheme = Helper.GetValue<ColorScheme>(colorManager, "_colorScheme");
 			
+			updateCustomSabers = PluginManager.GetPluginFromId("Custom Sabers") != null;
+			
+			if (updateCustomSabers)
+				InitCustomSabers();
+			
 			enabled = false;
+			
+		}
+		
+		private void InitCustomSabers() {
+			
+			try {
+				
+				Assembly customSabersAssembly = typeof(CustomSaber.Plugin).Assembly;
+				Type saberScriptType = customSabersAssembly.GetType("CustomSaber.Utilities.SaberScript", true);
+				
+				customSabersApplyColorsMethod = saberScriptType.GetMethod("ApplyColorsToSaber");
+				customSabersSaberScript = saberScriptType.GetField("instance").GetValue(null);
+				
+			} catch (Exception e) {
+				
+				Logger.log.Error("Error whilst trying to access Custom Sabers");
+				Logger.log.Error(e.GetType().Name + ": " + e.Message);
+				Logger.log.Error(e.StackTrace);
+				
+				updateCustomSabers = false;
+				
+			}
 			
 		}
 		
@@ -234,6 +269,26 @@ namespace TwitchFX {
 				
 				main = glowPS.main;
 				main.startColor = clashColor;
+				
+			}
+			
+			if (updateCustomSabers) {
+				
+				try {
+					
+					GameObject leftSaber = Helper.GetValue<GameObject>(customSabersSaberScript, "leftSaber");
+					GameObject rightSaber = Helper.GetValue<GameObject>(customSabersSaberScript, "rightSaber");
+					
+					customSabersApplyColorsMethod.Invoke(null, new object[] { leftSaber, leftColor });
+					customSabersApplyColorsMethod.Invoke(null, new object[] { rightSaber, rightColor });
+					
+				} catch (Exception e) {
+					
+					Logger.log.Error("Error whilst trying to update Custom Sabers");
+					Logger.log.Error(e.GetType().Name + ": " + e.Message);
+					Logger.log.Error(e.StackTrace);
+					
+				}
 				
 			}
 			
