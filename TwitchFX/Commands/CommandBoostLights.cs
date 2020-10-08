@@ -8,10 +8,7 @@
 			
 			string[] args = ParseArgs(argsStr, 1);
 			
-			float duration;
-			
-			if (!float.TryParse(args[0], out duration))
-				throw CreateInvalidArgs();
+			float duration = TryParseFloat(args, 0);
 			
 			if (LightController.instance == null) {
 				

@@ -48,14 +48,26 @@ namespace TwitchFX {
 			
 		}
 		
-		protected string[] ParseArgs(string argsStr, int expected = -1) {
+		protected string[] ParseArgs(string argsStr, int expectedMin = -1, int expectedMax = -1) {
 			
 			string[] args = argsStr.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
 			
-			if (expected >= 0 && args.Length != expected)
+			if (expectedMin != -1 && (args.Length < expectedMin || args.Length > (expectedMax != -1 ? expectedMax : expectedMin)))
 				throw CreateInvalidArgs();
 			
 			return args;
+			
+		}
+		
+		protected float TryParseFloat(string[] args, int index) {
+			
+			if (index >= args.Length)
+				return 0f;
+			
+			if (!float.TryParse(args[index], out float f))
+				throw CreateInvalidArgs();
+			
+			return f;
 			
 		}
 		
