@@ -10,6 +10,8 @@ namespace TwitchFX {
 		
 		public static ColorController instance { get; private set; }
 		
+		private static readonly int colorID = Shader.PropertyToID("_Color");
+		
 		public bool useCustomSaberColors { get; private set; } = false;
 		public Color saberColorLeft { get; private set;}
 		public Color saberColorRight { get; private set;}
@@ -310,6 +312,8 @@ namespace TwitchFX {
 			
 			useCustomNoteColors = true;
 			
+			UpdateNoteColors(leftColor, rightColor);
+			
 		}
 		
 		public void DisableNoteColorsIn(float duration) {
@@ -332,6 +336,53 @@ namespace TwitchFX {
 			}
 			
 			useCustomNoteColors = false;
+			
+			UpdateNoteColors(colorManager.ColorForNoteType(NoteType.NoteA), colorManager.ColorForNoteType(NoteType.NoteB));
+			
+		}
+		
+		private void UpdateNoteColors(Color leftColor, Color rightColor) {
+			
+			ColorNoteVisuals[] notes = Resources.FindObjectsOfTypeAll<ColorNoteVisuals>();
+			
+			foreach (ColorNoteVisuals note in notes) {
+				
+				NoteData noteData = Helper.GetValue<NoteController>(note, "_noteController").noteData;
+				
+				if (noteData == null)
+					continue;
+				
+				NoteType noteType = noteData.noteType;
+				
+				Color color;
+				
+				switch (noteType) {
+				case NoteType.NoteA:
+					color = leftColor;
+					break;
+				case NoteType.NoteB:
+					color = rightColor;
+					break;
+				default:
+					continue;
+				}
+				
+				float arrowGlowIntensity = Helper.GetValue<float>(note, "_arrowGlowIntensity");
+				
+				Helper.SetValue<Color>(note, "_noteColor", color);
+				Helper.GetValue<SpriteRenderer>(note, "_circleGlowSpriteRenderer").color = color;
+				Helper.GetValue<SpriteRenderer>(note, "_arrowGlowSpriteRenderer").color = color.ColorWithAlpha(arrowGlowIntensity);
+				
+				MaterialPropertyBlockController[] propertyBlockControllers = Helper.GetValue<MaterialPropertyBlockController[]>(note, "_materialPropertyBlockControllers");
+				
+				foreach (MaterialPropertyBlockController propertyBlockController in propertyBlockControllers) {
+					
+					propertyBlockController.materialPropertyBlock.SetColor(colorID, color);
+					propertyBlockController.ApplyChanges();
+					
+				}
+				
+			}
 			
 		}
 		
@@ -410,6 +461,8 @@ namespace TwitchFX {
 			if (disableNoteColorsOn != -1f && Time.time > disableNoteColorsOn) {
 				
 				useCustomNoteColors = false;
+				
+				UpdateNoteColors(colorManager.ColorForNoteType(NoteType.NoteA), colorManager.ColorForNoteType(NoteType.NoteB));
 				
 				disableNoteColorsOn = -1f;
 				
