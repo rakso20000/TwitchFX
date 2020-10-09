@@ -38,7 +38,7 @@ namespace TwitchFX {
 			
 			if (instance != null) {
 				
-				Logger.log.Warn("Instance of LightController already exists, destroying.");
+				Logger.log.Warn("Instance of ColorController already exists, destroying.");
 				
 				Destroy(this);
 				
