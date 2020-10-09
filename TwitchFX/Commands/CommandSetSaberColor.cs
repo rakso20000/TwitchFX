@@ -16,9 +16,6 @@ namespace TwitchFX.Commands {
 			
 			float duration = TryParseFloat(args, 2);
 			
-			if (args.Length >= 3 && !float.TryParse(args[2], out duration))
-				throw CreateInvalidArgs();
-			
 			if (ColorController.instance == null) {
 				
 				Plugin.chat.Send("Please use this command during a song");
