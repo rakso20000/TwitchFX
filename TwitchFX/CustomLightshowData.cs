@@ -18,7 +18,7 @@ namespace TwitchFX {
 			bool eventsExists = rootJSON.TryGetKey("_events", out JSONNode eventsNodeJSON);
 			
 			if (!eventsExists || !eventsNodeJSON.IsArray)
-				throw new InvalidJSONException("No events JSON object found in root");
+				throw new InvalidJSONException("No events JSON array found in root");
 			
 			JSONArray eventsJSON = eventsNodeJSON.AsArray;
 			
@@ -48,7 +48,7 @@ namespace TwitchFX {
 			}
 			
 			if (eventsList.Count == 0)
-				throw new InvalidJSONException("No valid events found in events JSON object");
+				throw new InvalidJSONException("No valid events found in events JSON array");
 			
 			BeatmapEventData[] events = eventsList.OrderBy(beatmapEvent => beatmapEvent.time).ToArray();
 			
