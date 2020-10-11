@@ -1,0 +1,9 @@
+{
+	"leftLightColor": "#1f1e33",
+	"rightLightColor": "#1f1e33",
+	"leftNoteColor": "#1f1e33",
+	"rightNoteColor": "gray",
+	"leftSaberColor": "#1f1e33",
+	"rightSaberColor": "gray",
+	"wallColor": "gray"
+}

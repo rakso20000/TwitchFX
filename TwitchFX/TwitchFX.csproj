@@ -180,7 +180,13 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="BuildTargets.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /E /I /Y "$(SolutionDir)..\ColorPresets" "$(BeatSaberDir)\UserData\TwitchFX\ColorPresets"
+xcopy /E /I /Y "$(SolutionDir)..\Lightshows" "$(BeatSaberDir)\UserData\TwitchFX\Lightshows"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>rmdir /Q /S "$(ProjectDir)obj\$(ConfigurationName)\zip\UserData\TwitchFX\ColorPresets"
+xcopy /E /I "$(SolutionDir)..\ColorPresets" "$(ProjectDir)obj\$(ConfigurationName)\zip\UserData\TwitchFX\ColorPresets"
+rmdir /Q /S "$(ProjectDir)obj\$(ConfigurationName)\zip\UserData\TwitchFX\Lightshows"
+xcopy /E /I "$(SolutionDir)..\Lightshows" "$(ProjectDir)obj\$(ConfigurationName)\zip\UserData\TwitchFX\Lightshows"</PreBuildEvent>
   </PropertyGroup>
 </Project>
