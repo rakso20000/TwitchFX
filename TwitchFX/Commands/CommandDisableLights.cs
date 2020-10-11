@@ -9,7 +9,7 @@
 			
 			string[] args = ParseArgs(argsStr, 0, 1);
 			
-			float duration = TryParseFloat(args, 1);
+			float duration = TryParseFloat(args, 0);
 			
 			if (LightController.instance == null) {
 				
