@@ -67,10 +67,10 @@ namespace TwitchFX {
 				
 				string name = Path.GetFileName(colorPresetFilePath);
 				
-				if (!name.EndsWith(".json") && !name.EndsWith(".dat"))
+				if (!name.EndsWith(".json"))
 					continue;
 				
-				name = name.Substring(0, name.Length - (name.EndsWith(".json") ? 5 : 4));
+				name = name.Substring(0, name.Length - 5);
 				
 				string json = File.ReadAllText(colorPresetFilePath);
 				
@@ -125,10 +125,10 @@ namespace TwitchFX {
 				
 				string name = Path.GetFileName(lightshowFilePath);
 				
-				if (!name.EndsWith(".json") && !name.EndsWith(".dat"))
+				if (!name.EndsWith(".json"))
 					continue;
 				
-				name = name.Substring(0, name.Length - (name.EndsWith(".json") ? 5 : 4));
+				name = name.Substring(0, name.Length - 5);
 				
 				string json = File.ReadAllText(lightshowFilePath);
 				
