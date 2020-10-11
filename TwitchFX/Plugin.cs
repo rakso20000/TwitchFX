@@ -64,7 +64,7 @@ namespace TwitchFX {
 				if (!name.EndsWith(".json") && !name.EndsWith(".dat"))
 					continue;
 				
-				name = name.Substring(0, name.Length - 5);
+				name = name.Substring(0, name.Length - (name.EndsWith(".json") ? 5 : 4));
 				
 				CustomLightshowData lightshow = CustomLightshowData.LoadLightshowDataFromFile(lightshowFilePath);
 				
