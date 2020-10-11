@@ -140,6 +140,7 @@
     <Compile Include="ColorMode.cs" />
     <Compile Include="ColorPreset.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Commands\CommandActivatePreset.cs" />
     <Compile Include="Commands\CommandBoostLights.cs" />
     <Compile Include="Commands\CommandDisableLights.cs" />
     <Compile Include="Commands\CommandLightshow.cs" />
