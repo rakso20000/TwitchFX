@@ -1,60 +1,44 @@
-﻿using System;
+﻿using ChatCore.SimpleJSON;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using ChatCore.SimpleJSON;
 
 namespace TwitchFX {
-	
+
 	public class CustomLightshowData {
 		
 		private static readonly Dictionary<string, CustomLightshowData> lightshows = new Dictionary<string, CustomLightshowData>();
 		
-		public static CustomLightshowData LoadLightshowDataFromFile(string path) {
-			
-			string json = File.ReadAllText(path);
+		public static CustomLightshowData LoadLightshowDataFromJSON(JSONNode rootJSON) {
 			
 			//just use the SimpleJSON library available in ChatCore
 			
-			JSONNode jsonRoot;
+			if (!rootJSON.IsObject)
+				throw new InvalidJSONException("Root is not a JSON object");
 			
-			try {
-				
-				jsonRoot = JSON.Parse(json);
-				
-			} catch (Exception) {
-				
-				return null;
-				
-			}
+			bool eventsExists = rootJSON.TryGetKey("_events", out JSONNode eventsNodeJSON);
 			
-			if (!jsonRoot.IsObject)
-				return null;
+			if (!eventsExists || !eventsNodeJSON.IsArray)
+				throw new InvalidJSONException("No events JSON object found in root");
 			
-			bool eventsExists = jsonRoot.TryGetKey("_events", out JSONNode jsonEventsNode);
-			
-			if (!eventsExists || !jsonEventsNode.IsArray)
-				return null;
-			
-			JSONArray jsonEvents = jsonEventsNode.AsArray;
+			JSONArray eventsJSON = eventsNodeJSON.AsArray;
 			
 			List<BeatmapEventData> eventsList = new List<BeatmapEventData>();
 			
-			foreach (JSONNode jsonEvent in jsonEvents) {
+			foreach (JSONNode eventJSON in eventsJSON) {
 				
-				bool timeExists = jsonEvent.TryGetKey("_time", out JSONNode jsonTime);
-				bool typeExists = jsonEvent.TryGetKey("_type", out JSONNode jsonType);
-				bool valueExists = jsonEvent.TryGetKey("_value", out JSONNode jsonValue);
+				bool timeExists = eventJSON.TryGetKey("_time", out JSONNode timeJSON);
+				bool typeExists = eventJSON.TryGetKey("_type", out JSONNode typeJSON);
+				bool valueExists = eventJSON.TryGetKey("_value", out JSONNode valueJSON);
 				
 				if (!timeExists || !typeExists || !valueExists)
 					continue;
 				
-				if (!jsonTime.IsNumber || !jsonType.IsNumber || !jsonValue.IsNumber)
+				if (!timeJSON.IsNumber || !typeJSON.IsNumber || !valueJSON.IsNumber)
 					continue;
 				
-				float time = jsonTime.AsFloat;
-				int type = jsonType.AsInt;
-				int value = jsonValue.AsInt;
+				float time = timeJSON.AsFloat;
+				int type = typeJSON.AsInt;
+				int value = valueJSON.AsInt;
 				
 				if (type < -1 || type > 15)
 					continue;
@@ -62,6 +46,9 @@ namespace TwitchFX {
 				eventsList.Add(new BeatmapEventData(time, (BeatmapEventType) type, value));
 				
 			}
+			
+			if (eventsList.Count == 0)
+				throw new InvalidJSONException("No valid events found in events JSON object");
 			
 			BeatmapEventData[] events = eventsList.OrderBy(beatmapEvent => beatmapEvent.time).ToArray();
 			

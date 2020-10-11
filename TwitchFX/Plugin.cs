@@ -52,38 +52,7 @@ namespace TwitchFX {
 			harmony.PatchAll();
 			
 			LoadColorPresets(UnityGame.UserDataPath + "\\TwitchFX\\ColorPresets");
-			
-			string lightshowFolderPath = UnityGame.UserDataPath + "\\TwitchFX\\Lightshows";
-			
-			if (!Directory.Exists(lightshowFolderPath))
-				Directory.CreateDirectory(lightshowFolderPath);
-			
-			string[] lightshowFilePaths = Directory.GetFiles(lightshowFolderPath);
-			
-			foreach (string lightshowFilePath in lightshowFilePaths) {
-				
-				string name = Path.GetFileName(lightshowFilePath);
-				
-				if (!name.EndsWith(".json") && !name.EndsWith(".dat"))
-					continue;
-				
-				name = name.Substring(0, name.Length - (name.EndsWith(".json") ? 5 : 4));
-				
-				CustomLightshowData lightshow = CustomLightshowData.LoadLightshowDataFromFile(lightshowFilePath);
-				
-				if (lightshow == null) {
-					
-					Logger.log.Error("Failed loading lightshow: " + name);
-					
-					continue;
-					
-				}
-				
-				CustomLightshowData.SetLightshowData(name, lightshow);
-				
-			}
-			
-			Logger.log.Info(CustomLightshowData.GetLightshowDataCount() + " lightshows loaded from " + lightshowFolderPath);
+			LoadLightshows(UnityGame.UserDataPath + "\\TwitchFX\\Lightshows");
 			
 		}
 		
@@ -142,6 +111,62 @@ namespace TwitchFX {
 			}
 			
 			Logger.log.Info(ColorPreset.GetColorPresetCount() + " color presets loaded from " + colorPresetFolderPath);
+			
+		}
+		
+		private void LoadLightshows(string lightshowFolderPath) {
+			
+			if (!Directory.Exists(lightshowFolderPath))
+				Directory.CreateDirectory(lightshowFolderPath);
+			
+			string[] lightshowFilePaths = Directory.GetFiles(lightshowFolderPath);
+			
+			foreach (string lightshowFilePath in lightshowFilePaths) {
+				
+				string name = Path.GetFileName(lightshowFilePath);
+				
+				if (!name.EndsWith(".json") && !name.EndsWith(".dat"))
+					continue;
+				
+				name = name.Substring(0, name.Length - (name.EndsWith(".json") ? 5 : 4));
+				
+				string json = File.ReadAllText(lightshowFilePath);
+				
+				JSONNode rootJSON;
+					
+				try {
+					
+					rootJSON = JSON.Parse(json);
+					
+				} catch (Exception e) {
+					
+					Logger.log.Error("Failed loading lightshow: " + name);
+					Logger.log.Error("\t" + e.Message);
+					
+					continue;
+					
+				}
+				
+				CustomLightshowData lightshow;
+				
+				try {
+					
+					lightshow = CustomLightshowData.LoadLightshowDataFromJSON(rootJSON);
+					
+				} catch (InvalidJSONException e) {
+					
+					Logger.log.Error("Failed loading lightshow: " + name);
+					Logger.log.Error("\tInvalid JSON data: " + e.errorMessage);
+					
+					continue;
+					
+				}
+				
+				CustomLightshowData.SetLightshowData(name, lightshow);
+				
+			}
+			
+			Logger.log.Info(CustomLightshowData.GetLightshowDataCount() + " lightshows loaded from " + lightshowFolderPath);
 			
 		}
 		
