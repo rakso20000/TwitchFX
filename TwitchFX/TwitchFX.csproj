@@ -127,7 +127,7 @@
     <Compile Include="ColorController.cs" />
     <Compile Include="Commands\CommandSetSaberColor.cs" />
     <Compile Include="Commands\CommandSetWallColor.cs" />
-    <Compile Include="Commands\CommmandSetSaberNoteColor.cs" />
+    <Compile Include="Commands\CommandSetSaberNoteColor.cs" />
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />

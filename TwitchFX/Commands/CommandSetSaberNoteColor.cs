@@ -2,7 +2,7 @@
 
 namespace TwitchFX.Commands {
 	
-	public class CommmandSetSaberNoteColor : Command {
+	public class CommandSetSaberNoteColor : Command {
 		
 		public override void Execute(string argsStr) {
 			
