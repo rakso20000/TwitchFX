@@ -52,7 +52,7 @@ namespace TwitchFX {
 			
 			BeatmapEventData[] events = eventsList.OrderBy(beatmapEvent => beatmapEvent.time).ToArray();
 			
-			return new CustomLightshowData(eventsList.ToArray());
+			return new CustomLightshowData(events);
 			
 		}
 		
