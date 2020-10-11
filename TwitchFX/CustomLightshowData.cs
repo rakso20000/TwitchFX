@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace TwitchFX {
-
+	
 	public class CustomLightshowData {
 		
 		private static readonly Dictionary<string, CustomLightshowData> lightshows = new Dictionary<string, CustomLightshowData>();
