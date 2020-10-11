@@ -27,7 +27,7 @@
       <Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" />
     </GetManifestInfo>
     <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
-    <ZipDir DirectoryName="$(IntermediateOutputPath)zip" ZipFileName="$(OutDir)zip\$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitShortHash).zip" />
+    <ZipDir DirectoryName="$(IntermediateOutputPath)zip" ZipFileName="$(OutDir)$(AssemblyName)-v$(PluginVersion).zip" />
   </Target>
   <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(DisableCopyToPlugins)' != 'True'">
     <Error Text="Unable to copy assembly to game folder. BeatSaberDir doesn't exist: $(BeatSaberDir)" Condition="!Exists($(BeatSaberDir))"/>
@@ -225,17 +225,17 @@
         try
         {
           var zipDir = new DirectoryInfo(Path.GetDirectoryName(Path.GetFullPath(ZipFileName)));
-          if (zipDir.Exists)
-            zipDir.Delete(true);
-          zipDir.Create();
-          zipDir.Refresh();
-          int tries = 0;
-          while(!zipDir.Exists || tries < 10) // Prevents breaking when Explorer is in the folder.
-          {
-            tries++;
-            Thread.Sleep(50);
+          if (!zipDir.Exists) {
             zipDir.Create();
             zipDir.Refresh();
+            int tries = 0;
+            while(!zipDir.Exists || tries < 10) // Prevents breaking when Explorer is in the folder.
+            {
+              tries++;
+              Thread.Sleep(50);
+              zipDir.Create();
+              zipDir.Refresh();
+            }
           }
 		  
           if(File.Exists(ZipFileName))
