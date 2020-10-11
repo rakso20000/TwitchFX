@@ -138,6 +138,7 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="ColorMode.cs" />
+    <Compile Include="ColorPreset.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Commands\CommandBoostLights.cs" />
     <Compile Include="Commands\CommandDisableLights.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Hooks\ObstacleController.cs" />
     <Compile Include="Hooks\ColorManager.cs" />
     <Compile Include="InvalidCommandArgumentsException.cs" />
+    <Compile Include="InvalidJSONException.cs" />
     <Compile Include="LightController.cs" />
     <Compile Include="LightEffectController.cs" />
     <Compile Include="LightWithIdManagerWrapper.cs" />

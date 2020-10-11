@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using HarmonyLib;
 using IPALogger = IPA.Logging.Logger;
+using ChatCore.SimpleJSON;
 
 namespace TwitchFX {
 	
@@ -50,6 +51,8 @@ namespace TwitchFX {
 			
 			harmony.PatchAll();
 			
+			LoadColorPresets(UnityGame.UserDataPath + "\\TwitchFX\\ColorPresets");
+			
 			string lightshowFolderPath = UnityGame.UserDataPath + "\\TwitchFX\\Lightshows";
 			
 			if (!Directory.Exists(lightshowFolderPath))
@@ -81,6 +84,64 @@ namespace TwitchFX {
 			}
 			
 			Logger.log.Info(CustomLightshowData.GetLightshowDataCount() + " lightshows loaded from " + lightshowFolderPath);
+			
+		}
+		
+		private void LoadColorPresets(string colorPresetFolderPath) {
+			
+			if (!Directory.Exists(colorPresetFolderPath))
+				Directory.CreateDirectory(colorPresetFolderPath);
+			
+			string[] colorPresetFilePaths = Directory.GetFiles(colorPresetFolderPath);
+			
+			foreach (string colorPresetFilePath in colorPresetFilePaths) {
+				
+				string name = Path.GetFileName(colorPresetFilePath);
+				
+				if (!name.EndsWith(".json") && !name.EndsWith(".dat"))
+					continue;
+				
+				name = name.Substring(0, name.Length - (name.EndsWith(".json") ? 5 : 4));
+				
+				string json = File.ReadAllText(colorPresetFilePath);
+				
+				JSONNode rootJSON;
+					
+				try {
+					
+					rootJSON = JSON.Parse(json);
+					
+				} catch (Exception e) {
+					
+					Logger.log.Error("Failed loading color preset: " + name);
+					Logger.log.Error("\t" + e.Message);
+					
+					continue;
+					
+				}
+				
+				ColorPreset colorPreset;
+				
+				try {
+					
+					colorPreset = ColorPreset.LoadColorPresetFromJSON(rootJSON);
+					
+				} catch (InvalidJSONException e) {
+					
+					Logger.log.Error("Failed loading color preset: " + name);
+					Logger.log.Error("\tInvalid JSON data: " + e.errorMessage);
+					
+					continue;
+					
+				}
+				
+				Logger.log.Info(colorPreset.leftSaberColor.r + ", " + colorPreset.leftSaberColor.g + ", " + colorPreset.leftSaberColor.b);
+				
+				ColorPreset.SetColorPreset(name, colorPreset);
+				
+			}
+			
+			Logger.log.Info(ColorPreset.GetColorPresetCount() + " color presets loaded from " + colorPresetFolderPath);
 			
 		}
 		
