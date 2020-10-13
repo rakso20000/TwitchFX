@@ -9,8 +9,8 @@ Commissioned by and developed in collaboration with [xariao].
 ## Installation
 
 1. Install the dependencies using [ModAssistant].
-2. Download the [latest release] of TwitchFX.
-3. Extract the contents of the zip into your Beat Saber directory.
+1. Download the [latest release] of TwitchFX.
+1. Extract the contents of the zip into your Beat Saber directory.
 
 [ModAssistant]: https://github.com/Assistant/ModAssistant
 [latest release]: https://github.com/rakso20000/TwitchFX/releases/latest
