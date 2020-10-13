@@ -1,204 +1,204 @@
 {
-	"_events":[
+	"_events": [
 		{
-			"_time":0,
-			"_type":2,
-			"_value":6
+			"_time": 0,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":0.125,
-			"_type":3,
-			"_value":6
+			"_time": 0.125,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":0.25,
-			"_type":2,
-			"_value":2
+			"_time": 0.25,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":0.375,
-			"_type":3,
-			"_value":2
+			"_time": 0.375,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":0.5,
-			"_type":2,
-			"_value":6
+			"_time": 0.5,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":0.625,
-			"_type":3,
-			"_value":6
+			"_time": 0.625,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":0.75,
-			"_type":2,
-			"_value":2
+			"_time": 0.75,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":0.875,
-			"_type":3,
-			"_value":2
+			"_time": 0.875,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":1,
-			"_type":2,
-			"_value":6
+			"_time": 1,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":1.125,
-			"_type":3,
-			"_value":6
+			"_time": 1.125,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":1.25,
-			"_type":2,
-			"_value":2
+			"_time": 1.25,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":1.375,
-			"_type":3,
-			"_value":2
+			"_time": 1.375,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":1.5,
-			"_type":2,
-			"_value":6
+			"_time": 1.5,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":1.625,
-			"_type":3,
-			"_value":6
+			"_time": 1.625,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":1.75,
-			"_type":2,
-			"_value":2
+			"_time": 1.75,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":1.875,
-			"_type":3,
-			"_value":2
+			"_time": 1.875,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":2,
-			"_type":2,
-			"_value":6
+			"_time": 2,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":2.125,
-			"_type":3,
-			"_value":6
+			"_time": 2.125,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":2.25,
-			"_type":2,
-			"_value":2
+			"_time": 2.25,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":2.375,
-			"_type":3,
-			"_value":2
+			"_time": 2.375,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":2.5,
-			"_type":2,
-			"_value":6
+			"_time": 2.5,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":2.625,
-			"_type":3,
-			"_value":6
+			"_time": 2.625,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":2.75,
-			"_type":2,
-			"_value":2
+			"_time": 2.75,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":2.875,
-			"_type":3,
-			"_value":2
+			"_time": 2.875,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":3,
-			"_type":2,
-			"_value":6
+			"_time": 3,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":3.125,
-			"_type":3,
-			"_value":6
+			"_time": 3.125,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":3.25,
-			"_type":2,
-			"_value":2
+			"_time": 3.25,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":3.375,
-			"_type":3,
-			"_value":2
+			"_time": 3.375,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":3.5,
-			"_type":2,
-			"_value":6
+			"_time": 3.5,
+			"_type": 2,
+			"_value": 6
 		},
 		{
-			"_time":3.625,
-			"_type":3,
-			"_value":6
+			"_time": 3.625,
+			"_type": 3,
+			"_value": 6
 		},
 		{
-			"_time":3.75,
-			"_type":2,
-			"_value":2
+			"_time": 3.75,
+			"_type": 2,
+			"_value": 2
 		},
 		{
-			"_time":3.875,
-			"_type":3,
-			"_value":2
+			"_time": 3.875,
+			"_type": 3,
+			"_value": 2
 		},
 		{
-			"_time":4,
-			"_type":1,
-			"_value":3
+			"_time": 4,
+			"_type": 1,
+			"_value": 3
 		},
 		{
-			"_time":4,
-			"_type":3,
-			"_value":7
+			"_time": 4,
+			"_type": 3,
+			"_value": 7
 		},
 		{
-			"_time":4,
-			"_type":2,
-			"_value":7
+			"_time": 4,
+			"_type": 2,
+			"_value": 7
 		},
 		{
-			"_time":4,
-			"_type":0,
-			"_value":3
+			"_time": 4,
+			"_type": 0,
+			"_value": 3
 		},
 		{
-			"_time":8,
-			"_type":2,
-			"_value":0
+			"_time": 8,
+			"_type": 2,
+			"_value": 0
 		},
 		{
-			"_time":8,
-			"_type":0,
-			"_value":0
+			"_time": 8,
+			"_type": 0,
+			"_value": 0
 		},
 		{
-			"_time":8,
-			"_type":1,
-			"_value":0
+			"_time": 8,
+			"_type": 1,
+			"_value": 0
 		},
 		{
-			"_time":8,
-			"_type":3,
-			"_value":0
+			"_time": 8,
+			"_type": 3,
+			"_value": 0
 		}
 	]
 }
