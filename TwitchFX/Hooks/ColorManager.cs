@@ -4,20 +4,20 @@ using HarmonyLib;
 namespace TwitchFX.Hooks {
 	
 	[HarmonyPatch(typeof(ColorManager))]
-	[HarmonyPatch("ColorForNoteType")]
-	public class ColorManager_ColorForNoteType {
+	[HarmonyPatch("ColorForType")]
+	public class ColorManager_ColorForType {
 		
 		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
-		public static bool Prefix(NoteType type, ref Color __result) {
+		public static bool Prefix(ColorType type, ref Color __result) {
 			
 			if (ColorController.instance == null || !ColorController.instance.useCustomNoteColors)
 				return true;
 			
 			switch (type) {
-			case NoteType.NoteA:
+			case ColorType.ColorA:
 				__result = ColorController.instance.noteColorLeft;
 				break;
-			case NoteType.NoteB:
+			case ColorType.ColorB:
 				__result = ColorController.instance.noteColorRight;
 				break;
 			default:

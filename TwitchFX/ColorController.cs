@@ -2,13 +2,14 @@
 using System;
 using System.Reflection;
 using UnityEngine;
-using Xft;
 
 namespace TwitchFX {
 	
 	public class ColorController : MonoBehaviour {
 		
 		public static ColorController instance { get; private set; }
+		
+		public SaberModelController[] sabers = new SaberModelController[2];
 		
 		private static readonly int colorID = Shader.PropertyToID("_Color");
 		
@@ -25,10 +26,11 @@ namespace TwitchFX {
 		
 		private ColorManager colorManager;
 		private ColorScheme colorScheme;
-		private BasicSaberModelController[] sabers;
 		
+		/*
 		private MethodInfo customSabersApplyColorsMethod;
 		private object customSabersSaberScript;
+		*/
 		
 		private bool updateCustomSabers;
 		
@@ -54,9 +56,8 @@ namespace TwitchFX {
 		
 		public void Start() {
 			
-			sabers = Resources.FindObjectsOfTypeAll<BasicSaberModelController>();
+			colorManager = Resources.FindObjectsOfTypeAll<ColorManager>()[1];
 			
-			colorManager = Helper.GetValue<ColorManager>(sabers[0], "_colorManager");
 			colorScheme = Helper.GetValue<ColorScheme>(colorManager, "_colorScheme");
 			
 			updateCustomSabers = PluginManager.GetPluginFromId("Custom Sabers") != null;
@@ -70,6 +71,7 @@ namespace TwitchFX {
 		
 		private void InitCustomSabers() {
 			
+			/*
 			try {
 				
 				Assembly customSabersAssembly = typeof(CustomSaber.Plugin).Assembly;
@@ -87,6 +89,7 @@ namespace TwitchFX {
 				updateCustomSabers = false;
 				
 			}
+			*/
 			
 		}
 		
@@ -137,7 +140,7 @@ namespace TwitchFX {
 		
 		private void UpdateSaberColors(Color leftColor, Color rightColor) {
 			
-			foreach (BasicSaberModelController saber in sabers) {
+			foreach (SaberModelController saber in sabers) {
 				
 				if (Helper.GetValue<ColorManager>(saber, "_colorManager") == null)
 					continue;
@@ -147,12 +150,14 @@ namespace TwitchFX {
 				
 				Color color = Helper.GetValue<SaberType>(glowColors[0], "_saberType") == SaberType.SaberA ? leftColor : rightColor;
 				
-				Color trailTintColor = Helper.GetValue<BasicSaberModelController.InitData>(saber, "_initData").trailTintColor;
-				XWeaponTrail trail = Helper.GetValue<XWeaponTrail>(saber, "_saberWeaponTrail");
-				trail.color = (color * trailTintColor).linear;
+				Color trailTintColor = Helper.GetValue<SaberModelController.InitData>(saber, "_initData").trailTintColor;
+				SaberTrail trail = Helper.GetValue<SaberTrail>(saber, "_saberTrail");
+				Helper.SetValue<Color>(trail, "_color", (color * trailTintColor).linear);
 				
-				Light light = Helper.GetValue<Light>(saber, "_light");
-				light.color = color;
+				TubeBloomPrePassLight light = Helper.GetValue<TubeBloomPrePassLight>(saber, "_saberLight");
+				
+				if (light != null)
+					light.color = color;
 				
 				foreach (SetSaberGlowColor glowColor in glowColors)
 					glowColor.SetColors();
@@ -274,6 +279,7 @@ namespace TwitchFX {
 				
 			}
 			
+			/*
 			if (updateCustomSabers) {
 				
 				try {
@@ -293,6 +299,7 @@ namespace TwitchFX {
 				}
 				
 			}
+			*/
 			
 		}
 		
@@ -337,7 +344,7 @@ namespace TwitchFX {
 			
 			useCustomNoteColors = false;
 			
-			UpdateNoteColors(colorManager.ColorForNoteType(NoteType.NoteA), colorManager.ColorForNoteType(NoteType.NoteB));
+			UpdateNoteColors(colorManager.ColorForType(ColorType.ColorA), colorManager.ColorForType(ColorType.ColorB));
 			
 		}
 		
@@ -352,15 +359,15 @@ namespace TwitchFX {
 				if (noteData == null)
 					continue;
 				
-				NoteType noteType = noteData.noteType;
+				ColorType colorType = noteData.colorType;
 				
 				Color color;
 				
-				switch (noteType) {
-				case NoteType.NoteA:
+				switch (colorType) {
+				case ColorType.ColorA:
 					color = leftColor;
 					break;
-				case NoteType.NoteB:
+				case ColorType.ColorB:
 					color = rightColor;
 					break;
 				default:
@@ -462,7 +469,7 @@ namespace TwitchFX {
 				
 				useCustomNoteColors = false;
 				
-				UpdateNoteColors(colorManager.ColorForNoteType(NoteType.NoteA), colorManager.ColorForNoteType(NoteType.NoteB));
+				UpdateNoteColors(colorManager.ColorForType(ColorType.ColorA), colorManager.ColorForType(ColorType.ColorB));
 				
 				disableNoteColorsOn = -1f;
 				
