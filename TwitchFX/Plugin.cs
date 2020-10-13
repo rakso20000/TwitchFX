@@ -104,8 +104,6 @@ namespace TwitchFX {
 					
 				}
 				
-				Logger.log.Info(colorPreset.leftSaberColor.r + ", " + colorPreset.leftSaberColor.g + ", " + colorPreset.leftSaberColor.b);
-				
 				ColorPreset.SetColorPreset(name, colorPreset);
 				
 			}
