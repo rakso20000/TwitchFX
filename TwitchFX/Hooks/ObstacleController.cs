@@ -5,7 +5,7 @@ namespace TwitchFX.Hooks {
 	
 	[HarmonyPatch(typeof(ObstacleController))]
 	[HarmonyPatch("Init")]
-	public class ColorController_Init {
+	public class ObstacleController_Init {
 		
 		public static void Postfix(ObstacleController __instance) {
 			
