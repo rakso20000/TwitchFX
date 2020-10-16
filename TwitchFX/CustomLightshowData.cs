@@ -1,6 +1,7 @@
 ﻿using ChatCore.SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace TwitchFX {
 	
@@ -42,6 +43,42 @@ namespace TwitchFX {
 				
 				if (type < -1 || type > 15)
 					continue;
+				
+				bool customDataExists = eventJSON.TryGetKey("_customData", out JSONNode customDataJSON);
+				
+				if (
+					customDataExists &&
+					customDataJSON is JSONObject customDataJSONObject &&
+					customDataJSONObject.TryGetKey("_color", out JSONNode colorJSON) &&
+					colorJSON is JSONArray colorJSONArray
+				) {
+					
+					if (colorJSONArray.List.Count < 3)
+						continue;
+					
+					if (
+						!colorJSONArray[0].IsNumber ||
+						!colorJSONArray[1].IsNumber ||
+						!colorJSONArray[2].IsNumber ||
+						(colorJSONArray.List.Count >= 4 && !colorJSONArray[3].IsNumber)
+					)
+						continue;
+					
+					float r =colorJSONArray[0].AsFloat;
+					float g = colorJSONArray[1].AsFloat;
+					float b = colorJSONArray[2].AsFloat;
+					float a = 1;
+					
+					if (colorJSONArray.List.Count >= 4)
+						a = colorJSONArray[3].AsFloat;
+					
+					Color color = new Color(r, g, b, a);
+					
+					eventsList.Add(new CustomBeatmapEventData(time, (BeatmapEventType) type, value, color));
+					
+					continue;
+					
+				}
 				
 				eventsList.Add(new BeatmapEventData(time, (BeatmapEventType) type, value));
 				

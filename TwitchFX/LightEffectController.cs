@@ -22,6 +22,8 @@ namespace TwitchFX {
 			controller.id = id;
 			controller.eventTypeForThisLight = eventTypeForThisLight;
 			
+			controller.lastEventData = new BeatmapEventData(0f, eventTypeForThisLight, 0);
+			
 			return controller;
 			
 		}
@@ -42,7 +44,7 @@ namespace TwitchFX {
 		private Color startColor;
 		private Color endColor;
 		
-		private int lastEventValue;
+		private BeatmapEventData lastEventData;
 		private float transitionValue;
 		
 		public void Awake() {
@@ -54,7 +56,7 @@ namespace TwitchFX {
 		public void OnEvent(BeatmapEventData eventData) {
 			
 			if (eventData.type == eventTypeForThisLight)
-				HandleEvent(eventData.value, true);
+				HandleEvent(eventData, true);
 			
 		}
 		
@@ -72,13 +74,13 @@ namespace TwitchFX {
 			
 			this.mode = mode;
 			
-			HandleEvent(lastEventValue, false);
+			HandleEvent(lastEventData, false);
 			
 		}
 		
-		private void HandleEvent(int eventValue, bool executeEvent) {
+		private void HandleEvent(BeatmapEventData eventData, bool executeEvent) {
 			
-			switch (eventValue) {
+			switch (eventData.value) {
 			//off
 			case 0:
 				
@@ -95,7 +97,7 @@ namespace TwitchFX {
 				transitionValue = 0f;
 				enabled = false;
 				
-				SetColor(GetColorForEvent(eventValue, false));
+				SetColor(GetColorForEvent(eventData, false));
 				
 				break;
 			//flash
@@ -109,8 +111,8 @@ namespace TwitchFX {
 					
 				}
 				
-				startColor = GetColorForEvent(eventValue, true);
-				endColor = GetColorForEvent(eventValue, false);
+				startColor = GetColorForEvent(eventData, true);
+				endColor = GetColorForEvent(eventData, false);
 				
 				SetColor(Color.Lerp(endColor, startColor, transitionValue));
 				
@@ -127,7 +129,7 @@ namespace TwitchFX {
 					
 				}
 				
-				startColor = GetColorForEvent(eventValue, true);
+				startColor = GetColorForEvent(eventData, true);
 				endColor = startColor.ColorWithAlpha(0f);
 				
 				SetColor(Color.Lerp(endColor, startColor, transitionValue));
@@ -135,7 +137,7 @@ namespace TwitchFX {
 				break;
 			}
 			
-			lastEventValue = eventValue;
+			lastEventData = eventData;
 			
 		}
 		
@@ -165,9 +167,15 @@ namespace TwitchFX {
 			
 		}
 		
-		private Color GetColorForEvent(int eventValue, bool highlight) {
+		private Color GetColorForEvent(BeatmapEventData eventData, bool highlight) {
 			
-			if (eventValue >= 4)
+			if (eventData is CustomBeatmapEventData customEventData) {
+				
+				return customEventData.color;
+				
+			}
+			
+			if (eventData.value >= 4)
 				return highlight ? highlightcolorLeft : colorLeft;
 			else
 				return highlight ? highlightcolorRight : colorRight;

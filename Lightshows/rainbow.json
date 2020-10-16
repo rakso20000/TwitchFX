@@ -1,0 +1,165 @@
+{
+	"_events":[
+		{
+			"_time": 0,
+			"_type": 1,
+			"_value": 2,
+			"_customData": {
+					"_color": [0.701, 0.941, 0]
+			}
+		},
+		{
+			"_time": 0.25,
+			"_type": 4,
+			"_value": 3,
+			"_customData": {
+					"_color": [0.941, 0.513, 0]
+			}
+		},
+		{
+			"_time": 0.5,
+			"_type": 1,
+			"_value": 2,
+			"_customData": {
+					"_color": [0.149, 0.941, 0]
+			}
+		},
+		{
+			"_time": 0.75,
+			"_type": 4,
+			"_value": 6,
+			"_customData": {
+					"_color": [0.941, 0, 0.023]
+			}
+		},
+		{
+			"_time": 1,
+			"_type": 1,
+			"_value": 2,
+			"_customData": {
+					"_color": [0, 0.937, 0.941]
+			}
+		},
+		{
+			"_time": 1.25,
+			"_type": 4,
+			"_value": 6,
+			"_customData": {
+					"_color": [0.941, 0, 0.698]
+			}
+		},
+		{
+			"_time": 1.5,
+			"_type": 1,
+			"_value": 2,
+			"_customData": {
+					"_color": [0, 0.529, 0.941]
+			}
+		},
+		{
+			"_time": 1.75,
+			"_type": 4,
+			"_value": 6,
+			"_customData": {
+					"_color": [0.509, 0, 0.941]
+			}
+		},
+		{
+			"_time": 2,
+			"_type": 1,
+			"_value": 2,
+			"_customData": {
+					"_color": [0, 0.050, 0.941]
+			}
+		},
+		{
+			"_time": 2.25,
+			"_type": 4,
+			"_value": 6,
+			"_customData": {
+					"_color": [0, 0.062, 0.941]
+			}
+		},
+		{
+			"_time": 2.5,
+			"_type": 1,
+			"_value": 2,
+			"_customData": {
+					"_color": [0.905, 0, 0.941]
+			}
+		},
+		{
+			"_time": 2.75,
+			"_type": 4,
+			"_value": 6,
+			"_customData": {
+					"_color": [0, 0.517, 0.941]
+			}
+		},
+		{
+			"_time": 3,
+			"_type": 4,
+			"_value": 3,
+			"_customData": {
+					"_color": [0.941, 0.882, 0]
+			}
+		},
+		{
+			"_time": 3,
+			"_type": 2,
+			"_value": 3,
+			"_customData": {
+					"_color": [0, 0.941, 0.874]
+			}
+		},
+		{
+			"_time": 3,
+			"_type": 3,
+			"_value": 3,
+			"_customData": {
+					"_color": [0.941, 0, 0.937]
+			}
+		},
+		{
+			"_time": 3,
+			"_type": 1,
+			"_value": 3,
+			"_customData": {
+					"_color": [0, 0.941, 0.054]
+			}
+		},
+		{
+			"_time": 3,
+			"_type": 0,
+			"_value": 3,
+			"_customData": {
+					"_color": [0, 0.396, 0.941]
+			}
+		},
+		{
+			"_time": 8,
+			"_type": 0,
+			"_value": 0
+		},
+		{
+			"_time": 8,
+			"_type": 1,
+			"_value": 0
+		},
+		{
+			"_time": 8,
+			"_type": 2,
+			"_value": 0
+		},
+		{
+			"_time": 8,
+			"_type": 3,
+			"_value": 0
+		},
+		{
+			"_time": 8,
+			"_type": 4,
+			"_value": 0
+		}
+	]
+}
