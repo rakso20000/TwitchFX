@@ -5,14 +5,14 @@ namespace TwitchFX {
 	
 	public class LightController : LazyController<LightController> {
 		
-		public event Action<BeatmapEventData> onCustomEventTriggered;
-		public event Action<ColorMode> onColorModeUpdated;
-		
 		public CustomLightshowController lightshowController;
 		public ColorManager colorManager;
 		
 		public ColorMode mode { get; private set; } = ColorMode.Default;
 		public bool boostColors { get; private set; } = false;
+		
+		private event Action<ColorMode> onColorModeUpdated;
+		private event Action<BeatmapEventData> onCustomEventTriggered;
 		
 		private float disableOn = -1f;
 		private float disableBoostOn = -1f;
