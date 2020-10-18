@@ -163,6 +163,7 @@
     <Compile Include="Commands\CommandSetSaberColor.cs" />
     <Compile Include="Commands\CommandSetWallColor.cs" />
     <Compile Include="Commands\CommandSetSaberNoteColor.cs" />
+    <Compile Include="Commands\CommandSpinRings.cs" />
     <Compile Include="CustomBeatmapEventManager.cs" />
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />

@@ -47,6 +47,7 @@ If you encounter a bug, have a feature request, or need assistance with setup fe
 * `!setwallcolor <color>` Changes walls to the specified color.  
   `!setwallcolor <color> <duration>` Changes walls to the specified color for the specified duration.
 * `!resetwallcolor` Resets walls to their default color.
+* `!spinrings` Makes the track lane rings spin.
 * `!activatepreset <name>` Activates the specified [color preset] to set light colors, note colors, saber colors, and wall color simultaneously.  
   `!activatepreset <name> <duration>` Activates the specified [color preset] for the specified duration.
 * `!lightshow <name>` Plays the specified [custom lightshow] effect.
@@ -93,6 +94,7 @@ I, as the developer of TwitchFX, have added an override that lets me execute all
 ```json
 {
 	"commands": {
+		"activatepreset": "preset",
 		"boostlights": "boost",
 		"disablelights": "disable",
 		"lightshow": "lightshow",
@@ -104,10 +106,11 @@ I, as the developer of TwitchFX, have added an override that lets me execute all
 		"setsabercolor": "sabers",
 		"setwallcolor": "walls",
 		"setsabernotecolor": "sabernotes",
-		"restorelights": "restore",
-		"activatepreset": "preset"
+		"spinrings": "spin",
+		"restorelights": "restore"
 	},
 	"commandsRequiredPermissions": {
+		"activatepreset": "subscriber",
 		"boostlights": "everyone",
 		"disablelights": "subscriber",
 		"lightshow": "everyone",
@@ -119,8 +122,8 @@ I, as the developer of TwitchFX, have added an override that lets me execute all
 		"setsabercolor": "moderator",
 		"setwallcolor": "vip",
 		"setsabernotecolor": "everyone",
-		"restorelights": "subscriber",
-		"activatepreset": "subscriber"
+		"spinrings": "everyone",
+		"restorelights": "subscriber"
 	},
 	"allowRaksoPermissionsOverride": true
 }

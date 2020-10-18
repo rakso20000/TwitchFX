@@ -39,6 +39,12 @@ namespace TwitchFX {
 			
 		}
 		
+		public void Spin() {
+			
+			onPipedOrCustomBeatmapEvent?.Invoke(new BeatmapEventData(0f, BeatmapEventType.Event8, 0));
+			
+		}
+		
 		public void EnableDefaultRingEvents() {
 			
 			disablePipedBeatmapEvents = false;
