@@ -171,6 +171,7 @@
     <Compile Include="Hooks\SaberModelController.cs" />
     <Compile Include="InvalidCommandArgumentsException.cs" />
     <Compile Include="InvalidJSONException.cs" />
+    <Compile Include="LazyController.cs" />
     <Compile Include="LightController.cs" />
     <Compile Include="LightEffectController.cs" />
     <Compile Include="LightWithIdManagerWrapper.cs" />

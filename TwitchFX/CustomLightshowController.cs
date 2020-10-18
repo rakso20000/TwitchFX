@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX {
 	
-	public class CustomLightshowController : MonoBehaviour {
+	public class CustomLightshowController : MonoBehavior {
 		
 		public static CustomLightshowController CreateCustomLightshowController(
 			CustomLightshowData lightshowData,

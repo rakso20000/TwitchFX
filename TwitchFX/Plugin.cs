@@ -7,7 +7,6 @@ using IPA.Config;
 using IPA.Config.Stores;
 using IPA.Utilities;
 using TwitchFX.Configuration;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using HarmonyLib;
 using IPALogger = IPA.Logging.Logger;
@@ -22,6 +21,8 @@ namespace TwitchFX {
 		
 		internal static Plugin instance { get; private set; }
 		internal static string Name => "TwitchFX";
+		
+		public bool inLevel = false;
 		
 		[Init]
 		public void Init(IPALogger logger, Config conf) {
@@ -186,8 +187,11 @@ namespace TwitchFX {
 			
 			if (nextScene.name == "GameCore") {
 				
-				new GameObject("TwitchFXLightController").AddComponent<LightController>();
-				new GameObject("TwitchFXColorController").AddComponent<ColorController>();
+				inLevel = true;
+				
+			} else {
+				
+				inLevel = false;
 				
 			}
 			

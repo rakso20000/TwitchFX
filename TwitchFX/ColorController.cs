@@ -5,13 +5,11 @@ using UnityEngine;
 
 namespace TwitchFX {
 	
-	public class ColorController : MonoBehaviour {
-		
-		public static ColorController instance { get; private set; }
-		
-		public SaberModelController[] sabers = new SaberModelController[2];
+	public class ColorController : LazyController<ColorController> {
 		
 		private static readonly int colorID = Shader.PropertyToID("_Color");
+		
+		public static SaberModelController[] sabers = new SaberModelController[2];
 		
 		public bool useCustomSaberColors { get; private set; } = false;
 		public Color saberColorLeft { get; private set;}
@@ -38,23 +36,7 @@ namespace TwitchFX {
 		private float disableNoteColorsOn = -1f;
 		private float disableWallColorOn = -1f;
 		
-		public void Awake() {
-			
-			if (instance != null) {
-				
-				Logger.log.Warn("Instance of ColorController already exists, destroying.");
-				
-				Destroy(this);
-				
-				return;
-				
-			}
-			
-			instance = this;
-			
-		}
-		
-		public void Start() {
+		protected override void Init() {
 			
 			colorManager = Resources.FindObjectsOfTypeAll<ColorManager>()[1];
 			
@@ -487,13 +469,6 @@ namespace TwitchFX {
 			
 			if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f && disableWallColorOn == -1f)
 				enabled = false;
-			
-		}
-		
-		public void OnDestroy() {
-			
-			if (instance == this)
-				instance = null;
 			
 		}
 		

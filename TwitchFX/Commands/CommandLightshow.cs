@@ -9,7 +9,7 @@
 			string[] args = ParseArgs(argsStr, 1);
 			string name = args[0];
 			
-			if (LightController.instance == null) {
+			if (!Plugin.instance.inLevel) {
 				
 				Plugin.chat.Send("Please use this command during a song");
 				

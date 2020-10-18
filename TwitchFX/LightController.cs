@@ -3,9 +3,7 @@ using UnityEngine;
 
 namespace TwitchFX {
 	
-	public class LightController : MonoBehaviour {
-		
-		public static LightController instance { get; private set; }
+	public class LightController : LazyController<LightController> {
 		
 		public event Action<BeatmapEventData> onCustomEventTriggered;
 		public event Action<ColorMode> onColorModeUpdated;
@@ -33,23 +31,7 @@ namespace TwitchFX {
 		private Color customColorLeft;
 		private Color customColorRight;
 		
-		public void Awake() {
-			
-			if (instance != null) {
-				
-				Logger.log.Warn("Instance of LightController already exists, destroying.");
-				
-				Destroy(this);
-				
-				return;
-				
-			}
-			
-			instance = this;
-			
-		}
-		
-		public void Start() {
+		protected override void Init() {
 			
 			colorManager = Resources.FindObjectsOfTypeAll<ColorManager>()[0];
 			
@@ -279,9 +261,6 @@ namespace TwitchFX {
 			
 			foreach (LightEffectController customLightEffectController in customLights)
 				beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= customLightEffectController.OnEvent;
-			
-			if (instance == this)
-				instance = null;
 			
 		}
 		

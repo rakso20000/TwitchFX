@@ -10,7 +10,7 @@ namespace TwitchFX.Hooks {
 		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
 		public static bool Prefix(ColorType type, ref Color __result) {
 			
-			if (ColorController.instance == null || !ColorController.instance.useCustomNoteColors)
+			if (ColorController.isNull || !ColorController.instance.useCustomNoteColors)
 				return true;
 			
 			switch (type) {
@@ -37,7 +37,7 @@ namespace TwitchFX.Hooks {
 		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
 		public static bool Prefix(SaberType type, ref Color __result) {
 			
-			if (ColorController.instance == null || !ColorController.instance.useCustomSaberColors)
+			if (ColorController.isNull || !ColorController.instance.useCustomSaberColors)
 				return true;
 			
 			switch (type) {
@@ -64,7 +64,7 @@ namespace TwitchFX.Hooks {
 		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
 		public static bool Prefix(SaberType type, ref Color __result) {
 			
-			if (ColorController.instance == null || !ColorController.instance.useCustomSaberColors)
+			if (ColorController.isNull || !ColorController.instance.useCustomSaberColors)
 				return true;
 			
 			Color color;
@@ -96,7 +96,7 @@ namespace TwitchFX.Hooks {
 		
 		public static bool Prefix(ref Color __result) {
 			
-			if (ColorController.instance == null || !ColorController.instance.useCustomWallColor)
+			if (ColorController.isNull || !ColorController.instance.useCustomWallColor)
 				return true;
 			
 			Color color = ColorController.instance.customWallColor;

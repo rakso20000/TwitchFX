@@ -9,7 +9,7 @@ namespace TwitchFX.Hooks {
 		
 		public static void Postfix(ObstacleController __instance) {
 			
-			if (ColorController.instance == null || !ColorController.instance.useCustomWallColor)
+			if (ColorController.isNull || !ColorController.instance.useCustomWallColor)
 				return;
 			
 			Color color = ColorController.instance.customWallColor;

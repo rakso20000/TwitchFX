@@ -6,7 +6,8 @@
 			
 			ParseArgs(argsStr, 0);
 			
-			ColorController.instance?.DisableWallColor();
+			if (Plugin.instance.inLevel)
+				ColorController.instance.DisableWallColor();
 			
 		}
 		

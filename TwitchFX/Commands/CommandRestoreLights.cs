@@ -6,7 +6,8 @@
 			
 			ParseArgs(argsStr, 0);
 			
-			LightController.instance?.SetColorMode(ColorMode.Default);
+			if (Plugin.instance.inLevel)
+				LightController.instance.SetColorMode(ColorMode.Default);
 			
 		}
 		

@@ -6,7 +6,8 @@
 			
 			ParseArgs(argsStr, 0);
 			
-			ColorController.instance?.DisableSaberColors();
+			if (Plugin.instance.inLevel)
+				ColorController.instance.DisableSaberColors();
 			
 		}
 		

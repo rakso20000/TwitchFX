@@ -10,7 +10,7 @@
 			
 			float duration = TryParseFloat(args, 0);
 			
-			if (LightController.instance == null) {
+			if (!Plugin.instance.inLevel) {
 				
 				Plugin.chat.Send("Please use this command during a song");
 				

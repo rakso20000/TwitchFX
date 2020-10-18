@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX {
 	
-	public class LightEffectController : MonoBehaviour {
+	public class LightEffectController : MonoBehavior {
 		
 		private const float FADE_SPEED = 2f;
 		

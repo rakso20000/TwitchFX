@@ -9,7 +9,7 @@ namespace TwitchFX.Hooks {
 		
 		public static bool Prefix(SaberModelController __instance, Transform parent, Saber saber) {
 			
-			ColorController.instance.sabers[saber.saberType == SaberType.SaberA ? 0 : 1] = __instance;
+			ColorController.sabers[saber.saberType == SaberType.SaberA ? 0 : 1] = __instance;
 			
 			return true;
 			

@@ -17,7 +17,7 @@ namespace TwitchFX.Commands {
 			
 			float duration = TryParseFloat(args, 2);
 			
-			if (LightController.instance == null) {
+			if (!Plugin.instance.inLevel) {
 				
 				Plugin.chat.Send("Please use this command during a song");
 				
