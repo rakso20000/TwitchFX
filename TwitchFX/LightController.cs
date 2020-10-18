@@ -12,7 +12,6 @@ namespace TwitchFX {
 		public bool boostColors { get; private set; } = false;
 		
 		private event Action<ColorMode> onColorModeUpdated;
-		private event Action<BeatmapEventData> onCustomEventTriggered;
 		
 		private float disableOn = -1f;
 		private float disableBoostOn = -1f;
@@ -66,7 +65,7 @@ namespace TwitchFX {
 				beatmapObjectCallbackController.beatmapEventDidTriggerEvent += customLightEffectController.OnEvent;
 				onColorModeUpdated += customLightEffectController.UpdateColorMode;
 				
-				onCustomEventTriggered += lightshowLightEffectController.OnEvent;
+				CustomBeatmapEventManager.onCustomBeatmapEvent += lightshowLightEffectController.OnEvent;
 				onColorModeUpdated += lightshowLightEffectController.UpdateColorMode;
 				
 				customLights[i] = customLightEffectController;
@@ -200,9 +199,19 @@ namespace TwitchFX {
 				
 				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", 0f);
 				
-			} else if (prevMode == ColorMode.Disabled) {
+			} else if (mode == ColorMode.CustomLightshow) {
+				
+				RingController.instance.DisableDefaultRingEvents();
+				
+			}
+			
+			if (prevMode == ColorMode.Disabled) {
 				
 				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", defaultBeatEffectDuration);
+				
+			} else if (prevMode == ColorMode.CustomLightshow) {
+				
+				RingController.instance.EnableDefaultRingEvents();
 				
 			}
 			
@@ -223,12 +232,6 @@ namespace TwitchFX {
 				}
 				
 			}
-			
-		}
-		
-		public void HandleCustomEvent(BeatmapEventData eventData) {
-			
-			onCustomEventTriggered?.Invoke(eventData);
 			
 		}
 		
@@ -261,6 +264,9 @@ namespace TwitchFX {
 			
 			foreach (LightEffectController customLightEffectController in customLights)
 				beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= customLightEffectController.OnEvent;
+			
+			foreach (LightEffectController lightshowLightEffectController in lightshowLights)
+				CustomBeatmapEventManager.onCustomBeatmapEvent -= lightshowLightEffectController.OnEvent;
 			
 		}
 		

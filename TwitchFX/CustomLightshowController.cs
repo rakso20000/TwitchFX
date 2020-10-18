@@ -59,7 +59,7 @@ namespace TwitchFX {
 				if (eventData.time > timeSource.songTime - startTime)
 					break;
 				
-				LightController.instance.HandleCustomEvent(eventData);
+				CustomBeatmapEventManager.RaiseCustomBeatmapEvent(eventData);
 				
 			}
 			

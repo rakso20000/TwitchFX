@@ -163,6 +163,7 @@
     <Compile Include="Commands\CommandSetSaberColor.cs" />
     <Compile Include="Commands\CommandSetWallColor.cs" />
     <Compile Include="Commands\CommandSetSaberNoteColor.cs" />
+    <Compile Include="CustomBeatmapEventManager.cs" />
     <Compile Include="CustomLightshowController.cs" />
     <Compile Include="CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomBeatmapEventData.cs" />
+    <Compile Include="RingController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
