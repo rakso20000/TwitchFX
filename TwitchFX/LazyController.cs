@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX {
@@ -16,7 +17,19 @@ namespace TwitchFX {
 				
 				controller = new GameObject(name).AddComponent<Controller>();
 				
-				controller.Init();
+				try {
+					
+					controller.Init();
+					
+				} catch (Exception exception) {
+					
+					Destroy(controller);
+					
+					controller = null;
+					
+					throw exception;
+					
+				}
 				
 				return controller;
 				
@@ -34,7 +47,7 @@ namespace TwitchFX {
 			
 		}
 		
-		//gets reset to null on destroy by Unity
+		//gets reset to null on scene change by Unity
 		private static Controller controller = null;
 		
 		protected abstract void Init();
