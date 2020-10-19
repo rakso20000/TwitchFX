@@ -71,6 +71,13 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public void OnDestroy() {
+			
+			bocc.beatmapEventDidTriggerEvent -= OnBeatmapEvent;
+			CustomBeatmapEventManager.onCustomBeatmapEvent -= OnCustomBeatmapEvent;
+			
+		}
+		
 	}
 	
 }
