@@ -1,4 +1,6 @@
-﻿namespace TwitchFX.Commands {
+﻿using TwitchFX.Lights;
+
+namespace TwitchFX.Commands {
 	
 	public class CommandSpinRings : Command {
 		

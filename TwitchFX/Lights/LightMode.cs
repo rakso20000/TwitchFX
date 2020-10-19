@@ -1,6 +1,6 @@
-﻿namespace TwitchFX {
+﻿namespace TwitchFX.Lights {
 	
-	public enum ColorMode {
+	public enum LightMode {
 		
 		Default,
 		Custom,

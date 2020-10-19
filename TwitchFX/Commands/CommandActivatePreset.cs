@@ -1,4 +1,7 @@
-﻿namespace TwitchFX.Commands {
+﻿using TwitchFX.Colors;
+using TwitchFX.Lights;
+
+namespace TwitchFX.Commands {
 	
 	public class CommandActivatePreset : Command {
 		
@@ -31,7 +34,7 @@
 			}
 			
 			LightController.instance.SetColors(preset.leftLightColor, preset.rightLightColor);
-			LightController.instance.SetColorMode(ColorMode.Custom);
+			LightController.instance.SetLightMode(LightMode.Custom);
 			
 			ColorController.instance.SetNoteColors(preset.leftNoteColor, preset.rightNoteColor);
 			ColorController.instance.SetSaberColors(preset.leftSaberColor, preset.rightSaberColor);

@@ -147,9 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chat.cs" />
-    <Compile Include="ColorMode.cs" />
-    <Compile Include="ColorPreset.cs" />
-    <Compile Include="Command.cs" />
+    <Compile Include="Lights\LightMode.cs" />
+    <Compile Include="Colors\ColorPreset.cs" />
+    <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandActivatePreset.cs" />
     <Compile Include="Commands\CommandBoostLights.cs" />
     <Compile Include="Commands\CommandDisableLights.cs" />
@@ -159,31 +159,31 @@
     <Compile Include="Commands\CommandResetWallColor.cs" />
     <Compile Include="Commands\CommandSetLightColor.cs" />
     <Compile Include="Commands\CommandSetNoteColor.cs" />
-    <Compile Include="ColorController.cs" />
+    <Compile Include="Colors\ColorController.cs" />
     <Compile Include="Commands\CommandSetSaberColor.cs" />
     <Compile Include="Commands\CommandSetWallColor.cs" />
     <Compile Include="Commands\CommandSetSaberNoteColor.cs" />
     <Compile Include="Commands\CommandSpinRings.cs" />
-    <Compile Include="CustomBeatmapEventManager.cs" />
-    <Compile Include="CustomLightshowController.cs" />
-    <Compile Include="CustomLightshowData.cs" />
+    <Compile Include="Lights\CustomBeatmapEventManager.cs" />
+    <Compile Include="Lights\CustomLightshowController.cs" />
+    <Compile Include="Lights\CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Hooks\ObstacleController.cs" />
     <Compile Include="Hooks\ColorManager.cs" />
     <Compile Include="Hooks\SaberModelController.cs" />
-    <Compile Include="InvalidCommandArgumentsException.cs" />
+    <Compile Include="Commands\InvalidCommandArgumentsException.cs" />
     <Compile Include="InvalidJSONException.cs" />
     <Compile Include="LazyController.cs" />
-    <Compile Include="LightController.cs" />
-    <Compile Include="LightEffectController.cs" />
-    <Compile Include="LightWithIdManagerWrapper.cs" />
+    <Compile Include="Lights\LightController.cs" />
+    <Compile Include="Lights\LightEffectController.cs" />
+    <Compile Include="Lights\LightWithIdManagerWrapper.cs" />
     <Compile Include="PermissionsLevel.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CustomBeatmapEventData.cs" />
-    <Compile Include="RingController.cs" />
+    <Compile Include="Lights\CustomBeatmapEventData.cs" />
+    <Compile Include="Lights\RingController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />

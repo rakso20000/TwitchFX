@@ -1,17 +1,17 @@
 using System;
 using UnityEngine;
 
-namespace TwitchFX {
+namespace TwitchFX.Lights {
 	
 	public class LightController : LazyController<LightController> {
 		
 		public CustomLightshowController lightshowController;
 		public ColorManager colorManager;
 		
-		public ColorMode mode { get; private set; } = ColorMode.Default;
+		public LightMode mode { get; private set; } = LightMode.Default;
 		public bool boostColors { get; private set; } = false;
 		
-		private event Action<ColorMode> onColorModeUpdated;
+		private event Action<LightMode> onLightModeUpdated;
 		
 		private float disableOn = -1f;
 		private float disableBoostOn = -1f;
@@ -59,14 +59,14 @@ namespace TwitchFX {
 				int id = Helper.GetValue<int>(light, "_lightsID");
 				BeatmapEventType eventTypeForThisLight = Helper.GetValue<BeatmapEventType>(light, "_event");
 				
-				LightEffectController customLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, ColorMode.Custom, id, eventTypeForThisLight);
-				LightEffectController lightshowLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, ColorMode.CustomLightshow, id, eventTypeForThisLight);
+				LightEffectController customLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.Custom, id, eventTypeForThisLight);
+				LightEffectController lightshowLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.CustomLightshow, id, eventTypeForThisLight);
 				
 				beatmapObjectCallbackController.beatmapEventDidTriggerEvent += customLightEffectController.OnEvent;
-				onColorModeUpdated += customLightEffectController.UpdateColorMode;
+				onLightModeUpdated += customLightEffectController.UpdateLightMode;
 				
 				CustomBeatmapEventManager.onCustomBeatmapEvent += lightshowLightEffectController.OnEvent;
-				onColorModeUpdated += lightshowLightEffectController.UpdateColorMode;
+				onLightModeUpdated += lightshowLightEffectController.UpdateLightMode;
 				
 				customLights[i] = customLightEffectController;
 				lightshowLights[i] = lightshowLightEffectController;
@@ -79,7 +79,7 @@ namespace TwitchFX {
 		
 		public void DisableIn(float duration) {
 			
-			if (mode == ColorMode.CustomLightshow) {
+			if (mode == LightMode.CustomLightshow) {
 				
 				lightshowController.RestoreTo(null, Time.time + duration);
 				
@@ -99,7 +99,7 @@ namespace TwitchFX {
 			
 			disableBoostOn = Time.time + duration;
 			
-			UpdateColorMode();
+			UpdateLightMode();
 			
 			enabled = true;
 			
@@ -122,13 +122,13 @@ namespace TwitchFX {
 			if (lightshowData == null)
 				return false;
 			
-			ColorMode prevMode = mode;
+			LightMode prevMode = mode;
 			float disableOn = this.disableOn;
 			
 			switch (prevMode) {
-			case ColorMode.CustomLightshow:
+			case LightMode.CustomLightshow:
 				break;
-			case ColorMode.Custom:
+			case LightMode.Custom:
 				
 				foreach (LightEffectController lightshowLightEffectController in lightshowLights)
 					lightshowLightEffectController.SetColors(customColorLeft, customColorRight);
@@ -148,7 +148,7 @@ namespace TwitchFX {
 			CustomLightshowController lightshowController = CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode, disableOn);
 			this.lightshowController?.Destroy(lightshowController);
 			
-			SetColorMode(ColorMode.CustomLightshow);
+			SetLightMode(LightMode.CustomLightshow);
 			
 			this.lightshowController = lightshowController;
 			
@@ -156,7 +156,7 @@ namespace TwitchFX {
 			
 		}
 		
-		public void SetColorMode(ColorMode mode) {
+		public void SetLightMode(LightMode mode) {
 			
 			if (enabled) {
 				
@@ -167,14 +167,14 @@ namespace TwitchFX {
 				
 			}
 			
-			if (this.mode == ColorMode.CustomLightshow && lightshowController != null) {
+			if (this.mode == LightMode.CustomLightshow && lightshowController != null) {
 				
-				if (mode == ColorMode.Custom) {
+				if (mode == LightMode.Custom) {
 					
 					foreach (LightEffectController lightshowLightEffectController in lightshowLights)
 						lightshowLightEffectController.SetColors(customColorLeft, customColorRight);
 					
-					UpdateColorMode();
+					UpdateLightMode();
 					
 				}
 				
@@ -184,32 +184,32 @@ namespace TwitchFX {
 				
 			}
 			
-			ColorMode prevMode = this.mode;
+			LightMode prevMode = this.mode;
 			this.mode = mode;
 			
-			UpdateColorMode();
+			UpdateLightMode();
 			
-			if (mode == ColorMode.Disabled || mode == ColorMode.CustomLightshow)
+			if (mode == LightMode.Disabled || mode == LightMode.CustomLightshow)
 				managerWrapper.ClearLights();
 			
 			if (mode == prevMode)
 				return;
 			
-			if (mode == ColorMode.Disabled) {
+			if (mode == LightMode.Disabled) {
 				
 				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", 0f);
 				
-			} else if (mode == ColorMode.CustomLightshow) {
+			} else if (mode == LightMode.CustomLightshow) {
 				
 				RingController.instance.DisableDefaultRingEvents();
 				
 			}
 			
-			if (prevMode == ColorMode.Disabled) {
+			if (prevMode == LightMode.Disabled) {
 				
 				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", defaultBeatEffectDuration);
 				
-			} else if (prevMode == ColorMode.CustomLightshow) {
+			} else if (prevMode == LightMode.CustomLightshow) {
 				
 				RingController.instance.EnableDefaultRingEvents();
 				
@@ -217,11 +217,11 @@ namespace TwitchFX {
 			
 		}
 		
-		private void UpdateColorMode() {
+		private void UpdateLightMode() {
 			
-			onColorModeUpdated?.Invoke(mode);
+			onLightModeUpdated?.Invoke(mode);
 			
-			if (mode == ColorMode.Default) {
+			if (mode == LightMode.Default) {
 				
 				foreach (LightSwitchEventEffect light in defaultLights) {
 					
@@ -239,7 +239,7 @@ namespace TwitchFX {
 			
 			if (disableOn != -1f && Time.time > disableOn) {
 				
-				SetColorMode(ColorMode.Default);
+				SetLightMode(LightMode.Default);
 				
 				disableOn = -1f;
 				
@@ -249,7 +249,7 @@ namespace TwitchFX {
 				
 				boostColors = false;
 				
-				UpdateColorMode();
+				UpdateLightMode();
 				
 				disableBoostOn = -1f;
 				

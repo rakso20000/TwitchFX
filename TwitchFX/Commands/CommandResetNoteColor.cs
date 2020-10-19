@@ -1,4 +1,6 @@
-﻿namespace TwitchFX.Commands {
+﻿using TwitchFX.Colors;
+
+namespace TwitchFX.Commands {
 	
 	public class CommandResetNoteColor : Command {
 		

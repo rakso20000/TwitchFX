@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
-namespace TwitchFX {
+namespace TwitchFX.Lights {
 	
 	public class CustomLightshowController : MonoBehavior {
 		
 		public static CustomLightshowController CreateCustomLightshowController(
 			CustomLightshowData lightshowData,
 			IAudioTimeSource timeSource,
-			ColorMode restoreMode,
+			LightMode restoreMode,
 			float restoreDefaultLightsAfter
 		) {
 			
@@ -25,7 +25,7 @@ namespace TwitchFX {
 		
 		private CustomLightshowData lightshowData;
 		private IAudioTimeSource timeSource;
-		private ColorMode restoreMode;
+		private LightMode restoreMode;
 		private float restoreDefaultLightsAfter;
 		
 		private float startTime;
@@ -33,7 +33,7 @@ namespace TwitchFX {
 		
 		private int eventIndex = 0;
 		
-		public void RestoreTo(ColorMode? mode, float disableOn) {
+		public void RestoreTo(LightMode? mode, float disableOn) {
 			
 			if (mode.HasValue)
 				restoreMode = mode.Value;
@@ -77,11 +77,11 @@ namespace TwitchFX {
 				
 				if (restoreDefaultLightsAfter != -1f && Time.time > restoreDefaultLightsAfter) {
 					
-					LightController.instance.SetColorMode(ColorMode.Default);
+					LightController.instance.SetLightMode(LightMode.Default);
 					
 				} else {
 					
-					LightController.instance.SetColorMode(restoreMode);
+					LightController.instance.SetLightMode(restoreMode);
 					
 					if (restoreDefaultLightsAfter != -1f)
 						LightController.instance.DisableIn(restoreDefaultLightsAfter - Time.time);

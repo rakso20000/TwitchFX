@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TwitchFX.Colors;
+using UnityEngine;
 
 namespace TwitchFX.Commands {
 	

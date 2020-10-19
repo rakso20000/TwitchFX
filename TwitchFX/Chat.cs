@@ -3,6 +3,7 @@ using ChatCore.Interfaces;
 using ChatCore.Models.Twitch;
 using ChatCore.Services.Twitch;
 using System;
+using TwitchFX.Commands;
 using TwitchFX.Configuration;
 
 namespace TwitchFX {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchFX {
+namespace TwitchFX.Commands {
 	
 	public class InvalidCommandArgumentsException : Exception {
 		

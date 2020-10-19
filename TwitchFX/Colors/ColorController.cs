@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using UnityEngine;
 
-namespace TwitchFX {
+namespace TwitchFX.Colors {
 	
 	public class ColorController : LazyController<ColorController> {
 		

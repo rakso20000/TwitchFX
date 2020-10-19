@@ -1,4 +1,6 @@
-﻿namespace TwitchFX.Commands {
+﻿using TwitchFX.Lights;
+
+namespace TwitchFX.Commands {
 	
 	public class CommandDisableLights : Command {
 		
@@ -19,7 +21,7 @@
 				
 			}
 			
-			LightController.instance.SetColorMode(ColorMode.Disabled);
+			LightController.instance.SetLightMode(LightMode.Disabled);
 			
 			if (args.Length >= 1)
 				LightController.instance.DisableIn(duration);

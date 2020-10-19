@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TwitchFX {
+namespace TwitchFX.Lights {
 	
 	public class LightWithIdManagerWrapper : LightWithIdManager {
 		
@@ -52,7 +52,7 @@ namespace TwitchFX {
 		
 		public override void SetColorForId(int id, Color color) {
 			
-			if (LightController.instance.mode != ColorMode.Default)
+			if (LightController.instance.mode != LightMode.Default)
 				return;
 			
 			if (LightController.instance.boostColors)

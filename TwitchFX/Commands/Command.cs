@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TwitchFX.Configuration;
 using UnityEngine;
 
-namespace TwitchFX {
+namespace TwitchFX.Commands {
 	
 	public abstract class Command {
 		

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
-namespace TwitchFX {
+namespace TwitchFX.Lights {
 	
 	public class LightEffectController : MonoBehavior {
 		
@@ -11,7 +11,7 @@ namespace TwitchFX {
 		
 		public static LightEffectController CreateLightEffectController(
 			LightWithIdManagerWrapper lightManager,
-			ColorMode activeOnMode,
+			LightMode activeOnMode,
 			int id,
 			BeatmapEventType eventTypeForThisLight
 		) {
@@ -31,11 +31,11 @@ namespace TwitchFX {
 		
 		private LightWithIdManagerWrapper lightManager;
 		
-		private ColorMode activeOnMode;
+		private LightMode activeOnMode;
 		private int id;
 		private BeatmapEventType eventTypeForThisLight;
 		
-		private ColorMode mode = ColorMode.Default;
+		private LightMode mode = LightMode.Default;
 		
 		private Color colorLeft;
 		private Color colorRight;
@@ -71,7 +71,7 @@ namespace TwitchFX {
 			
 		}
 		
-		public void UpdateColorMode(ColorMode mode) {
+		public void UpdateLightMode(LightMode mode) {
 			
 			this.mode = mode;
 			

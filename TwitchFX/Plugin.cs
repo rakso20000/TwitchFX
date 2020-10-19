@@ -11,6 +11,9 @@ using UnityEngine.SceneManagement;
 using HarmonyLib;
 using IPALogger = IPA.Logging.Logger;
 using ChatCore.SimpleJSON;
+using TwitchFX.Lights;
+using TwitchFX.Colors;
+using TwitchFX.Commands;
 
 namespace TwitchFX {
 	

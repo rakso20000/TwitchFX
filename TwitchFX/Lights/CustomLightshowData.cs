@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TwitchFX {
+namespace TwitchFX.Lights {
 	
 	public class CustomLightshowData {
 		

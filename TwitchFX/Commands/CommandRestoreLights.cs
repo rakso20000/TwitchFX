@@ -1,4 +1,6 @@
-﻿namespace TwitchFX.Commands {
+﻿using TwitchFX.Lights;
+
+namespace TwitchFX.Commands {
 	
 	public class CommandRestoreLights : Command {
 		
@@ -7,7 +9,7 @@
 			ParseArgs(argsStr, 0);
 			
 			if (Plugin.instance.inLevel)
-				LightController.instance.SetColorMode(ColorMode.Default);
+				LightController.instance.SetLightMode(LightMode.Default);
 			
 		}
 		

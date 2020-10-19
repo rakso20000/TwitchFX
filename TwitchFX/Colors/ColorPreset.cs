@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TwitchFX {
+namespace TwitchFX.Colors {
 	
 	public class ColorPreset {
 		

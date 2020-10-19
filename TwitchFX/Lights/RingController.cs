@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace TwitchFX {
+namespace TwitchFX.Lights {
 	
 	public class RingController : LazyController<RingController> {
 		

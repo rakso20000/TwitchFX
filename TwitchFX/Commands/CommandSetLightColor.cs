@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TwitchFX.Lights;
+using UnityEngine;
 
 namespace TwitchFX.Commands {
 	
@@ -26,7 +27,7 @@ namespace TwitchFX.Commands {
 			}
 			
 			LightController.instance.SetColors(leftColor, rightColor);
-			LightController.instance.SetColorMode(ColorMode.Custom);
+			LightController.instance.SetLightMode(LightMode.Custom);
 			
 			if (args.Length >= 3)
 				LightController.instance.DisableIn(duration);

@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using TwitchFX.Colors;
 using UnityEngine;
 
 namespace TwitchFX.Hooks {
