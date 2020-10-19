@@ -16,9 +16,12 @@ namespace TwitchFX.Lights {
 			TrackLaneRingsRotationEffectSpawner[] rotationEffects = Resources.FindObjectsOfTypeAll<TrackLaneRingsRotationEffectSpawner>();
 			TrackLaneRingsPositionStepEffectSpawner[] positionStepEffects = Resources.FindObjectsOfTypeAll<TrackLaneRingsPositionStepEffectSpawner>();
 			
-			TrackLaneRingsRotationEffectSpawner rotatinEffect = rotationEffects[0];
+			object someEffect = rotationEffects.Length != 0 ? (object) rotationEffects[0] : positionStepEffects.Length != 0 ? positionStepEffects[0] : null;
 			
-			bocc = Helper.GetValue<BeatmapObjectCallbackController>(rotatinEffect, "_beatmapObjectCallbackController");
+			if (someEffect == null)
+				return;
+			
+			bocc = Helper.GetValue<BeatmapObjectCallbackController>(someEffect, "_beatmapObjectCallbackController");
 			
 			bocc.beatmapEventDidTriggerEvent += OnBeatmapEvent;
 			CustomBeatmapEventManager.onCustomBeatmapEvent += OnCustomBeatmapEvent;
@@ -72,7 +75,9 @@ namespace TwitchFX.Lights {
 		
 		public void OnDestroy() {
 			
-			bocc.beatmapEventDidTriggerEvent -= OnBeatmapEvent;
+			if (bocc != null)
+				bocc.beatmapEventDidTriggerEvent -= OnBeatmapEvent;
+			
 			CustomBeatmapEventManager.onCustomBeatmapEvent -= OnCustomBeatmapEvent;
 			
 		}
