@@ -201,7 +201,10 @@ namespace TwitchFX.Lights {
 				
 			} else if (mode == LightMode.CustomLightshow) {
 				
+				LightRotationController.instance.DisableDefaultLightRotationEvents();
 				RingController.instance.DisableDefaultRingEvents();
+				
+				LightRotationController.instance.ResetLightRotation();
 				
 			}
 			
@@ -211,6 +214,7 @@ namespace TwitchFX.Lights {
 				
 			} else if (prevMode == LightMode.CustomLightshow) {
 				
+				LightRotationController.instance.EnableDefaultLightRotationEvents();
 				RingController.instance.EnableDefaultRingEvents();
 				
 			}

@@ -176,6 +176,7 @@
     <Compile Include="LazyController.cs" />
     <Compile Include="Lights\LightController.cs" />
     <Compile Include="Lights\LightEffectController.cs" />
+    <Compile Include="Lights\LightRotationController.cs" />
     <Compile Include="Lights\LightWithIdManagerWrapper.cs" />
     <Compile Include="PermissionsLevel.cs" />
     <Compile Include="Plugin.cs" />
