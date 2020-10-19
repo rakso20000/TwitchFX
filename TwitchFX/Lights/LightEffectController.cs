@@ -12,9 +12,13 @@ namespace TwitchFX.Lights {
 		public static LightEffectController CreateLightEffectController(
 			LightWithIdManagerWrapper lightManager,
 			LightMode activeOnMode,
-			int id,
-			BeatmapEventType eventTypeForThisLight
+			LightSwitchEventEffect baseLight
 		) {
+			
+			int id = Helper.GetValue<int>(baseLight, "_lightsID");
+			BeatmapEventType eventTypeForThisLight = Helper.GetValue<BeatmapEventType>(baseLight, "_event");
+			
+			int lastEventValue = Helper.GetValue<int>(baseLight, "_prevLightSwitchBeatmapEventDataValue");
 			
 			LightEffectController controller = new GameObject("TwitchFXLightEffectController").AddComponent<LightEffectController>();
 			
@@ -23,7 +27,20 @@ namespace TwitchFX.Lights {
 			controller.id = id;
 			controller.eventTypeForThisLight = eventTypeForThisLight;
 			
-			controller.lastEventData = new BeatmapEventData(0f, eventTypeForThisLight, 0);
+			controller.lastEventData = new BeatmapEventData(0f, eventTypeForThisLight, lastEventValue);
+			
+			controller.enabled = baseLight.enabled;
+			
+			if (baseLight.enabled) {
+				
+				float highlightValue = Helper.GetValue<float>(baseLight, "_highlightValue");
+				
+				controller.transitionValue = highlightValue;
+				
+				controller.startColor = offColor;
+				controller.endColor = offColor;
+				
+			}
 			
 			return controller;
 			

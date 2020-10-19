@@ -56,20 +56,18 @@ namespace TwitchFX.Lights {
 				
 				Helper.SetValue<LightWithIdManagerWrapper>(light, "_lightManager", managerWrapper);
 				
-				int id = Helper.GetValue<int>(light, "_lightsID");
-				BeatmapEventType eventTypeForThisLight = Helper.GetValue<BeatmapEventType>(light, "_event");
 				
-				LightEffectController customLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.Custom, id, eventTypeForThisLight);
-				LightEffectController lightshowLightEffectController = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.CustomLightshow, id, eventTypeForThisLight);
+				LightEffectController customLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.Custom, light);
+				LightEffectController lightshowLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.CustomLightshow, light);
 				
-				beatmapObjectCallbackController.beatmapEventDidTriggerEvent += customLightEffectController.OnEvent;
-				onLightModeUpdated += customLightEffectController.UpdateLightMode;
+				beatmapObjectCallbackController.beatmapEventDidTriggerEvent += customLight.OnEvent;
+				onLightModeUpdated += customLight.UpdateLightMode;
 				
-				CustomBeatmapEventManager.onCustomBeatmapEvent += lightshowLightEffectController.OnEvent;
-				onLightModeUpdated += lightshowLightEffectController.UpdateLightMode;
+				CustomBeatmapEventManager.onCustomBeatmapEvent += lightshowLight.OnEvent;
+				onLightModeUpdated += lightshowLight.UpdateLightMode;
 				
-				customLights[i] = customLightEffectController;
-				lightshowLights[i] = lightshowLightEffectController;
+				customLights[i] = customLight;
+				lightshowLights[i] = lightshowLight;
 				
 			}
 			
@@ -266,11 +264,11 @@ namespace TwitchFX.Lights {
 		
 		public void OnDestroy() {
 			
-			foreach (LightEffectController customLightEffectController in customLights)
-				beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= customLightEffectController.OnEvent;
+			foreach (LightEffectController light in customLights)
+				beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= light.OnEvent;
 			
-			foreach (LightEffectController lightshowLightEffectController in lightshowLights)
-				CustomBeatmapEventManager.onCustomBeatmapEvent -= lightshowLightEffectController.OnEvent;
+			foreach (LightEffectController light in lightshowLights)
+				CustomBeatmapEventManager.onCustomBeatmapEvent -= light.OnEvent;
 			
 		}
 		
