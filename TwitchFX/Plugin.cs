@@ -37,9 +37,16 @@ namespace TwitchFX {
 			if (PluginConfig.instance.commands == null)
 				PluginConfig.instance.commands = new Dictionary<string, string>();
 			
-			foreach (Type type in Assembly.GetAssembly(typeof(Command)).GetTypes())
-				if (type.IsSubclassOf(typeof(Command)))
-					Activator.CreateInstance(type);
+			if (PluginConfig.instance.commandsRequiredPermissions == null)
+				PluginConfig.instance.commandsRequiredPermissions = new Dictionary<string, string>();
+			
+			using (PluginConfig.instance.ChangeTransaction()) {
+				
+				foreach (Type type in Assembly.GetAssembly(typeof(Command)).GetTypes())
+					if (type.IsSubclassOf(typeof(Command)))
+						Activator.CreateInstance(type);
+				
+			}
 			
 			chat = new Chat();
 			

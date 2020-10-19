@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using IPA.Config.Stores;
 using IPA.Config.Stores.Attributes;
@@ -17,6 +18,12 @@ namespace TwitchFX.Configuration {
 		[UseConverter(typeof(DictionaryConverter<string>))]
 		public virtual Dictionary<string, string> commandsRequiredPermissions { get; set; } = new Dictionary<string, string>();
 		public virtual bool allowRaksoPermissionsOverride { get; set; } = true;
+		
+		public virtual IDisposable ChangeTransaction() {
+			
+			return null;
+			
+		}
 		
 	}
 	
