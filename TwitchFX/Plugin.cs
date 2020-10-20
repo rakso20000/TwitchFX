@@ -8,7 +8,6 @@ using IPA.Config.Stores;
 using IPA.Utilities;
 using TwitchFX.Configuration;
 using UnityEngine.SceneManagement;
-using HarmonyLib;
 using IPALogger = IPA.Logging.Logger;
 using ChatCore.SimpleJSON;
 using TwitchFX.Lights;
@@ -62,10 +61,6 @@ namespace TwitchFX {
 		
 		[OnStart]
 		public void OnStart() {
-			
-			Harmony harmony = new Harmony("com.rakso20000.beatsaber.twitchfx");
-			
-			harmony.PatchAll();
 			
 			HookManager.instance.HookAll(assembly);
 			
