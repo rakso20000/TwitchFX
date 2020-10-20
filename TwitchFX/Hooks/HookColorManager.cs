@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
-using HarmonyLib;
 using TwitchFX.Colors;
 
-namespace TwitchFX.Hooks {
+namespace TwitchFX.Hooking {
 	
-	[HarmonyPatch(typeof(ColorManager))]
-	[HarmonyPatch("ColorForType")]
-	public class ColorManager_ColorForType {
+	public class HookColorManager : Hook<ColorManager> {
 		
-		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
-		public static bool Prefix(ColorType type, ref Color __result) {
+		[Prefix]
+		[Before("com.noodle.BeatSaber.ChromaCore")]
+		public static bool ColorForType(ColorType type, ref Color __result) {
 			
 			if (ColorController.isNull || !ColorController.instance.useCustomNoteColors)
 				return true;
@@ -29,14 +27,9 @@ namespace TwitchFX.Hooks {
 			
 		}
 		
-	}
-	
-	[HarmonyPatch(typeof(ColorManager))]
-	[HarmonyPatch("ColorForSaberType")]
-	public class ColorManager_ColorForSaberType {
-		
-		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
-		public static bool Prefix(SaberType type, ref Color __result) {
+		[Prefix]
+		[Before("com.noodle.BeatSaber.ChromaCore")]
+		public static bool ColorForSaberType(SaberType type, ref Color __result) {
 			
 			if (ColorController.isNull || !ColorController.instance.useCustomSaberColors)
 				return true;
@@ -56,14 +49,9 @@ namespace TwitchFX.Hooks {
 			
 		}
 		
-	}
-	
-	[HarmonyPatch(typeof(ColorManager))]
-	[HarmonyPatch("EffectsColorForSaberType")]
-	public class ColorManager_EffectsColorForSaberType {
-		
-		[HarmonyBefore(new string[] { "com.noodle.BeatSaber.ChromaCore" })]
-		public static bool Prefix(SaberType type, ref Color __result) {
+		[Prefix]
+		[Before("com.noodle.BeatSaber.ChromaCore")]
+		public static bool EffectsColorForSaberType(SaberType type, ref Color __result) {
 			
 			if (ColorController.isNull || !ColorController.instance.useCustomSaberColors)
 				return true;
@@ -89,13 +77,8 @@ namespace TwitchFX.Hooks {
 			
 		}
 		
-	}
-	
-	[HarmonyPatch(typeof(ColorManager))]
-	[HarmonyPatch("GetObstacleEffectColor")]
-	public class ColorManager_GetObstacleEffectColor {
-		
-		public static bool Prefix(ref Color __result) {
+		[Prefix]
+		public static bool GetObstacleEffectColor(ref Color __result) {
 			
 			if (ColorController.isNull || !ColorController.instance.useCustomWallColor)
 				return true;

@@ -158,6 +158,10 @@
   <ItemGroup>
     <Compile Include="Chat.cs" />
     <Compile Include="Injector.cs" />
+    <Compile Include="Hooking\Attributes.cs" />
+    <Compile Include="Hooking\Hook.cs" />
+    <Compile Include="Hooking\HookBase.cs" />
+    <Compile Include="Hooking\HookManager.cs" />
     <Compile Include="Lights\LightMode.cs" />
     <Compile Include="Colors\ColorPreset.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -179,9 +183,9 @@
     <Compile Include="Lights\CustomLightshowController.cs" />
     <Compile Include="Lights\CustomLightshowData.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Hooks\ObstacleController.cs" />
-    <Compile Include="Hooks\ColorManager.cs" />
-    <Compile Include="Hooks\SaberModelController.cs" />
+    <Compile Include="Hooks\HookObstacleController.cs" />
+    <Compile Include="Hooks\HookColorManager.cs" />
+    <Compile Include="Hooks\HookSaberModelController.cs" />
     <Compile Include="Commands\InvalidCommandArgumentsException.cs" />
     <Compile Include="InvalidJSONException.cs" />
     <Compile Include="LazyController.cs" />

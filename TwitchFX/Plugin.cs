@@ -8,12 +8,12 @@ using IPA.Config.Stores;
 using IPA.Utilities;
 using TwitchFX.Configuration;
 using UnityEngine.SceneManagement;
-using HarmonyLib;
 using IPALogger = IPA.Logging.Logger;
 using ChatCore.SimpleJSON;
 using TwitchFX.Lights;
 using TwitchFX.Colors;
 using TwitchFX.Commands;
+using TwitchFX.Hooking;
 using UnityEngine;
 
 namespace TwitchFX {
@@ -27,6 +27,8 @@ namespace TwitchFX {
 		internal static string Name => "TwitchFX";
 		
 		public bool inLevel = false;
+		
+		private Assembly assembly;
 		
 		[Init]
 		public void Init(IPALogger logger, Config conf) {
@@ -44,9 +46,11 @@ namespace TwitchFX {
 			if (PluginConfig.instance.commandsRequiredPermissions == null)
 				PluginConfig.instance.commandsRequiredPermissions = new Dictionary<string, string>();
 			
+			assembly = Assembly.GetExecutingAssembly();
+			
 			using (PluginConfig.instance.ChangeTransaction()) {
 				
-				foreach (Type type in Assembly.GetAssembly(typeof(Command)).GetTypes())
+				foreach (Type type in assembly.GetTypes())
 					if (type.IsSubclassOf(typeof(Command)))
 						Activator.CreateInstance(type);
 				
@@ -59,9 +63,7 @@ namespace TwitchFX {
 		[OnStart]
 		public void OnStart() {
 			
-			Harmony harmony = new Harmony("com.rakso20000.beatsaber.twitchfx");
-			
-			harmony.PatchAll();
+			HookManager.instance.HookAll(assembly);
 			
 			LoadColorPresets(UnityGame.UserDataPath + "\\TwitchFX\\ColorPresets");
 			LoadLightshows(UnityGame.UserDataPath + "\\TwitchFX\\Lightshows");
