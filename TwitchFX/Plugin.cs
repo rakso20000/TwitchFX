@@ -14,6 +14,7 @@ using ChatCore.SimpleJSON;
 using TwitchFX.Lights;
 using TwitchFX.Colors;
 using TwitchFX.Commands;
+using UnityEngine;
 
 namespace TwitchFX {
 	
@@ -198,6 +199,8 @@ namespace TwitchFX {
 			if (nextScene.name == "GameCore") {
 				
 				inLevel = true;
+				
+				new GameObject("TwitchFXInjector").AddComponent<Injector>();
 				
 			} else {
 				

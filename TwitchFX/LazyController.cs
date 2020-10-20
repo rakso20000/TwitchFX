@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX {
@@ -11,10 +12,16 @@ namespace TwitchFX {
 				
 				if (controller != null)
 					return controller;
+
+				//for now LazyControllers only work in GameCore
+				if (Injector.instance == null)
+					throw new InvalidOperationException("Can't create " + typeof(Controller).Name + " as Injector is not available");
 				
 				string name = "TwitchFX" + typeof(Controller).Name;
 				
 				controller = new GameObject(name).AddComponent<Controller>();
+				
+				Injector.instance.Inject(controller);
 				
 				controller.Init();
 				
