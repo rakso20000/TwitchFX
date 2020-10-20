@@ -2,7 +2,7 @@
 using HarmonyLib;
 using TwitchFX.Colors;
 
-namespace TwitchFX.Hooks {
+namespace TwitchFX.Hooking {
 	
 	[HarmonyPatch(typeof(ColorManager))]
 	[HarmonyPatch("ColorForType")]

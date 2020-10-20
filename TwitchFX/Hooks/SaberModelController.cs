@@ -2,7 +2,7 @@
 using TwitchFX.Colors;
 using UnityEngine;
 
-namespace TwitchFX.Hooks {
+namespace TwitchFX.Hooking {
 	
 	[HarmonyPatch(typeof(SaberModelController))]
 	[HarmonyPatch("Init")]
