@@ -28,6 +28,8 @@ namespace TwitchFX {
 			
 			instance = this;
 			
+			enabled = false;
+			
 		}
 		
 		public void Inject(object injectee) {
