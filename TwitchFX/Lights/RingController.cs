@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 namespace TwitchFX.Lights {
 	
@@ -9,16 +10,25 @@ namespace TwitchFX.Lights {
 		
 		private BeatmapObjectCallbackController bocc;
 		
+		private TrackLaneRingsRotationEffectSpawner[] rotationEffects;
+		private TrackLaneRingsPositionStepEffectSpawner[] positionStepEffects;
+		
 		private bool disablePipedBeatmapEvents = false;
 		
+		[Inject]
+		public void Inject(
+			BeatmapObjectCallbackController bocc,
+			TrackLaneRingsRotationEffectSpawner[] rotationEffects,
+			TrackLaneRingsPositionStepEffectSpawner[] positionStepEffects
+		) {
+			
+			this.bocc = bocc;
+			this.rotationEffects = rotationEffects;
+			this.positionStepEffects = positionStepEffects;
+			
+		}
+		
 		protected override void Init() {
-			
-			TrackLaneRingsRotationEffectSpawner[] rotationEffects = Resources.FindObjectsOfTypeAll<TrackLaneRingsRotationEffectSpawner>();
-			TrackLaneRingsPositionStepEffectSpawner[] positionStepEffects = Resources.FindObjectsOfTypeAll<TrackLaneRingsPositionStepEffectSpawner>();
-			
-			TrackLaneRingsRotationEffectSpawner rotatinEffect = rotationEffects[0];
-			
-			bocc = Helper.GetValue<BeatmapObjectCallbackController>(rotatinEffect, "_beatmapObjectCallbackController");
 			
 			bocc.beatmapEventDidTriggerEvent += OnBeatmapEvent;
 			CustomBeatmapEventManager.onCustomBeatmapEvent += OnCustomBeatmapEvent;
