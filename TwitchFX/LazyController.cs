@@ -12,7 +12,7 @@ namespace TwitchFX {
 				
 				if (controller != null)
 					return controller;
-
+				
 				//for now LazyControllers only work in GameCore
 				if (Injector.instance == null)
 					throw new InvalidOperationException("Can't create " + typeof(Controller).Name + " as Injector is not available");

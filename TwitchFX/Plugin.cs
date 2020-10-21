@@ -160,7 +160,7 @@ namespace TwitchFX {
 				string json = File.ReadAllText(lightshowFilePath);
 				
 				JSONNode rootJSON;
-					
+				
 				try {
 					
 					rootJSON = JSON.Parse(json);

@@ -11,8 +11,8 @@ namespace TwitchFX.Colors {
 		private static readonly int colorID = Shader.PropertyToID("_Color");
 		
 		public bool useCustomSaberColors { get; private set; } = false;
-		public Color saberColorLeft { get; private set;}
-		public Color saberColorRight { get; private set;}
+		public Color saberColorLeft { get; private set; }
+		public Color saberColorRight { get; private set; }
 		
 		public bool useCustomNoteColors { get; private set; } = false;
 		public Color noteColorLeft { get; private set; }

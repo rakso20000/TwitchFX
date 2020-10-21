@@ -18,7 +18,7 @@ namespace TwitchFX.Lights {
 			
 			//accessible via colors
 			_colors = manager.colors;
-
+			
 			//accessed by chroma and ClearLights
 			_lights = Helper.GetValue<List<LightWithId>[]>(manager, "_lights");
 			

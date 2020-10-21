@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using TwitchFX.Lights;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX.Hooking {
@@ -94,7 +93,6 @@ namespace TwitchFX.Hooking {
 						harmony.Patch(hookedMethod, postfix: harmonyMethod);
 					
 				}
-				
 				
 			}
 			
