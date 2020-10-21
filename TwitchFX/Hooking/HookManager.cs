@@ -100,27 +100,40 @@ namespace TwitchFX.Hooking {
 			
 		}
 		
-		public void BindOnCreation<Behavior>(bool allowMultiple = false) where Behavior : MonoBehavior {
+		public void BindOnCreation<Behavior>(bool allowMultiple = false, string methodName = null) where Behavior : MonoBehavior {
 			
 			Type type = typeof(Behavior);
 			
 			MethodInfo method;
 			
-			method = type.GetMethod(
-				"Awake",
-				BindingFlags.NonPublic |
-				BindingFlags.Public |
-				BindingFlags.Instance
-			);
-			
-			if (method == null) {
+			if (methodName != null) {
 				
 				method = type.GetMethod(
-					"Start",
+					methodName,
 					BindingFlags.NonPublic |
 					BindingFlags.Public |
 					BindingFlags.Instance
 				);
+				
+			} else {
+				
+				method = type.GetMethod(
+					"Awake",
+					BindingFlags.NonPublic |
+					BindingFlags.Public |
+					BindingFlags.Instance
+				);
+				
+				if (method == null) {
+					
+					method = type.GetMethod(
+						"Start",
+						BindingFlags.NonPublic |
+						BindingFlags.Public |
+						BindingFlags.Instance
+					);
+					
+				}
 				
 			}
 			

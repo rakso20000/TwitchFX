@@ -185,7 +185,6 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Hooks\HookObstacleController.cs" />
     <Compile Include="Hooks\HookColorManager.cs" />
-    <Compile Include="Hooks\HookSaberModelController.cs" />
     <Compile Include="Commands\InvalidCommandArgumentsException.cs" />
     <Compile Include="InvalidJSONException.cs" />
     <Compile Include="LazyController.cs" />

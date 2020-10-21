@@ -2,14 +2,13 @@
 using System;
 using System.Reflection;
 using UnityEngine;
+using Zenject;
 
 namespace TwitchFX.Colors {
 	
 	public class ColorController : LazyController<ColorController> {
 		
 		private static readonly int colorID = Shader.PropertyToID("_Color");
-		
-		public static SaberModelController[] sabers = new SaberModelController[2];
 		
 		public bool useCustomSaberColors { get; private set; } = false;
 		public Color saberColorLeft { get; private set;}
@@ -25,6 +24,8 @@ namespace TwitchFX.Colors {
 		private ColorManager colorManager;
 		private ColorScheme colorScheme;
 		
+		private SaberModelController[] sabers;
+		
 		/*
 		private MethodInfo customSabersApplyColorsMethod;
 		private object customSabersSaberScript;
@@ -36,11 +37,20 @@ namespace TwitchFX.Colors {
 		private float disableNoteColorsOn = -1f;
 		private float disableWallColorOn = -1f;
 		
+		[Inject]
+		public void Inject(
+			ColorManager colorManager,
+			ColorScheme colorScheme,
+			SaberModelController[] sabers
+		) {
+			
+			this.colorManager = colorManager;
+			this.colorScheme = colorScheme;
+			this.sabers = sabers;
+			
+		}
+		
 		protected override void Init() {
-			
-			colorManager = Resources.FindObjectsOfTypeAll<ColorManager>()[1];
-			
-			colorScheme = Helper.GetValue<ColorScheme>(colorManager, "_colorScheme");
 			
 			updateCustomSabers = PluginManager.GetPluginFromId("Custom Sabers") != null;
 			

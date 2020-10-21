@@ -77,6 +77,7 @@ namespace TwitchFX {
 			HookManager.instance.BindOnCreation<BeatEffectSpawner>();
 			
 			HookManager.instance.BindOnCreation<LightSwitchEventEffect>(true);
+			HookManager.instance.BindOnCreation<SaberModelController>(true, "Init");
 			
 		}
 		
