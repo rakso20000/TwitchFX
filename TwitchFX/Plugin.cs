@@ -80,6 +80,8 @@ namespace TwitchFX {
 			HookManager.instance.BindOnCreation<SaberModelController>(true, "Init");
 			HookManager.instance.BindOnCreation<TrackLaneRingsRotationEffectSpawner>(true);
 			HookManager.instance.BindOnCreation<TrackLaneRingsPositionStepEffectSpawner>(true);
+			HookManager.instance.BindOnCreation<LightRotationEventEffect>(true);
+			HookManager.instance.BindOnCreation<LightPairRotationEventEffect>(true);
 			
 		}
 		
