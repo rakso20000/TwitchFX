@@ -63,10 +63,20 @@ namespace TwitchFX {
 		[OnStart]
 		public void OnStart() {
 			
-			HookManager.instance.HookAll(assembly);
+			SetUpHooks();
 			
 			LoadColorPresets(UnityGame.UserDataPath + "\\TwitchFX\\ColorPresets");
 			LoadLightshows(UnityGame.UserDataPath + "\\TwitchFX\\Lightshows");
+			
+		}
+		
+		private void SetUpHooks() {
+			
+			HookManager.instance.HookAll(assembly);
+			
+			HookManager.instance.BindOnCreation<BeatEffectSpawner>();
+			
+			HookManager.instance.BindOnCreation<LightSwitchEventEffect>(true);
 			
 		}
 		
