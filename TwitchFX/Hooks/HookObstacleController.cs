@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using HarmonyLib;
 using TwitchFX.Colors;
 
-namespace TwitchFX.Hooks {
+namespace TwitchFX.Hooking {
 	
-	[HarmonyPatch(typeof(ObstacleController))]
-	[HarmonyPatch("Init")]
-	public class ObstacleController_Init {
+	public class HookObstacleController : Hook<ObstacleController> {
 		
-		public static void Postfix(ObstacleController __instance) {
+		[Postfix]
+		public static void Init(ObstacleController __instance) {
 			
 			if (ColorController.isNull || !ColorController.instance.useCustomWallColor)
 				return;

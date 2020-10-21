@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace TwitchFX.Lights {
 	
 	public class LightController : LazyController<LightController> {
 		
 		public CustomLightshowController lightshowController;
-		public ColorManager colorManager;
 		
 		public LightMode mode { get; private set; } = LightMode.Default;
 		public bool boostColors { get; private set; } = false;
@@ -16,8 +16,10 @@ namespace TwitchFX.Lights {
 		private float disableOn = -1f;
 		private float disableBoostOn = -1f;
 		
+		private ColorManager colorManager;
+		private LightWithIdManager lightWithIdManager;
 		private LightWithIdManagerWrapper managerWrapper;
-		private BeatmapObjectCallbackController beatmapObjectCallbackController;
+		private BeatmapObjectCallbackController bocc;
 		private BeatEffectSpawner beatEffectSpawner;
 		private IAudioTimeSource timeSource;
 		
@@ -30,25 +32,33 @@ namespace TwitchFX.Lights {
 		private Color customColorLeft;
 		private Color customColorRight;
 		
+		[Inject]
+		public void Inject(
+			ColorManager colorManager,
+			LightWithIdManager lightWithIdManager,
+			BeatmapObjectCallbackController bocc,
+			BeatEffectSpawner beatEffectSpawner,
+			IAudioTimeSource timeSource,
+			LightSwitchEventEffect[] defaultLights
+		) {
+			
+			this.colorManager = colorManager;
+			this.lightWithIdManager = lightWithIdManager;
+			this.bocc = bocc;
+			this.beatEffectSpawner = beatEffectSpawner;
+			this.timeSource = timeSource;
+			this.defaultLights = defaultLights;
+			
+		}
+		
 		protected override void Init() {
 			
-			colorManager = Resources.FindObjectsOfTypeAll<ColorManager>()[0];
-			
-			beatEffectSpawner = Resources.FindObjectsOfTypeAll<BeatEffectSpawner>()[0];
 			defaultBeatEffectDuration = Helper.GetValue<float>(beatEffectSpawner, "_effectDuration");
 			
-			BeatmapObjectCallbackController bocc = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>()[0];
-			timeSource = Helper.GetValue<IAudioTimeSource>(bocc, "_audioTimeSource");
-			
-			defaultLights = Resources.FindObjectsOfTypeAll<LightSwitchEventEffect>();
 			customLights = new LightEffectController[defaultLights.Length];
 			lightshowLights = new LightEffectController[defaultLights.Length];
 			
-			LightSwitchEventEffect ligt = defaultLights[0];
-			
-			managerWrapper = new LightWithIdManagerWrapper(Helper.GetValue<LightWithIdManager>(ligt, "_lightManager"));
-			
-			beatmapObjectCallbackController = Helper.GetValue<BeatmapObjectCallbackController>(ligt, "_beatmapObjectCallbackController");
+			managerWrapper = new LightWithIdManagerWrapper(lightWithIdManager);
 			
 			for (int i = 0; i < defaultLights.Length; i++) {
 				
@@ -56,11 +66,10 @@ namespace TwitchFX.Lights {
 				
 				Helper.SetValue<LightWithIdManagerWrapper>(light, "_lightManager", managerWrapper);
 				
-				
 				LightEffectController customLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.Custom, light);
 				LightEffectController lightshowLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.CustomLightshow, light);
 				
-				beatmapObjectCallbackController.beatmapEventDidTriggerEvent += customLight.OnEvent;
+				bocc.beatmapEventDidTriggerEvent += customLight.OnEvent;
 				onLightModeUpdated += customLight.UpdateLightMode;
 				
 				CustomBeatmapEventManager.onCustomBeatmapEvent += lightshowLight.OnEvent;
@@ -265,7 +274,7 @@ namespace TwitchFX.Lights {
 		public void OnDestroy() {
 			
 			foreach (LightEffectController light in customLights)
-				beatmapObjectCallbackController.beatmapEventDidTriggerEvent -= light.OnEvent;
+				bocc.beatmapEventDidTriggerEvent -= light.OnEvent;
 			
 			foreach (LightEffectController light in lightshowLights)
 				CustomBeatmapEventManager.onCustomBeatmapEvent -= light.OnEvent;
