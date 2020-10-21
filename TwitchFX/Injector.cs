@@ -38,6 +38,18 @@ namespace TwitchFX {
 			
 		}
 		
+		public bool HasBinding<Type>() {
+			
+			return container.HasBinding<Type>();
+			
+		}
+		
+		public void BindInstance<Type>(Type instance) {
+			
+			container.BindInstance(instance);
+			
+		}
+		
 		public void OnDestroy() {
 			
 			if (instance == this)

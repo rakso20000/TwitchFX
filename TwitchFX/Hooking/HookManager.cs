@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TwitchFX.Lights;
+using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX.Hooking {
 	
@@ -23,9 +24,15 @@ namespace TwitchFX.Hooking {
 		
 		private static HookManager hookManager;
 		
-		public void HookAll(Assembly assembly) {
+		private Harmony harmony;
+		
+		public HookManager() {
 			
-			Harmony harmony = new Harmony("com.rakso20000.beatsaber.twitchfx");
+			harmony = new Harmony("com.rakso20000.beatsaber.twitchfx");
+			
+		}
+		
+		public void HookAll(Assembly assembly) {
 			
 			foreach (Type type in assembly.GetTypes()) {
 				
@@ -88,6 +95,90 @@ namespace TwitchFX.Hooking {
 					
 				}
 				
+				
+			}
+			
+		}
+		
+		public void BindOnCreation<Behavior>(bool allowMultiple = false) where Behavior : MonoBehavior {
+			
+			Type type = typeof(Behavior);
+			
+			MethodInfo method;
+			
+			method = type.GetMethod(
+				"Awake",
+				BindingFlags.NonPublic |
+				BindingFlags.Public |
+				BindingFlags.Instance
+			);
+			
+			if (method == null) {
+				
+				method = type.GetMethod(
+					"Start",
+					BindingFlags.NonPublic |
+					BindingFlags.Public |
+					BindingFlags.Instance
+				);
+				
+			}
+			
+			if (method == null) {
+				
+				Logger.log.Error("Couldn't hook into creation of " + type.Name + ". Instance might not get bound to container.");
+				
+				return;
+				
+			}
+			
+			HarmonyMethod hookHarmonyMethod = new HarmonyMethod(typeof(OnCreationHandler), allowMultiple ? "OnMultiBehaviorCreated" : "OnSingleBehaviorCreated");
+			
+			harmony.Patch(method, prefix: hookHarmonyMethod);
+			
+		}
+		
+		private class OnCreationHandler {
+			
+			private static readonly MethodInfo onBehaviorCreated = typeof(OnCreationHandler).GetMethod("OnBehaviorCreated", BindingFlags.Static | BindingFlags.Public);
+			
+			public static bool OnSingleBehaviorCreated(object __instance) {
+				
+				onBehaviorCreated.MakeGenericMethod(__instance.GetType()).Invoke(null, new object[] { __instance, true });
+				
+				return true;
+				
+			}
+			
+			public static bool OnMultiBehaviorCreated(object __instance) {
+				
+				onBehaviorCreated.MakeGenericMethod(__instance.GetType()).Invoke(null, new object[] { __instance, false });
+				
+				return true;
+				
+			}
+			
+			public static void OnBehaviorCreated<Type>(Type instance, bool single) {
+				
+				if (Injector.instance == null) {
+					
+					Logger.log.Error("Injector is not available. Could not bind " + typeof(Type).Name + ".");
+					
+					return;
+					
+				}
+				
+				if (single && Injector.instance.HasBinding<Type>()) {
+					
+					Logger.log.Warn(typeof(Type).Name + " is already bound. Not binding again.");
+					
+					return;
+					
+				}
+				
+				Injector.instance.BindInstance<Type>(instance);
+				
+				Logger.log.Debug("Bound instance of type " + typeof(Type).Name + ".");
 				
 			}
 			
