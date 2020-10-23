@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
@@ -33,7 +34,7 @@ namespace TwitchFX {
 					
 					controller = null;
 					
-					throw exception;
+					ExceptionDispatchInfo.Capture(exception).Throw();
 					
 				}
 				
