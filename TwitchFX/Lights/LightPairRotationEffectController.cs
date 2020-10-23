@@ -124,17 +124,26 @@ namespace TwitchFX.Lights {
 				float speed = customEventData?.rotationSpeed ?? eventData.value;
 				bool lockPosition = customEventData?.rotationLockPosition ?? false;
 				float direction = customEventData?.rotationDirection ?? directionGenerated;
+				float? startPosition = customEventData?.rotationStartPosition;
 				
 				if (eventData.type != eventL)
 					direction = -direction;
 				
 				RotationData rotation = eventData.type == eventL ? rotationL : rotationR;
 				
+				if (startPosition.HasValue) {
+					
+					rotation.rotationAngle = (eventData.type == eventL ? startPosition.Value : -startPosition.Value) + rotation.startRotationAngle;
+					
+					rotation.transform.localRotation = rotation.startRotation * Quaternion.Euler(rotationVector * rotation.rotationAngle);
+					
+				}
+				
 				if (eventData.value == 0) {
 					
 					rotation.enabled = false;
 					
-					if (!lockPosition)
+					if (!lockPosition && !startPosition.HasValue)
 						rotation.transform.localRotation = rotation.startRotation * Quaternion.Euler(rotationVector * rotation.startRotationAngle);
 					
 				} else if (eventData.value > 0) {
@@ -143,7 +152,7 @@ namespace TwitchFX.Lights {
 					
 					rotation.rotationSpeed = speed * direction * 20f;
 					
-					if (!lockPosition) {
+					if (!lockPosition && !startPosition.HasValue) {
 						
 						rotation.rotationAngle = (eventData.type == eventL ? startRotationGenerated : -startRotationGenerated) + rotation.startRotationAngle;
 						

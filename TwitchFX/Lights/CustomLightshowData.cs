@@ -53,6 +53,7 @@ namespace TwitchFX.Lights {
 					float? rotationSpeed = null;
 					bool? rotationLockPosition = null;
 					float? rotationDirection = null;
+					float? rotationStartPosition = null;
 					
 					if (
 						customDataJSONObject.TryGetKey("_color", out JSONNode colorJSON) &&
@@ -92,6 +93,12 @@ namespace TwitchFX.Lights {
 					)
 						rotationDirection = rotationDirectionJSONNumber.AsInt == 0 ? -1f : 1f;
 					
+					if (
+						customDataJSONObject.TryGetKey("_startPosition", out JSONNode rotationStartPositionJSON) &&
+						rotationStartPositionJSON is JSONNumber rotationStartPositionJSONNumber
+					)
+						rotationStartPosition = rotationStartPositionJSONNumber.AsFloat;
+					
 					CustomBeatmapEventData customEventData = new CustomBeatmapEventData(
 						time,
 						(BeatmapEventType) type,
@@ -99,7 +106,8 @@ namespace TwitchFX.Lights {
 						color,
 						rotationSpeed,
 						rotationLockPosition,
-						rotationDirection
+						rotationDirection,
+						rotationStartPosition
 					);
 					
 					eventsList.Add(customEventData);

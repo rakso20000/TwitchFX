@@ -56,22 +56,30 @@ namespace TwitchFX.Lights {
 			float speed = customEventData?.rotationSpeed ?? eventData.value;
 			bool lockPosition = customEventData?.rotationLockPosition ?? false;
 			float direction = customEventData?.rotationDirection ?? (Random.value > 0.5f ? 1f : -1f);
+			float? startPosition = customEventData?.rotationStartPosition;
 			
 			if (eventData.type != BeatmapEventType.Event12)
 				direction = -direction;
+			
+			if (startPosition.HasValue) {
+				
+				transform.localRotation = startRotation;
+				transform.Rotate(rotationVector, startPosition.Value, Space.Self);
+				
+			}
 			
 			if (eventData.value == 0) {
 				
 				enabled = false;
 				
-				if (!lockPosition)
+				if (!lockPosition && !startPosition.HasValue)
 					transform.localRotation = startRotation;
 				
 			} else if (eventData.value > 0) {
 				
 				enabled = true;
 				
-				if (!lockPosition) {
+				if (!lockPosition && !startPosition.HasValue) {
 					
 					transform.localRotation = startRotation;
 					transform.Rotate(rotationVector, Random.Range(0f, 180f), Space.Self);
