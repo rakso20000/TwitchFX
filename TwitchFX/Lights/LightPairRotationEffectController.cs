@@ -145,7 +145,7 @@ namespace TwitchFX.Lights {
 					
 					if (!lockPosition) {
 						
-						rotation.rotationAngle = (eventData.type == eventL ? startRotationGenerated : -startRotationGenerated) * rotation.startRotationAngle;
+						rotation.rotationAngle = (eventData.type == eventL ? startRotationGenerated : -startRotationGenerated) + rotation.startRotationAngle;
 						
 						rotation.transform.localRotation = rotation.startRotation * Quaternion.Euler(rotationVector * rotation.rotationAngle);
 						
