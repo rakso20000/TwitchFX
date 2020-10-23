@@ -187,8 +187,8 @@ namespace TwitchFX.Lights {
 		
 		private Color GetColorForEvent(BeatmapEventData eventData, bool highlight) {
 			
-			if (eventData is CustomBeatmapEventData customEventData)
-				return customEventData.color;
+			if (eventData is CustomBeatmapEventData customEventData && customEventData.color.HasValue)
+				return customEventData.color.Value;
 			
 			if (highlight)
 				return eventData.value >= 4 ? highlightcolorLeft : highlightcolorRight;

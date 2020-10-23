@@ -211,7 +211,7 @@ namespace TwitchFX.Lights {
 				LightRotationController.instance.DisableDefaultLightRotationEvents();
 				RingController.instance.DisableDefaultRingEvents();
 				
-				LightRotationController.instance.ResetLightRotation();
+				LightRotationController.instance.ResetCustomLightRotation();
 				
 			}
 			

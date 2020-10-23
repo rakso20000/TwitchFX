@@ -44,37 +44,65 @@ namespace TwitchFX.Lights {
 				if (type < -1 || type > 15)
 					continue;
 				
-				bool customDataExists = eventJSON.TryGetKey("_customData", out JSONNode customDataJSON);
-				
 				if (
-					customDataExists &&
-					customDataJSON is JSONObject customDataJSONObject &&
-					customDataJSONObject.TryGetKey("_color", out JSONNode colorJSON) &&
-					colorJSON is JSONArray colorJSONArray
+					eventJSON.TryGetKey("_customData", out JSONNode customDataJSON) &&
+					customDataJSON is JSONObject customDataJSONObject
 				) {
 					
-					if (colorJSONArray.List.Count < 3)
-						continue;
+					Color? color = null;
+					float? rotationSpeed = null;
+					bool? rotationLockPosition = null;
+					float? rotationDirection = null;
 					
 					if (
-						!colorJSONArray[0].IsNumber ||
-						!colorJSONArray[1].IsNumber ||
-						!colorJSONArray[2].IsNumber ||
-						(colorJSONArray.List.Count >= 4 && !colorJSONArray[3].IsNumber)
+						customDataJSONObject.TryGetKey("_color", out JSONNode colorJSON) &&
+						colorJSON is JSONArray colorJSONArray &&
+						colorJSONArray.List.Count >= 3 &&
+						colorJSONArray[0].IsNumber &&
+						colorJSONArray[1].IsNumber &&
+						colorJSONArray[2].IsNumber &&
+						(colorJSONArray[3].IsNumber || colorJSONArray.List.Count == 3)
+					) {
+						
+						float r =colorJSONArray[0].AsFloat;
+						float g = colorJSONArray[1].AsFloat;
+						float b = colorJSONArray[2].AsFloat;
+						float a = colorJSONArray.List.Count >= 4 ? colorJSONArray[3].AsFloat : 1f;
+						
+						color = new Color(r, g, b, a);
+						
+					}
+					
+					if (
+						customDataJSONObject.TryGetKey("_preciseSpeed", out JSONNode rotationSpeedJSON) &&
+						rotationSpeedJSON is JSONNumber rotationSpeedJSONNumber
 					)
-						continue;
+						rotationSpeed = rotationSpeedJSONNumber.AsFloat;
 					
-					float r =colorJSONArray[0].AsFloat;
-					float g = colorJSONArray[1].AsFloat;
-					float b = colorJSONArray[2].AsFloat;
-					float a = 1;
+					if (
+						customDataJSONObject.TryGetKey("_lockPosition", out JSONNode rotationLockPositionJSON) &&
+						rotationLockPositionJSON is JSONBool rotationLockPositionJSONBool
+					)
+						rotationLockPosition = rotationLockPositionJSONBool.AsBool;
 					
-					if (colorJSONArray.List.Count >= 4)
-						a = colorJSONArray[3].AsFloat;
+					if (
+						customDataJSONObject.TryGetKey("_direction", out JSONNode rotationDirectionJSON) &&
+						rotationDirectionJSON is JSONNumber rotationDirectionJSONNumber &&
+						(rotationDirectionJSONNumber.AsInt == 0 || rotationDirectionJSONNumber.AsInt == 1)
+					)
+						rotationDirection = rotationDirectionJSONNumber.AsInt == 0 ? -1f : 1f;
 					
-					Color color = new Color(r, g, b, a);
+					CustomBeatmapEventData customEventData = new CustomBeatmapEventData(
+						time,
+						(BeatmapEventType) type,
+						value,
+						color,
+						rotationSpeed,
+						rotationLockPosition,
+						rotationDirection
+					);
 					
-					eventsList.Add(new CustomBeatmapEventData(time, (BeatmapEventType) type, value, color));
+					eventsList.Add(customEventData);
 					
 					continue;
 					
