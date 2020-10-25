@@ -48,16 +48,30 @@ namespace TwitchFX.Hooking {
 			if (ColorController.isNull || !ColorController.instance.useCustomSaberColors)
 				return true;
 			
+			Color color;
+			
 			switch (type) {
 			case SaberType.SaberA:
-				__result = ColorController.instance.saberColorLeft;
+				
+				color = ColorController.instance.saberColorLeft;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetLeftColor();
+				
 				break;
 			case SaberType.SaberB:
-				__result = ColorController.instance.saberColorRight;
+				
+				color = ColorController.instance.saberColorRight;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetRightColor();
+				
 				break;
 			default:
 				return true;
 			}
+			
+			__result = color;
 			
 			return false;
 			
@@ -74,10 +88,20 @@ namespace TwitchFX.Hooking {
 			
 			switch (type) {
 			case SaberType.SaberA:
+				
 				color = ColorController.instance.saberColorLeft;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetLeftColor();
+				
 				break;
 			case SaberType.SaberB:
+				
 				color = ColorController.instance.saberColorRight;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetRightColor();
+				
 				break;
 			default:
 				return true;
