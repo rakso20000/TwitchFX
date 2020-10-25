@@ -1,9 +1,12 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using UnityEngine;
 
 namespace TwitchFX {
 	
 	public class Helper {
+		
+		private static readonly Color rainbowColor = new Color(1337f, 420f, 69f);
 		
 		public static T GetValue<T>(object obj, string name) {
 			
@@ -57,7 +60,21 @@ namespace TwitchFX {
 			
 		}
 		
+		public static bool IsRainbow(Color color) {
+			
+			return color.Equals(rainbowColor);
+			
+		}
+		
 		public static bool TryParseColor(string colorStr, out Color color) {
+			
+			if (colorStr.Equals("rainbow", StringComparison.OrdinalIgnoreCase)) {
+				
+				color = rainbowColor;
+				
+				return true;
+				
+			}
 			
 			if (colorStr.StartsWith("#")) { //hex color code
 				

@@ -91,8 +91,7 @@ namespace TwitchFX.Colors {
 				
 				disableSaberColorsOn = -1f;
 				
-				if (disableNoteColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -119,8 +118,7 @@ namespace TwitchFX.Colors {
 				
 				disableSaberColorsOn = -1f;
 				
-				if (disableNoteColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -301,8 +299,7 @@ namespace TwitchFX.Colors {
 				
 				disableNoteColorsOn = -1f;
 				
-				if (disableSaberColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -329,8 +326,7 @@ namespace TwitchFX.Colors {
 				
 				disableNoteColorsOn = -1f;
 				
-				if (disableSaberColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -387,20 +383,15 @@ namespace TwitchFX.Colors {
 		
 		public void SetWallColor(Color color) {
 			
-			if (enabled) {
-				
-				disableWallColorOn = -1f;
-				
-				if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f)
-					enabled = false;
-				
-			}
+			disableWallColorOn = -1f;
 			
 			customWallColor = color;
 			
 			useCustomWallColor = true;
 			
-			UpdateWallColor(color);
+			UpdateWallColor(Helper.IsRainbow(color) ? RainbowController.instance.GetWallColor() : color);
+			
+			SetEnabled();
 			
 		}
 		
@@ -418,8 +409,7 @@ namespace TwitchFX.Colors {
 				
 				disableWallColorOn = -1f;
 				
-				if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -477,8 +467,19 @@ namespace TwitchFX.Colors {
 				
 			}
 			
-			if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f && disableWallColorOn == -1f)
-				enabled = false;
+			if (useCustomWallColor && Helper.IsRainbow(customWallColor))
+				UpdateWallColor(RainbowController.instance.GetWallColor());
+			
+			SetEnabled();
+			
+		}
+		
+		private void SetEnabled() {
+			
+			enabled = disableSaberColorsOn != -1f ||
+				disableNoteColorsOn != -1f ||
+				disableWallColorOn != -1f ||
+				Helper.IsRainbow(customWallColor);
 			
 		}
 		

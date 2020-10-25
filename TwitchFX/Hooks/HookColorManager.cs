@@ -85,6 +85,9 @@ namespace TwitchFX.Hooking {
 			
 			Color color = ColorController.instance.customWallColor;
 			
+			if (Helper.IsRainbow(color))
+				color = RainbowController.instance.GetWallColor();
+			
 			Color.RGBToHSV(color, out float h, out float s, out float v);
 			
 			__result = Color.HSVToRGB(h, s, 1f);
