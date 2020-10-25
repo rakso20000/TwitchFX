@@ -12,16 +12,30 @@ namespace TwitchFX.Hooking {
 			if (ColorController.isNull || !ColorController.instance.useCustomNoteColors)
 				return true;
 			
+			Color color;
+			
 			switch (type) {
 			case ColorType.ColorA:
-				__result = ColorController.instance.noteColorLeft;
+				
+				color = ColorController.instance.noteColorLeft;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetLeftColor();
+				
 				break;
 			case ColorType.ColorB:
-				__result = ColorController.instance.noteColorRight;
+				
+				color = ColorController.instance.noteColorRight;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetRightColor();
+				
 				break;
 			default:
 				return true;
 			}
+			
+			__result = color;
 			
 			return false;
 			
