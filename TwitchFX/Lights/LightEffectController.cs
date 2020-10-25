@@ -12,7 +12,8 @@ namespace TwitchFX.Lights {
 		public static LightEffectController CreateLightEffectController(
 			LightWithIdManagerWrapper lightManager,
 			LightMode activeOnMode,
-			LightSwitchEventEffect baseLight
+			LightSwitchEventEffect baseLight,
+			IAudioTimeSource timeSource
 		) {
 			
 			int id = Helper.GetValue<int>(baseLight, "_lightsID");
@@ -22,6 +23,7 @@ namespace TwitchFX.Lights {
 			
 			LightEffectController controller = new GameObject("TwitchFXLightEffectController").AddComponent<LightEffectController>();
 			
+			controller.timeSource = timeSource;
 			controller.lightManager = lightManager;
 			controller.activeOnMode = activeOnMode;
 			controller.id = id;
@@ -46,6 +48,8 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		private IAudioTimeSource timeSource;
+		
 		private LightWithIdManagerWrapper lightManager;
 		
 		private LightMode activeOnMode;
@@ -61,6 +65,9 @@ namespace TwitchFX.Lights {
 		
 		private Color startColor;
 		private Color endColor;
+		
+		private float gradientStartTime;
+		private ColorGradient? gradient = null;
 		
 		private BeatmapEventData lastEventData;
 		private float transitionValue;
@@ -157,22 +164,49 @@ namespace TwitchFX.Lights {
 			
 			lastEventData = eventData;
 			
+			if (
+				eventData is CustomBeatmapEventData customEventData
+			) {
+				
+				gradientStartTime = timeSource.songTime;
+				gradient = customEventData.colorGradient;
+				
+			}
+			
+			if (gradient.HasValue)
+				enabled = true;
+			
 		}
 		
 		public void Update() {
 			
-			SetColor(Color.Lerp(endColor, startColor, transitionValue));
+			if (gradient.HasValue) {
+				
+				ColorGradient grad = gradient.Value;
+				
+				SetColor(Color.Lerp(grad.endColor, grad.startColor, (timeSource.songTime - gradientStartTime) / grad.duration));
+				
+				if (timeSource.songTime - gradientStartTime >= grad.duration)
+					gradient = null;
+				
+			} else {
+				
+				SetColor(Color.Lerp(endColor, startColor, transitionValue));
+				
+			}
 			
 			transitionValue = Mathf.Lerp(transitionValue, 0f, Time.deltaTime * FADE_SPEED);
 			
 			if (transitionValue < 0.0001f) {
 				
 				transitionValue = 0f;
-				enabled = false;
 				
 				SetColor(endColor);
 				
 			}
+			
+			if (!gradient.HasValue && transitionValue == 0f)
+				enabled = false;
 			
 		}
 		

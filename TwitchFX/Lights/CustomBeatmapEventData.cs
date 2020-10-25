@@ -5,6 +5,7 @@ namespace TwitchFX.Lights {
 	public class CustomBeatmapEventData : BeatmapEventData {
 		
 		public readonly Color? color;
+		public readonly ColorGradient? colorGradient;
 		public readonly float? rotationSpeed;
 		public readonly bool? rotationLockPosition;
 		public readonly float? rotationDirection;
@@ -15,6 +16,7 @@ namespace TwitchFX.Lights {
 			BeatmapEventType type,
 			int value,
 			Color? color,
+			ColorGradient? colorGradient,
 			float? rotationSpeed,
 			bool? rotationLockPosition,
 			float? rotationDirection,
@@ -22,6 +24,7 @@ namespace TwitchFX.Lights {
 		) : base(time, type, value) {
 			
 			this.color = color;
+			this.colorGradient = colorGradient;
 			this.rotationSpeed = rotationSpeed;
 			this.rotationLockPosition = rotationLockPosition;
 			this.rotationDirection = rotationDirection;

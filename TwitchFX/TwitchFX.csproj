@@ -163,6 +163,7 @@
     <Compile Include="Hooking\HookBase.cs" />
     <Compile Include="Hooking\HookManager.cs" />
     <Compile Include="Libs\EasingFunction.cs" />
+    <Compile Include="Lights\ColorGradient.cs" />
     <Compile Include="Lights\LightMode.cs" />
     <Compile Include="Colors\ColorPreset.cs" />
     <Compile Include="Commands\Command.cs" />

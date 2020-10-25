@@ -1,4 +1,5 @@
 ﻿using ChatCore.SimpleJSON;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +16,15 @@ namespace TwitchFX.Lights {
 			
 			if (!rootJSON.IsObject)
 				throw new InvalidJSONException("Root is not a JSON object");
+			
+			float bpm = 120f;
+			
+			if (
+				rootJSON.TryGetKey("_bpm", out JSONNode bpmJSON) &&
+				bpmJSON is JSONNumber bpmJSONNumber &&
+				bpmJSONNumber.AsFloat > 0f
+			)
+				bpmJSON = bpmJSONNumber.AsFloat;
 			
 			bool eventsExists = rootJSON.TryGetKey("_events", out JSONNode eventsNodeJSON);
 			
@@ -50,6 +60,7 @@ namespace TwitchFX.Lights {
 				) {
 					
 					Color? color = null;
+					ColorGradient? colorGradient = null;
 					float? rotationSpeed = null;
 					bool? rotationLockPosition = null;
 					float? rotationDirection = null;
@@ -57,20 +68,46 @@ namespace TwitchFX.Lights {
 					
 					if (
 						customDataJSONObject.TryGetKey("_color", out JSONNode colorJSON) &&
-						colorJSON is JSONArray colorJSONArray &&
-						colorJSONArray.List.Count >= 3 &&
-						colorJSONArray[0].IsNumber &&
-						colorJSONArray[1].IsNumber &&
-						colorJSONArray[2].IsNumber &&
-						(colorJSONArray[3].IsNumber || colorJSONArray.List.Count == 3)
+						TryParseColor(colorJSON, out Color col)
+					)
+						color = col;
+					
+					if (
+						customDataJSON.TryGetKey("_lightGradient", out JSONNode colorGradientJSON) &&
+						colorGradientJSON is JSONObject colorGradientJSONObject &&
+						colorGradientJSONObject.TryGetKey("_startColor", out JSONNode startColorJSON) &&
+						colorGradientJSONObject.TryGetKey("_endColor", out JSONNode endColorJSON) &&
+						colorGradientJSONObject.TryGetKey("_duration", out JSONNode durationJSON) &&
+						TryParseColor(startColorJSON, out Color startColor) &&
+						TryParseColor(endColorJSON, out Color endColor) &&
+						durationJSON is JSONNumber durationJSONNumber &&
+						durationJSONNumber.AsFloat > 0f
 					) {
 						
-						float r =colorJSONArray[0].AsFloat;
-						float g = colorJSONArray[1].AsFloat;
-						float b = colorJSONArray[2].AsFloat;
-						float a = colorJSONArray.List.Count >= 4 ? colorJSONArray[3].AsFloat : 1f;
+						float currentBPM = bpm;
 						
-						color = new Color(r, g, b, a);
+						if (
+							colorGradientJSONObject.TryGetKey("_bpm", out JSONNode currentBPMJSON) &&
+							currentBPMJSON is JSONNumber currentBPMJSONNumber &&
+							currentBPMJSONNumber.AsFloat > 0f
+						)
+							currentBPM = currentBPMJSONNumber.AsFloat;
+						
+						EasingFunction.Ease? easing = null;
+						
+						if (
+							colorGradientJSONObject.TryGetKey("_easing", out JSONNode easingJSON) &&
+							easingJSON is JSONString easingJSONString &&
+							Enum.TryParse(easingJSONString.Value, out EasingFunction.Ease ease)
+						)
+							easing = ease;
+						
+						colorGradient = new ColorGradient(
+							startColor,
+							endColor,
+							durationJSONNumber.AsFloat * 60f / currentBPM,
+							easing ?? EasingFunction.Ease.Linear
+						);
 						
 					}
 					
@@ -104,6 +141,7 @@ namespace TwitchFX.Lights {
 						(BeatmapEventType) type,
 						value,
 						color,
+						colorGradient,
 						rotationSpeed,
 						rotationLockPosition,
 						rotationDirection,
@@ -144,6 +182,34 @@ namespace TwitchFX.Lights {
 		public static int GetLightshowDataCount() {
 			
 			return lightshows.Count;
+			
+		}
+		
+		private static bool TryParseColor(JSONNode colorJSON, out Color color) {
+			
+			if (
+				colorJSON is JSONArray colorJSONArray &&
+				colorJSONArray.List.Count >= 3 &&
+				colorJSONArray[0].IsNumber &&
+				colorJSONArray[1].IsNumber &&
+				colorJSONArray[2].IsNumber &&
+				(colorJSONArray[3].IsNumber || colorJSONArray.List.Count == 3)
+			) {
+				
+				float r =colorJSONArray[0].AsFloat;
+				float g = colorJSONArray[1].AsFloat;
+				float b = colorJSONArray[2].AsFloat;
+				float a = colorJSONArray.List.Count >= 4 ? colorJSONArray[3].AsFloat : 1f;
+				
+				color = new Color(r, g, b, a);
+				
+				return true;
+				
+			}
+			
+			color = Color.black;
+			
+			return false;
 			
 		}
 		
