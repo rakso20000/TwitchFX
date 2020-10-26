@@ -14,10 +14,6 @@ namespace TwitchFX {
 			
 			this.container = container;
 			
-		}
-		
-		public void Awake() {
-			
 			if (instance != null) {
 				
 				Logger.log.Warn("Multiple instances of Injector exist");
