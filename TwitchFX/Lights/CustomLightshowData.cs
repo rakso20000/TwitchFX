@@ -61,10 +61,19 @@ namespace TwitchFX.Lights {
 					
 					Color? color = null;
 					ColorGradient? colorGradient = null;
+					float? direction = null;
 					float? rotationSpeed = null;
 					bool? rotationLockPosition = null;
-					float? rotationDirection = null;
 					float? rotationStartPosition = null;
+					string ringsNameFilter = null;
+					bool? ringsCounterSpin = null;
+					bool? ringsReset = null;
+					float? ringsStep = null;
+					float? ringsPropagationSpeed = null;
+					float? ringsFlexySpeed = null;
+					float? ringsStepMultiplier = null;
+					float? ringsPropagationSpeedMultiplier = null;
+					float? ringsFlexySpeedMultiplier = null;
 					
 					if (
 						customDataJSONObject.TryGetKey("_color", out JSONNode colorJSON) &&
@@ -112,6 +121,13 @@ namespace TwitchFX.Lights {
 					}
 					
 					if (
+						customDataJSONObject.TryGetKey("_direction", out JSONNode directionJSON) &&
+						directionJSON is JSONNumber directionJSONNumber &&
+						(directionJSONNumber.AsInt == 0 || directionJSONNumber.AsInt == 1)
+					)
+						direction = directionJSONNumber.AsInt == 0 ? -1f : 1f;
+					
+					if (
 						customDataJSONObject.TryGetKey("_preciseSpeed", out JSONNode rotationSpeedJSON) &&
 						rotationSpeedJSON is JSONNumber rotationSpeedJSONNumber
 					)
@@ -124,17 +140,64 @@ namespace TwitchFX.Lights {
 						rotationLockPosition = rotationLockPositionJSONBool.AsBool;
 					
 					if (
-						customDataJSONObject.TryGetKey("_direction", out JSONNode rotationDirectionJSON) &&
-						rotationDirectionJSON is JSONNumber rotationDirectionJSONNumber &&
-						(rotationDirectionJSONNumber.AsInt == 0 || rotationDirectionJSONNumber.AsInt == 1)
-					)
-						rotationDirection = rotationDirectionJSONNumber.AsInt == 0 ? -1f : 1f;
-					
-					if (
 						customDataJSONObject.TryGetKey("_startPosition", out JSONNode rotationStartPositionJSON) &&
 						rotationStartPositionJSON is JSONNumber rotationStartPositionJSONNumber
 					)
 						rotationStartPosition = rotationStartPositionJSONNumber.AsFloat;
+					
+					if (
+						customDataJSONObject.TryGetKey("_nameFilter", out JSONNode ringsNameFilterJSON) &&
+						ringsNameFilterJSON is JSONString ringsNameFilterJSONString
+					)
+						ringsNameFilter = ringsNameFilterJSONString.Value;
+					
+					if (
+						customDataJSONObject.TryGetKey("_counterSpin", out JSONNode ringsCounterSpinJSON) &&
+						ringsCounterSpinJSON is JSONBool ringsCounterSpinJSONBool
+					)
+						ringsCounterSpin = ringsCounterSpinJSONBool.AsBool;
+					
+					if (
+						customDataJSONObject.TryGetKey("_reset", out JSONNode ringsResetJSON) &&
+						ringsResetJSON is JSONBool ringsResetJSONBool
+					)
+						ringsReset = ringsResetJSONBool.AsBool;
+					
+					if (
+						customDataJSONObject.TryGetKey("_step", out JSONNode ringsStepJSON) &&
+						ringsStepJSON is JSONNumber ringsStepJSONNumber
+					)
+						ringsStep = ringsStepJSONNumber.AsFloat;
+					
+					if (
+						customDataJSONObject.TryGetKey("_prop", out JSONNode ringsPropagationSpeedJSON) &&
+						ringsPropagationSpeedJSON is JSONNumber ringsPropagationSpeedJSONNumber
+					)
+						ringsPropagationSpeed = ringsPropagationSpeedJSONNumber.AsFloat;
+					
+					if (
+						customDataJSONObject.TryGetKey("_speed", out JSONNode ringsFlexySpeedJSON) &&
+						ringsFlexySpeedJSON is JSONNumber ringsFlexySpeedJSONNumber
+					)
+						ringsFlexySpeed = ringsFlexySpeedJSONNumber.AsFloat;
+					
+					if (
+						customDataJSONObject.TryGetKey("_stepMult", out JSONNode ringsStepMultiplierJSON) &&
+						ringsStepMultiplierJSON is JSONNumber ringsStepMultiplierJSONNumber
+					)
+						ringsStepMultiplier = ringsStepMultiplierJSONNumber.AsFloat;
+					
+					if (
+						customDataJSONObject.TryGetKey("_propMult", out JSONNode ringsPropagationSpeedMultiplierJSON) &&
+						ringsPropagationSpeedMultiplierJSON is JSONNumber ringsPropagationSpeedMultiplierJSONNumber
+					)
+						ringsPropagationSpeedMultiplier = ringsPropagationSpeedMultiplierJSONNumber.AsFloat;
+					
+					if (
+						customDataJSONObject.TryGetKey("_speedMult", out JSONNode ringsFlexySpeedMultiplierJSON) &&
+						ringsFlexySpeedMultiplierJSON is JSONNumber ringsFlexySpeedMultiplierJSONNumber
+					)
+						ringsFlexySpeedMultiplier = ringsFlexySpeedMultiplierJSONNumber.AsFloat;
 					
 					CustomBeatmapEventData customEventData = new CustomBeatmapEventData(
 						time,
@@ -142,10 +205,19 @@ namespace TwitchFX.Lights {
 						value,
 						color,
 						colorGradient,
+						direction,
 						rotationSpeed,
 						rotationLockPosition,
-						rotationDirection,
-						rotationStartPosition
+						rotationStartPosition,
+						ringsNameFilter,
+						ringsCounterSpin,
+						ringsReset,
+						ringsStep,
+						ringsPropagationSpeed,
+						ringsFlexySpeed,
+						ringsStepMultiplier,
+						ringsPropagationSpeedMultiplier,
+						ringsFlexySpeedMultiplier
 					);
 					
 					eventsList.Add(customEventData);

@@ -6,12 +6,14 @@ namespace TwitchFX.Lights {
 	
 	public class RingController : LazyController<RingController> {
 		
-		private event Action<BeatmapEventData> onPipedOrCustomBeatmapEvent;
+		private event Action<BeatmapEventData> onPipedBeatmapEvent;
 		
 		private BeatmapObjectCallbackController bocc;
 		
 		private TrackLaneRingsRotationEffectSpawner[] rotationEffects;
 		private TrackLaneRingsPositionStepEffectSpawner[] positionStepEffects;
+		
+		private RingRotationEffectController[] rotationControllers;
 		
 		private bool disablePipedBeatmapEvents = false;
 		
@@ -34,19 +36,29 @@ namespace TwitchFX.Lights {
 				return;
 			
 			bocc.beatmapEventDidTriggerEvent += OnBeatmapEvent;
-			CustomBeatmapEventManager.onCustomBeatmapEvent += OnCustomBeatmapEvent;
 			
-			foreach (TrackLaneRingsRotationEffectSpawner rotationEffect in rotationEffects) {
+			rotationControllers = new RingRotationEffectController[rotationEffects.Length];
+			
+			for (int i = 0; i < rotationEffects.Length; i++) {
 				
-				onPipedOrCustomBeatmapEvent += rotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				TrackLaneRingsRotationEffectSpawner rotationEffect = rotationEffects[i];
+				
+				onPipedBeatmapEvent += rotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
 				bocc.beatmapEventDidTriggerEvent -= rotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				
+				RingRotationEffectController rotationController = RingRotationEffectController.Create(rotationEffect);
+				CustomBeatmapEventManager.onCustomBeatmapEvent += rotationController.OnEvent;
+				
+				rotationControllers[i] = rotationController;
 				
 			}
 			
 			foreach (TrackLaneRingsPositionStepEffectSpawner positionStepEffect in positionStepEffects) {
 				
-				onPipedOrCustomBeatmapEvent += positionStepEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				onPipedBeatmapEvent += positionStepEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
 				bocc.beatmapEventDidTriggerEvent -= positionStepEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				
+				CustomBeatmapEventManager.onCustomBeatmapEvent += positionStepEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
 				
 			}
 			
@@ -54,7 +66,7 @@ namespace TwitchFX.Lights {
 		
 		public void Spin() {
 			
-			onPipedOrCustomBeatmapEvent?.Invoke(new BeatmapEventData(0f, BeatmapEventType.Event8, 0));
+			onPipedBeatmapEvent?.Invoke(new BeatmapEventData(0f, BeatmapEventType.Event8, 0));
 			
 		}
 		
@@ -73,13 +85,7 @@ namespace TwitchFX.Lights {
 		private void OnBeatmapEvent(BeatmapEventData eventData) {
 			
 			if (!disablePipedBeatmapEvents)
-				onPipedOrCustomBeatmapEvent?.Invoke(eventData);
-			
-		}
-		
-		private void OnCustomBeatmapEvent(BeatmapEventData eventData) {
-			
-			onPipedOrCustomBeatmapEvent?.Invoke(eventData);
+				onPipedBeatmapEvent?.Invoke(eventData);
 			
 		}
 		
@@ -88,7 +94,11 @@ namespace TwitchFX.Lights {
 			if (bocc != null)
 				bocc.beatmapEventDidTriggerEvent -= OnBeatmapEvent;
 			
-			CustomBeatmapEventManager.onCustomBeatmapEvent -= OnCustomBeatmapEvent;
+			foreach (RingRotationEffectController rotationController in rotationControllers)
+				CustomBeatmapEventManager.onCustomBeatmapEvent -= rotationController.OnEvent;
+			
+			foreach (TrackLaneRingsPositionStepEffectSpawner positionStepEffect in positionStepEffects)
+				CustomBeatmapEventManager.onCustomBeatmapEvent -= positionStepEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
 			
 		}
 		

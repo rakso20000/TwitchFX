@@ -16,7 +16,7 @@ namespace TwitchFX {
 			
 		}
 		
-		public void Awake() {
+		public void Start() {
 			
 			if (instance != null) {
 				

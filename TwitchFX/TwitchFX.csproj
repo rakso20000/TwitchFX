@@ -196,6 +196,7 @@
     <Compile Include="Lights\LightRotationController.cs" />
     <Compile Include="Lights\LightRotationEffectController.cs" />
     <Compile Include="Lights\LightWithIdManagerWrapper.cs" />
+    <Compile Include="Lights\RingRotationEffectController.cs" />
     <Compile Include="PermissionsLevel.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />

@@ -121,9 +121,9 @@ namespace TwitchFX.Lights {
 				
 				CustomBeatmapEventData customEventData = eventData as CustomBeatmapEventData;
 				
+				float direction = customEventData?.direction ?? directionGenerated;
 				float speed = customEventData?.rotationSpeed ?? eventData.value;
 				bool lockPosition = customEventData?.rotationLockPosition ?? false;
-				float direction = customEventData?.rotationDirection ?? directionGenerated;
 				float? startPosition = customEventData?.rotationStartPosition;
 				
 				if (eventData.type != eventL)
