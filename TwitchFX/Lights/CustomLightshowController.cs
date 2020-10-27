@@ -79,9 +79,14 @@ namespace TwitchFX.Lights {
 				foreach (LightEffectController light in lights)
 					light.SetColors(LightController.instance.customColorLeft, LightController.instance.customColorRight);
 				
-				LightController.instance.UpdateLightMode();
+			} else {
+				
+				foreach (LightEffectController light in lights)
+					light.SetColors(colorScheme.environmentColor0, colorScheme.environmentColor1);
 				
 			}
+			
+			LightController.instance.UpdateLightMode();
 			
 		}
 		
