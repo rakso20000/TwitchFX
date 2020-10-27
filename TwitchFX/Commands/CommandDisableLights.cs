@@ -11,7 +11,7 @@ namespace TwitchFX.Commands {
 			
 			string[] args = ParseArgs(argsStr, 0, 1);
 			
-			float duration = TryParseFloat(args, 0);
+			float? duration = TryParseFloat(args, 0);
 			
 			if (!Plugin.instance.inLevel) {
 				
@@ -21,10 +21,7 @@ namespace TwitchFX.Commands {
 				
 			}
 			
-			LightController.instance.SetLightMode(LightMode.Disabled);
-			
-			if (args.Length >= 1)
-				LightController.instance.DisableIn(duration);
+			LightController.instance.SetLightMode(LightMode.Disabled, duration);
 			
 		}
 		

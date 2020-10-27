@@ -15,7 +15,7 @@ namespace TwitchFX.Commands {
 			Color leftColor = ParseColor(args[0]);
 			Color rightColor = ParseColor(args[1]);
 			
-			float duration = TryParseFloat(args, 2);
+			float? duration = TryParseFloat(args, 2);
 			
 			if (!Plugin.instance.inLevel) {
 				
@@ -25,15 +25,8 @@ namespace TwitchFX.Commands {
 				
 			}
 			
-			ColorController.instance.SetSaberColors(leftColor, rightColor);
-			ColorController.instance.SetNoteColors(leftColor, rightColor);
-			
-			if (args.Length >= 3) {
-				
-				ColorController.instance.DisableSaberColorsIn(duration);
-				ColorController.instance.DisableNoteColorsIn(duration);
-				
-			}
+			ColorController.instance.SetSaberColors(leftColor, rightColor, duration);
+			ColorController.instance.SetNoteColors(leftColor, rightColor, duration);
 			
 		}
 		

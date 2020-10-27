@@ -10,7 +10,7 @@ namespace TwitchFX.Commands {
 			
 			string[] args = ParseArgs(argsStr, 1);
 			
-			float duration = TryParseFloat(args, 0);
+			float duration = TryParseFloat(args, 0).Value;
 			
 			if (!Plugin.instance.inLevel) {
 				

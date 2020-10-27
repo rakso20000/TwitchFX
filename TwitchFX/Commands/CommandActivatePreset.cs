@@ -13,7 +13,7 @@ namespace TwitchFX.Commands {
 			string[] args = ParseArgs(argsStr, 1, 2);
 			string name = args[0];
 			
-			float duration = TryParseFloat(args, 1);
+			float? duration = TryParseFloat(args, 1);
 			
 			if (!Plugin.instance.inLevel) {
 				
@@ -34,20 +34,11 @@ namespace TwitchFX.Commands {
 			}
 			
 			LightController.instance.SetColors(preset.leftLightColor, preset.rightLightColor);
-			LightController.instance.SetLightMode(LightMode.Custom);
+			LightController.instance.SetLightMode(LightMode.Custom, duration);
 			
-			ColorController.instance.SetNoteColors(preset.leftNoteColor, preset.rightNoteColor);
-			ColorController.instance.SetSaberColors(preset.leftSaberColor, preset.rightSaberColor);
-			ColorController.instance.SetWallColor(preset.wallColor);
-			
-			if (args.Length >= 2) {
-				
-				LightController.instance.DisableIn(duration);
-				ColorController.instance.DisableNoteColorsIn(duration);
-				ColorController.instance.DisableSaberColorsIn(duration);
-				ColorController.instance.DisableWallColorIn(duration);
-				
-			}
+			ColorController.instance.SetNoteColors(preset.leftNoteColor, preset.rightNoteColor, duration);
+			ColorController.instance.SetSaberColors(preset.leftSaberColor, preset.rightSaberColor, duration);
+			ColorController.instance.SetWallColor(preset.wallColor, duration);
 			
 		}
 		

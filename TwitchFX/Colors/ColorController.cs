@@ -85,16 +85,7 @@ namespace TwitchFX.Colors {
 			
 		}
 		
-		public void SetSaberColors(Color leftColor, Color rightColor) {
-			
-			if (enabled) {
-				
-				disableSaberColorsOn = -1f;
-				
-				if (disableNoteColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
-				
-			}
+		public void SetSaberColors(Color leftColor, Color rightColor, float? duration = null) {
 			
 			saberColorLeft = leftColor;
 			saberColorRight = rightColor;
@@ -103,13 +94,9 @@ namespace TwitchFX.Colors {
 			
 			UpdateSaberColors(leftColor, rightColor);
 			
-		}
-		
-		public void DisableSaberColorsIn(float duration) {
+			disableSaberColorsOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
-			disableSaberColorsOn = Time.time + duration;
-			
-			enabled = true;
+			enabled = disableSaberColorsOn != -1f || disableNoteColorsOn != -1f || disableWallColorOn != -1f;
 			
 		}
 		
@@ -295,16 +282,7 @@ namespace TwitchFX.Colors {
 			
 		}
 		
-		public void SetNoteColors(Color leftColor, Color rightColor) {
-			
-			if (enabled) {
-				
-				disableNoteColorsOn = -1f;
-				
-				if (disableSaberColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
-				
-			}
+		public void SetNoteColors(Color leftColor, Color rightColor, float? duration = null) {
 			
 			noteColorLeft = leftColor;
 			noteColorRight = rightColor;
@@ -313,13 +291,9 @@ namespace TwitchFX.Colors {
 			
 			UpdateNoteColors(leftColor, rightColor);
 			
-		}
-		
-		public void DisableNoteColorsIn(float duration) {
+			disableNoteColorsOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
-			disableNoteColorsOn = Time.time + duration;
-			
-			enabled = true;
+			enabled = disableSaberColorsOn != -1f || disableNoteColorsOn != -1f || disableWallColorOn != -1f;
 			
 		}
 		
@@ -385,16 +359,7 @@ namespace TwitchFX.Colors {
 			
 		}
 		
-		public void SetWallColor(Color color) {
-			
-			if (enabled) {
-				
-				disableWallColorOn = -1f;
-				
-				if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f)
-					enabled = false;
-				
-			}
+		public void SetWallColor(Color color, float? duration = null) {
 			
 			customWallColor = color;
 			
@@ -402,13 +367,9 @@ namespace TwitchFX.Colors {
 			
 			UpdateWallColor(color);
 			
-		}
-		
-		public void DisableWallColorIn(float duration) {
+			disableWallColorOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
-			disableWallColorOn = Time.time + duration;
-			
-			enabled = true;
+			enabled = disableSaberColorsOn != -1f || disableNoteColorsOn != -1f || disableWallColorOn != -1f;
 			
 		}
 		

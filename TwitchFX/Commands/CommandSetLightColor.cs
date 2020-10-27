@@ -16,7 +16,7 @@ namespace TwitchFX.Commands {
 			Color leftColor = ParseColor(args[0]);
 			Color rightColor = args.Length > 1 ? ParseColor(args[1]) : leftColor;
 			
-			float duration = TryParseFloat(args, 2);
+			float? duration = TryParseFloat(args, 2);
 			
 			if (!Plugin.instance.inLevel) {
 				
@@ -27,10 +27,7 @@ namespace TwitchFX.Commands {
 			}
 			
 			LightController.instance.SetColors(leftColor, rightColor);
-			LightController.instance.SetLightMode(LightMode.Custom);
-			
-			if (args.Length >= 3)
-				LightController.instance.DisableIn(duration);
+			LightController.instance.SetLightMode(LightMode.Custom, duration);
 			
 		}
 		

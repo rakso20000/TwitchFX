@@ -14,7 +14,7 @@ namespace TwitchFX.Commands {
 			
 			Color color = ParseColor(args[0]);
 			
-			float duration = TryParseFloat(args, 1);
+			float? duration = TryParseFloat(args, 1);
 			
 			if (!Plugin.instance.inLevel) {
 				
@@ -24,10 +24,7 @@ namespace TwitchFX.Commands {
 				
 			}
 			
-			ColorController.instance.SetWallColor(color);
-			
-			if (args.Length >= 2)
-				ColorController.instance.DisableWallColorIn(duration);
+			ColorController.instance.SetWallColor(color, duration);
 			
 		}
 		

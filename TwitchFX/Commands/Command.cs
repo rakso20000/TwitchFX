@@ -92,10 +92,11 @@ namespace TwitchFX.Commands {
 			
 		}
 		
-		protected float TryParseFloat(string[] args, int index) {
+		//returns null if the index doesn't exist and throws if the index does exist but is not a float
+		protected float? TryParseFloat(string[] args, int index) {
 			
 			if (index >= args.Length)
-				return 0f;
+				return null;
 			
 			if (!float.TryParse(args[index], out float f))
 				throw CreateInvalidArgs();

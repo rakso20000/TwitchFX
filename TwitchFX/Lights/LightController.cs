@@ -84,22 +84,6 @@ namespace TwitchFX.Lights {
 			
 		}
 		
-		public void DisableIn(float duration) {
-			
-			if (mode == LightMode.CustomLightshow) {
-				
-				lightshowController.RestoreTo(null, Time.time + duration);
-				
-				return;
-				
-			}
-			
-			disableOn = Time.time + duration;
-			
-			enabled = true;
-			
-		}
-		
 		public void BoostLights(float duration) {
 			
 			boostColors = true;
@@ -163,16 +147,9 @@ namespace TwitchFX.Lights {
 			
 		}
 		
-		public void SetLightMode(LightMode mode) {
+		public void SetLightMode(LightMode mode, float? duration = null) {
 			
-			if (enabled) {
-				
-				disableOn = -1f;
-				
-				if (disableBoostOn == -1f)
-					enabled = false;
-				
-			}
+			float disableOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
 			if (this.mode == LightMode.CustomLightshow && lightshowController != null) {
 				
@@ -185,11 +162,15 @@ namespace TwitchFX.Lights {
 					
 				}
 				
-				lightshowController.RestoreTo(mode, -1f);
+				lightshowController.RestoreTo(mode, disableOn);
 				
 				return;
 				
 			}
+			
+			this.disableOn = disableOn;
+			
+			enabled = disableOn != -1f || disableBoostOn != -1f;
 			
 			LightMode prevMode = this.mode;
 			this.mode = mode;

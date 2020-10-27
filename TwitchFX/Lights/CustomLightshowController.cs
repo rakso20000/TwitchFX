@@ -81,10 +81,7 @@ namespace TwitchFX.Lights {
 					
 				} else {
 					
-					LightController.instance.SetLightMode(restoreMode);
-					
-					if (restoreDefaultLightsAfter != -1f)
-						LightController.instance.DisableIn(restoreDefaultLightsAfter - Time.time);
+					LightController.instance.SetLightMode(restoreMode, restoreDefaultLightsAfter == -1f ? (float?) null : restoreDefaultLightsAfter - Time.time);
 					
 				}
 				
