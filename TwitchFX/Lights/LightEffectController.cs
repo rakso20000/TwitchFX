@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TwitchFX.Colors;
+using UnityEngine;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX.Lights {
@@ -6,6 +7,9 @@ namespace TwitchFX.Lights {
 	public class LightEffectController : MonoBehavior {
 		
 		private const float FADE_SPEED = 2f;
+		
+		private const float NORMAL_ALPHA = 0.5490196f;
+		private const float HIGHLIGHT_ALPHA = 0.7529412f;
 		
 		private static readonly Color offColor = new Color(0f, 0f, 0f, 0f);
 		
@@ -59,11 +63,16 @@ namespace TwitchFX.Lights {
 		private Color highlightcolorLeft;
 		private Color highlightcolorRight;
 		
+		private bool rainbowLeft = false;
+		private bool rainbowRight = false;
+		
 		private Color startColor;
 		private Color endColor;
 		
 		private BeatmapEventData lastEventData;
 		private float transitionValue;
+		
+		private bool isLeftActive;
 		
 		public void Awake() {
 			
@@ -80,11 +89,20 @@ namespace TwitchFX.Lights {
 		
 		public void SetColors(Color leftColor, Color rightColor) {
 			
-			colorLeft = leftColor.ColorWithAlpha(0.5490196f);
-			colorRight = rightColor.ColorWithAlpha(0.5490196f);
+			if (Helper.IsRainbow(leftColor))
+				rainbowLeft = true;
 			
-			highlightcolorLeft = leftColor.ColorWithAlpha(0.7529412f);
-			highlightcolorRight = rightColor.ColorWithAlpha(0.7529412f);
+			if (Helper.IsRainbow(rightColor))
+				rainbowRight = true;
+			
+			colorLeft = leftColor.ColorWithAlpha(NORMAL_ALPHA);
+			colorRight = rightColor.ColorWithAlpha(NORMAL_ALPHA);
+			
+			highlightcolorLeft = leftColor.ColorWithAlpha(HIGHLIGHT_ALPHA);
+			highlightcolorRight = rightColor.ColorWithAlpha(HIGHLIGHT_ALPHA);
+			
+			if (rainbowLeft || rainbowRight)
+				enabled = true;
 			
 		}
 		
@@ -157,22 +175,59 @@ namespace TwitchFX.Lights {
 			
 			lastEventData = eventData;
 			
+			isLeftActive = eventData.value >= 4;
+			
+			if (rainbowLeft || rainbowRight)
+				enabled = true;
+			
 		}
 		
 		public void Update() {
 			
-			SetColor(Color.Lerp(endColor, startColor, transitionValue));
+			Color color;
 			
-			transitionValue = Mathf.Lerp(transitionValue, 0f, Time.deltaTime * FADE_SPEED);
-			
-			if (transitionValue < 0.0001f) {
+			if (transitionValue > 0f) {
 				
-				transitionValue = 0f;
-				enabled = false;
+				color = Color.Lerp(endColor, startColor, transitionValue);
 				
-				SetColor(endColor);
+				transitionValue = Mathf.Lerp(transitionValue, 0f, Time.deltaTime * FADE_SPEED);
+				
+				if (transitionValue < 0.0001f) {
+					
+					transitionValue = 0f;
+					enabled = false;
+					
+					color = endColor;
+					
+				}
+				
+			} else {
+				
+				color = colorLeft;
 				
 			}
+			
+			if ((isLeftActive && rainbowLeft) || (!isLeftActive && rainbowRight)) {
+				
+				float alpha = color.a;
+				
+				if (isLeftActive)
+					color = RainbowController.instance.GetLeftColor();
+				else
+					color = RainbowController.instance.GetRightColor();
+				
+				color = color.ColorWithAlpha(alpha);
+				
+			}
+			
+			SetColor(color);
+			
+			if (
+				transitionValue == 0f &&
+				!rainbowLeft &&
+				!rainbowRight
+			)
+				enabled = false;
 			
 		}
 		
@@ -189,6 +244,12 @@ namespace TwitchFX.Lights {
 			
 			if (eventData is CustomBeatmapEventData customEventData)
 				return customEventData.color;
+			
+			if (eventData.value >= 4 && rainbowLeft)
+				return RainbowController.instance.GetLeftColor().ColorWithAlpha(highlight ? HIGHLIGHT_ALPHA : NORMAL_ALPHA);
+			
+			if (eventData.value < 4 && rainbowRight)
+				return RainbowController.instance.GetRightColor().ColorWithAlpha(highlight ? HIGHLIGHT_ALPHA : NORMAL_ALPHA);
 			
 			if (highlight)
 				return eventData.value >= 4 ? highlightcolorLeft : highlightcolorRight;

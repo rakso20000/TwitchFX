@@ -13,6 +13,9 @@ namespace TwitchFX.Hooking {
 			
 			Color color = ColorController.instance.customWallColor;
 			
+			if (Helper.IsRainbow(color))
+				color = RainbowController.instance.GetWallColor();
+			
 			StretchableObstacle stretchable = Helper.GetValue<StretchableObstacle>(__instance, "_stretchableObstacle");
 			
 			ParametricBoxFrameController frame = Helper.GetValue<ParametricBoxFrameController>(stretchable, "_obstacleFrame");

@@ -64,6 +64,8 @@ The duration is given in seconds and does not have to be an integer.
 
 Colors are given either as a [hex triplet] with a leading `#` or as one of the following presets: `red`, `green`, `blue`, `yellow`, `cyan`, `magenta`, `white`, `gray`, `grey`, `black`
 
+You can also pass `rainbow` instead of a color to get rainbow colors. The rainbow colors of left and right light, saber, and note colors are always on the opposite side of the color spectrum so you can easily differentiate between them. The rainbow colors for lights, sabers, and notes are synchronized so you can see which saber to use for a rainbow note by its.
+
 [hex triplet]: https://en.wikipedia.org/wiki/Web_colors#Hex_triplet
 
 ## Configuration

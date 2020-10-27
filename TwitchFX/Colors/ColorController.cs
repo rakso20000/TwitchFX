@@ -92,11 +92,14 @@ namespace TwitchFX.Colors {
 			
 			useCustomSaberColors = true;
 			
-			UpdateSaberColors(leftColor, rightColor);
+			UpdateSaberColors(
+				Helper.IsRainbow(leftColor) ? RainbowController.instance.GetLeftColor() : leftColor,
+				Helper.IsRainbow(rightColor) ? RainbowController.instance.GetRightColor() : rightColor
+			);
 			
 			disableSaberColorsOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
-			enabled = disableSaberColorsOn != -1f || disableNoteColorsOn != -1f || disableWallColorOn != -1f;
+			SetEnabled();
 			
 		}
 		
@@ -106,8 +109,7 @@ namespace TwitchFX.Colors {
 				
 				disableSaberColorsOn = -1f;
 				
-				if (disableNoteColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -289,11 +291,14 @@ namespace TwitchFX.Colors {
 			
 			useCustomNoteColors = true;
 			
-			UpdateNoteColors(leftColor, rightColor);
+			UpdateNoteColors(
+				Helper.IsRainbow(leftColor)? RainbowController.instance.GetLeftColor() : leftColor,
+				Helper.IsRainbow(rightColor) ? RainbowController.instance.GetRightColor() : rightColor
+			);
 			
 			disableNoteColorsOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
-			enabled = disableSaberColorsOn != -1f || disableNoteColorsOn != -1f || disableWallColorOn != -1f;
+			SetEnabled();
 			
 		}
 		
@@ -303,8 +308,7 @@ namespace TwitchFX.Colors {
 				
 				disableNoteColorsOn = -1f;
 				
-				if (disableSaberColorsOn == -1f && disableWallColorOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -365,11 +369,11 @@ namespace TwitchFX.Colors {
 			
 			useCustomWallColor = true;
 			
-			UpdateWallColor(color);
+			UpdateWallColor(Helper.IsRainbow(color) ? RainbowController.instance.GetWallColor() : color);
 			
 			disableWallColorOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
-			enabled = disableSaberColorsOn != -1f || disableNoteColorsOn != -1f || disableWallColorOn != -1f;
+			SetEnabled();
 			
 		}
 		
@@ -379,8 +383,7 @@ namespace TwitchFX.Colors {
 				
 				disableWallColorOn = -1f;
 				
-				if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f)
-					enabled = false;
+				SetEnabled();
 				
 			}
 			
@@ -438,8 +441,35 @@ namespace TwitchFX.Colors {
 				
 			}
 			
-			if (disableSaberColorsOn == -1f && disableNoteColorsOn == -1f && disableWallColorOn == -1f)
-				enabled = false;
+			if (useCustomSaberColors && (Helper.IsRainbow(saberColorLeft) || Helper.IsRainbow(saberColorRight)))
+				UpdateSaberColors(
+					Helper.IsRainbow(saberColorLeft) ? RainbowController.instance.GetLeftColor() : saberColorLeft,
+					Helper.IsRainbow(saberColorRight) ? RainbowController.instance.GetRightColor() : saberColorRight
+				);
+			
+			if (useCustomNoteColors && (Helper.IsRainbow(noteColorLeft) || Helper.IsRainbow(noteColorRight)))
+				UpdateNoteColors(
+					Helper.IsRainbow(noteColorLeft) ? RainbowController.instance.GetLeftColor() : noteColorLeft,
+					Helper.IsRainbow(noteColorRight) ? RainbowController.instance.GetRightColor() : noteColorRight
+				);
+			
+			if (useCustomWallColor && Helper.IsRainbow(customWallColor))
+				UpdateWallColor(RainbowController.instance.GetWallColor());
+			
+			SetEnabled();
+			
+		}
+		
+		private void SetEnabled() {
+			
+			enabled = disableSaberColorsOn != -1f ||
+				disableNoteColorsOn != -1f ||
+				disableWallColorOn != -1f ||
+				Helper.IsRainbow(saberColorLeft) ||
+				Helper.IsRainbow(saberColorRight) ||
+				Helper.IsRainbow(noteColorLeft) ||
+				Helper.IsRainbow(noteColorRight) ||
+				Helper.IsRainbow(customWallColor);
 			
 		}
 		

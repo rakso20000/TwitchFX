@@ -12,16 +12,30 @@ namespace TwitchFX.Hooking {
 			if (ColorController.isNull || !ColorController.instance.useCustomNoteColors)
 				return true;
 			
+			Color color;
+			
 			switch (type) {
 			case ColorType.ColorA:
-				__result = ColorController.instance.noteColorLeft;
+				
+				color = ColorController.instance.noteColorLeft;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetLeftColor();
+				
 				break;
 			case ColorType.ColorB:
-				__result = ColorController.instance.noteColorRight;
+				
+				color = ColorController.instance.noteColorRight;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetRightColor();
+				
 				break;
 			default:
 				return true;
 			}
+			
+			__result = color;
 			
 			return false;
 			
@@ -34,16 +48,30 @@ namespace TwitchFX.Hooking {
 			if (ColorController.isNull || !ColorController.instance.useCustomSaberColors)
 				return true;
 			
+			Color color;
+			
 			switch (type) {
 			case SaberType.SaberA:
-				__result = ColorController.instance.saberColorLeft;
+				
+				color = ColorController.instance.saberColorLeft;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetLeftColor();
+				
 				break;
 			case SaberType.SaberB:
-				__result = ColorController.instance.saberColorRight;
+				
+				color = ColorController.instance.saberColorRight;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetRightColor();
+				
 				break;
 			default:
 				return true;
 			}
+			
+			__result = color;
 			
 			return false;
 			
@@ -60,10 +88,20 @@ namespace TwitchFX.Hooking {
 			
 			switch (type) {
 			case SaberType.SaberA:
+				
 				color = ColorController.instance.saberColorLeft;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetLeftColor();
+				
 				break;
 			case SaberType.SaberB:
+				
 				color = ColorController.instance.saberColorRight;
+				
+				if (Helper.IsRainbow(color))
+					color = RainbowController.instance.GetRightColor();
+				
 				break;
 			default:
 				return true;
@@ -84,6 +122,9 @@ namespace TwitchFX.Hooking {
 				return true;
 			
 			Color color = ColorController.instance.customWallColor;
+			
+			if (Helper.IsRainbow(color))
+				color = RainbowController.instance.GetWallColor();
 			
 			Color.RGBToHSV(color, out float h, out float s, out float v);
 			
