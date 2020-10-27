@@ -7,14 +7,30 @@ namespace TwitchFX.Lights {
 		
 		public static CustomLightshowController CreateCustomLightshowController(
 			CustomLightshowData lightshowData,
+			LightEffectController[] lights,
+			ColorScheme colorScheme,
 			IAudioTimeSource timeSource,
 			LightMode restoreMode,
 			float restoreDefaultLightsAfter
 		) {
 			
+			if (restoreMode == LightMode.CustomLightshow) {
+				
+				restoreMode = LightController.instance.lightshowController.restoreMode;
+				restoreDefaultLightsAfter = LightController.instance.lightshowController.restoreDefaultLightsAfter;
+				
+				LightController.instance.lightshowController.skipRestore = true;
+				
+				Destroy(LightController.instance.lightshowController);
+				LightController.instance.lightshowController = null;
+				
+			}
+			
 			CustomLightshowController controller = new GameObject("TwitchFXCustomLightshowController").AddComponent<CustomLightshowController>();
 			
 			controller.lightshowData = lightshowData;
+			controller.lights = lights;
+			controller.colorScheme = colorScheme;
 			controller.timeSource = timeSource;
 			controller.restoreMode = restoreMode;
 			controller.restoreDefaultLightsAfter = restoreDefaultLightsAfter;
@@ -24,6 +40,8 @@ namespace TwitchFX.Lights {
 		}
 		
 		private CustomLightshowData lightshowData;
+		private LightEffectController[] lights;
+		private ColorScheme colorScheme;
 		private IAudioTimeSource timeSource;
 		private LightMode restoreMode;
 		private float restoreDefaultLightsAfter;
@@ -31,14 +49,39 @@ namespace TwitchFX.Lights {
 		private float startTime;
 		private bool initialized = false;
 		
+		private bool skipRestore = false;
+		
 		private int eventIndex = 0;
 		
-		public void RestoreTo(LightMode? mode, float disableOn) {
+		public void Start() {
 			
-			if (mode.HasValue)
-				restoreMode = mode.Value;
+			if (restoreMode == LightMode.Custom) {
+				
+				foreach (LightEffectController light in lights)
+					light.SetColors(LightController.instance.customColorLeft, LightController.instance.customColorRight);
+				
+			} else {
+				
+				foreach (LightEffectController light in lights)
+					light.SetColors(colorScheme.environmentColor0, colorScheme.environmentColor1);
+				
+			}
 			
+		}
+		
+		public void OnInterceptedMode(LightMode mode, float disableOn) {
+			
+			restoreMode = mode;
 			restoreDefaultLightsAfter = disableOn;
+			
+			if (mode == LightMode.Custom) {
+				
+				foreach (LightEffectController light in lights)
+					light.SetColors(LightController.instance.customColorLeft, LightController.instance.customColorRight);
+				
+				LightController.instance.UpdateLightMode();
+				
+			}
 			
 		}
 		
@@ -64,16 +107,16 @@ namespace TwitchFX.Lights {
 			}
 			
 			if (eventIndex >= lightshowData.Length)
-				Destroy(null);
+				Destroy(this);
 			
 		}
 		
-		public void Destroy(CustomLightshowController nextLightshowController) {
+		public void OnDestroy() {
 			
 			if (LightController.instance.lightshowController == this)
 				LightController.instance.lightshowController = null;
 			
-			if (nextLightshowController == null) {
+			if (!skipRestore) {
 				
 				if (restoreDefaultLightsAfter != -1f && Time.time > restoreDefaultLightsAfter) {
 					
@@ -85,13 +128,7 @@ namespace TwitchFX.Lights {
 					
 				}
 				
-			} else {
-				
-				nextLightshowController.RestoreTo(restoreMode, restoreDefaultLightsAfter);
-				
 			}
-			
-			Object.Destroy(this);
 			
 		}
 		

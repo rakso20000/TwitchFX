@@ -11,12 +11,15 @@ namespace TwitchFX.Lights {
 		public LightMode mode { get; private set; } = LightMode.Default;
 		public bool boostColors { get; private set; } = false;
 		
+		public Color customColorLeft { get; private set; }
+		public Color customColorRight { get; private set; }
+		
 		private event Action<LightMode> onLightModeUpdated;
 		
 		private float disableOn = -1f;
 		private float disableBoostOn = -1f;
 		
-		private ColorManager colorManager;
+		private ColorScheme colorScheme;
 		private LightWithIdManager lightWithIdManager;
 		private LightWithIdManagerWrapper managerWrapper;
 		private BeatmapObjectCallbackController bocc;
@@ -29,12 +32,9 @@ namespace TwitchFX.Lights {
 		private LightEffectController[] customLights;
 		private LightEffectController[] lightshowLights;
 		
-		private Color customColorLeft;
-		private Color customColorRight;
-		
 		[Inject]
 		public void Inject(
-			ColorManager colorManager,
+			ColorScheme colorScheme,
 			LightWithIdManager lightWithIdManager,
 			BeatmapObjectCallbackController bocc,
 			BeatEffectSpawner beatEffectSpawner,
@@ -42,7 +42,7 @@ namespace TwitchFX.Lights {
 			LightSwitchEventEffect[] defaultLights
 		) {
 			
-			this.colorManager = colorManager;
+			this.colorScheme = colorScheme;
 			this.lightWithIdManager = lightWithIdManager;
 			this.bocc = bocc;
 			this.beatEffectSpawner = beatEffectSpawner;
@@ -113,31 +113,14 @@ namespace TwitchFX.Lights {
 			if (lightshowData == null)
 				return false;
 			
-			LightMode prevMode = mode;
-			float disableOn = this.disableOn;
-			
-			switch (prevMode) {
-			case LightMode.CustomLightshow:
-				break;
-			case LightMode.Custom:
-				
-				foreach (LightEffectController lightshowLightEffectController in lightshowLights)
-					lightshowLightEffectController.SetColors(customColorLeft, customColorRight);
-				
-				break;
-			default:
-				
-				Color leftColor = Helper.GetValue<SimpleColorSO>(colorManager, "_environmentColor0").color;
-				Color rightColor = Helper.GetValue<SimpleColorSO>(colorManager, "_environmentColor1").color;
-				
-				foreach (LightEffectController lightshowLightEffectController in lightshowLights)
-					lightshowLightEffectController.SetColors(leftColor, rightColor);
-				
-				break;
-			}
-			
-			CustomLightshowController lightshowController = CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode, disableOn);
-			this.lightshowController?.Destroy(lightshowController);
+			CustomLightshowController lightshowController = CustomLightshowController.CreateCustomLightshowController(
+				lightshowData,
+				lightshowLights,
+				colorScheme,
+				timeSource,
+				mode,
+				disableOn
+			);
 			
 			SetLightMode(LightMode.CustomLightshow);
 			
@@ -151,18 +134,11 @@ namespace TwitchFX.Lights {
 			
 			float disableOn = duration.HasValue ? Time.time + duration.Value : -1f;
 			
-			if (this.mode == LightMode.CustomLightshow && lightshowController != null) {
+			LightMode prevMode = this.mode;
+			
+			if (prevMode == LightMode.CustomLightshow && lightshowController != null) {
 				
-				if (mode == LightMode.Custom) {
-					
-					foreach (LightEffectController lightshowLightEffectController in lightshowLights)
-						lightshowLightEffectController.SetColors(customColorLeft, customColorRight);
-					
-					UpdateLightMode();
-					
-				}
-				
-				lightshowController.RestoreTo(mode, disableOn);
+				lightshowController.OnInterceptedMode(mode, disableOn);
 				
 				return;
 				
@@ -172,7 +148,6 @@ namespace TwitchFX.Lights {
 			
 			enabled = disableOn != -1f || disableBoostOn != -1f;
 			
-			LightMode prevMode = this.mode;
 			this.mode = mode;
 			
 			UpdateLightMode();
@@ -209,7 +184,7 @@ namespace TwitchFX.Lights {
 			
 		}
 		
-		private void UpdateLightMode() {
+		public void UpdateLightMode() {
 			
 			onLightModeUpdated?.Invoke(mode);
 			
