@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TwitchFX.Colors;
+using UnityEngine;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX.Lights {
@@ -55,7 +56,16 @@ namespace TwitchFX.Lights {
 		
 		public void Start() {
 			
-			if (restoreMode == LightMode.Custom) {
+			if (lightshowData.colorPreset != null) {
+				
+				ColorController.instance.SetNoteColors(lightshowData.colorPreset.leftNoteColor, lightshowData.colorPreset.rightNoteColor);
+				ColorController.instance.SetSaberColors(lightshowData.colorPreset.leftSaberColor, lightshowData.colorPreset.rightSaberColor);
+				ColorController.instance.SetWallColor(lightshowData.colorPreset.wallColor);
+				
+				foreach (LightEffectController light in lights)
+					light.SetColors(lightshowData.colorPreset.leftLightColor, lightshowData.colorPreset.rightLightColor);
+				
+			} else if (restoreMode == LightMode.Custom) {
 				
 				foreach (LightEffectController light in lights)
 					light.SetColors(LightController.instance.customColorLeft, LightController.instance.customColorRight);
@@ -122,6 +132,14 @@ namespace TwitchFX.Lights {
 				LightController.instance.lightshowController = null;
 			
 			if (!skipRestore) {
+				
+				if (lightshowData.colorPreset != null) {
+					
+					ColorController.instance.DisableNoteColors();
+					ColorController.instance.DisableSaberColors();
+					ColorController.instance.DisableWallColor();
+					
+				}
 				
 				if (restoreDefaultLightsAfter != -1f && Time.time > restoreDefaultLightsAfter) {
 					

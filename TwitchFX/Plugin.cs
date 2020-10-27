@@ -178,7 +178,7 @@ namespace TwitchFX {
 				
 				try {
 					
-					lightshow = CustomLightshowData.LoadLightshowDataFromJSON(rootJSON);
+					lightshow = CustomLightshowData.LoadLightshowDataFromJSON(rootJSON, name);
 					
 				} catch (InvalidJSONException e) {
 					

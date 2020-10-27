@@ -1,4 +1,13 @@
 {
+	"colorPreset": {
+		"leftLightColor": "cyan",
+		"rightLightColor": "yellow",
+		"leftNoteColor": "gray",
+		"rightNoteColor": "yellow",
+		"leftSaberColor": "gray",
+		"rightSaberColor": "yellow",
+		"wallColor": "green"
+	},
 	"_events": [
 		{
 			"_time": 0,

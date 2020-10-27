@@ -52,7 +52,6 @@ If you encounter a bug, have a feature request, or need assistance with setup fe
   `!activatepreset <name> <duration>` Activates the specified [color preset] for the specified duration.
 * `!lightshow <name>` Plays the specified [custom lightshow] effect.
 
-[color preset]: https://github.com/rakso20000/TwitchFX#color-presets
 [custom lightshow]: https://github.com/rakso20000/TwitchFX#custom-lightshows
 
 ### Arguments
@@ -166,7 +165,9 @@ Custom lightshows are quick series of lighting effects that override the default
 
 The lightshows are located in the `Beat Saber\UserData\TwitchFX\Lightshows` folder and follow the [JSON] format.
 
-Each preset has to include an `_events` [JSON] array with an object for each lighting event. These objects must contain a number `_time`, an integer `_type`, and an integer `_value`. This is the same format that Beat Saber itself uses for custom maps so you can create custom lightshows using any Beat Saber map editor.
+Each lightshow has to include an `_events` [JSON] array with an object for each lighting event. These objects must contain a number `_time`, an integer `_type`, and an integer `_value`. This is the same format that Beat Saber itself uses for custom maps so you can create custom lightshows using any Beat Saber map editor.
+
+Additionally, lightshows can have a `colorPreset` tag which can either be a string referring to a [color preset] or a [JSON] object following the format of a [color preset]. This preset will be active for the duration of the lightshow.
 
 The lightshows must have the `.json` extension to read and can be referred to using the `!lightshow` command by their file names.
 
@@ -192,6 +193,15 @@ The full version is available [here][full lightshow].
 
 ```json
 {
+	"colorPreset": {
+		"leftLightColor": "cyan",
+		"rightLightColor": "yellow",
+		"leftNoteColor": "gray",
+		"rightNoteColor": "yellow",
+		"leftSaberColor": "gray",
+		"rightSaberColor": "yellow",
+		"wallColor": "green"
+	},
 	"_events": [
 		{
 			"_time": 0,
@@ -219,4 +229,5 @@ The full version is available [here][full lightshow].
 
 [full lightshow]: https://github.com/rakso20000/TwitchFX/blob/master/Lightshows/drumroll.json
 
+[color preset]: https://github.com/rakso20000/TwitchFX#color-presets
 [JSON]: https://www.json.org/json-en.html

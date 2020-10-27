@@ -1,6 +1,7 @@
 ﻿using ChatCore.SimpleJSON;
 using System.Collections.Generic;
 using System.Linq;
+using TwitchFX.Colors;
 using UnityEngine;
 
 namespace TwitchFX.Lights {
@@ -9,12 +10,40 @@ namespace TwitchFX.Lights {
 		
 		private static readonly Dictionary<string, CustomLightshowData> lightshows = new Dictionary<string, CustomLightshowData>();
 		
-		public static CustomLightshowData LoadLightshowDataFromJSON(JSONNode rootJSON) {
+		public static CustomLightshowData LoadLightshowDataFromJSON(JSONNode rootJSON, string name) {
 			
 			//just use the SimpleJSON library available in ChatCore
 			
 			if (!rootJSON.IsObject)
 				throw new InvalidJSONException("Root is not a JSON object");
+			
+			ColorPreset colorPreset = null;
+			
+			if (rootJSON.TryGetKey("colorPreset", out JSONNode colorPresetJSON)) {
+				
+				if (colorPresetJSON is JSONString colorPresetJSONString) {
+					
+					colorPreset = ColorPreset.GetColorPreset(colorPresetJSONString.Value);
+					
+					if (colorPreset == null)
+						Logger.log.Warn("Couldn't find color preset for lightshow: " + name);
+					
+				} else {
+					
+					try {
+						
+						colorPreset = ColorPreset.LoadColorPresetFromJSON(colorPresetJSON);
+						
+					} catch (InvalidJSONException e) {
+						
+						Logger.log.Warn("Failed loading color preset for lightshow: " + name);
+						Logger.log.Warn("\tInvalid JSON data: " + e.errorMessage);
+						
+					}
+					
+				}
+				
+			}
 			
 			bool eventsExists = rootJSON.TryGetKey("_events", out JSONNode eventsNodeJSON);
 			
@@ -89,7 +118,7 @@ namespace TwitchFX.Lights {
 			
 			BeatmapEventData[] events = eventsList.OrderBy(beatmapEvent => beatmapEvent.time).ToArray();
 			
-			return new CustomLightshowData(events);
+			return new CustomLightshowData(events, colorPreset);
 			
 		}
 		
@@ -131,11 +160,14 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public readonly ColorPreset colorPreset;
+		
 		private BeatmapEventData[] beatmapEvents;
 		
-		private CustomLightshowData(BeatmapEventData[] beatmapEvents) {
+		private CustomLightshowData(BeatmapEventData[] beatmapEvents, ColorPreset colorPreset) {
 			
 			this.beatmapEvents = beatmapEvents;
+			this.colorPreset = colorPreset;
 			
 		}
 		
