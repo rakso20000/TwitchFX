@@ -9,7 +9,7 @@ using IPA.Utilities;
 using TwitchFX.Configuration;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
-using ChatCore.SimpleJSON;
+using ChatCore.Utilities;
 using TwitchFX.Lights;
 using TwitchFX.Colors;
 using TwitchFX.Commands;

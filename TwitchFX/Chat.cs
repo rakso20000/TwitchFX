@@ -2,6 +2,7 @@
 using ChatCore.Interfaces;
 using ChatCore.Models.Twitch;
 using ChatCore.Services.Twitch;
+using ChatCore.Utilities;
 using System;
 using TwitchFX.Commands;
 using TwitchFX.Configuration;
