@@ -21,7 +21,7 @@ namespace TwitchFX {
 	[Plugin(RuntimeOptions.SingleStartInit)]
 	public class Plugin {
 		
-		public static Chat chat;
+		public static ChatController chat;
 		
 		internal static Plugin instance { get; private set; }
 		internal static string Name => "TwitchFX";
@@ -56,12 +56,12 @@ namespace TwitchFX {
 				
 			}
 			
-			chat = new Chat();
-			
 		}
 		
 		[OnStart]
 		public void OnStart() {
+			
+			chat = new GameObject("TwitchFXChat").AddComponent<ChatController>();
 			
 			SetUpHooks();
 			
