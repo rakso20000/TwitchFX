@@ -15,19 +15,37 @@ namespace TwitchFX.Lights {
 			float restoreDefaultLightsAfter
 		) {
 			
+			CustomLightshowController controller = new GameObject("TwitchFXCustomLightshowController").AddComponent<CustomLightshowController>();
+			
 			if (restoreMode == LightMode.CustomLightshow) {
 				
-				restoreMode = LightController.instance.lightshowController.restoreMode;
-				restoreDefaultLightsAfter = LightController.instance.lightshowController.restoreDefaultLightsAfter;
+				CustomLightshowController prevLightshow = LightController.instance.lightshowController;
 				
-				LightController.instance.lightshowController.skipRestore = true;
+				restoreMode = prevLightshow.restoreMode;
+				restoreDefaultLightsAfter = prevLightshow.restoreDefaultLightsAfter;
 				
-				Destroy(LightController.instance.lightshowController);
+				prevLightshow.skipRestoreMode = true;
+				
+				if (lightshowData.colorPreset != null) {
+					
+					controller.restoreSaberColorLeft = prevLightshow.restoreSaberColorLeft;
+					controller.restoreSaberColorRight = prevLightshow.restoreSaberColorRight;
+					controller.restoreNoteColorLeft = prevLightshow.restoreNoteColorLeft;
+					controller.restoreNoteColorRight = prevLightshow.restoreNoteColorRight;
+					controller.restoreWallColor = prevLightshow.restoreWallColor;
+					controller.restoreSaberColorsAfter = prevLightshow.restoreSaberColorsAfter;
+					controller.restoreNoteColorsAfter = prevLightshow.restoreNoteColorsAfter;
+					controller.restoreWallColorAfter = prevLightshow.restoreWallColorAfter;
+					controller.skipSetRestore = true;
+					
+					prevLightshow.skipRestoreColors = true;
+					
+				}
+				
+				Destroy(prevLightshow);
 				LightController.instance.lightshowController = null;
 				
 			}
-			
-			CustomLightshowController controller = new GameObject("TwitchFXCustomLightshowController").AddComponent<CustomLightshowController>();
 			
 			controller.lightshowData = lightshowData;
 			controller.lights = lights;
@@ -44,13 +62,25 @@ namespace TwitchFX.Lights {
 		private LightEffectController[] lights;
 		private ColorScheme colorScheme;
 		private IAudioTimeSource timeSource;
+		
 		private LightMode restoreMode;
+		private Color? restoreSaberColorLeft = null;
+		private Color? restoreSaberColorRight = null;
+		private Color? restoreNoteColorLeft = null;
+		private Color? restoreNoteColorRight = null;
+		private Color? restoreWallColor = null;
 		private float restoreDefaultLightsAfter;
+		private float restoreSaberColorsAfter = -1f;
+		private float restoreNoteColorsAfter = -1f;
+		private float restoreWallColorAfter = -1f;
+		
+		private bool skipSetRestore = false;
 		
 		private float startTime;
 		private bool initialized = false;
 		
-		private bool skipRestore = false;
+		private bool skipRestoreMode = false;
+		private bool skipRestoreColors = false;
 		
 		private int eventIndex = 0;
 		
@@ -58,9 +88,16 @@ namespace TwitchFX.Lights {
 			
 			if (lightshowData.colorPreset != null) {
 				
+				if (!skipSetRestore)
+					ColorController.instance.SetRestoreValues(this);
+				
+				ColorController.instance.StopIntercept();
+				
 				ColorController.instance.SetNoteColors(lightshowData.colorPreset.leftNoteColor, lightshowData.colorPreset.rightNoteColor);
 				ColorController.instance.SetSaberColors(lightshowData.colorPreset.leftSaberColor, lightshowData.colorPreset.rightSaberColor);
 				ColorController.instance.SetWallColor(lightshowData.colorPreset.wallColor);
+				
+				ColorController.instance.StartIntercept(this);
 				
 				foreach (LightEffectController light in lights)
 					light.SetColors(lightshowData.colorPreset.leftLightColor, lightshowData.colorPreset.rightLightColor);
@@ -100,6 +137,29 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public void OnInterceptedSaberColors(Color? leftColor, Color? rightColor, float disableOn) {
+			
+			restoreSaberColorLeft = leftColor;
+			restoreSaberColorRight = rightColor;
+			restoreSaberColorsAfter = disableOn;
+			
+		}
+		
+		public void OnInterceptedNoteColors(Color? leftColor, Color? rightColor, float disableOn) {
+			
+			restoreNoteColorLeft = leftColor;
+			restoreNoteColorRight = rightColor;
+			restoreNoteColorsAfter = disableOn;
+			
+		}
+		
+		public void OnInterceptedWallColor(Color? color, float disableOn) {
+			
+			restoreWallColor = color;
+			restoreWallColorAfter = disableOn;
+			
+		}
+		
 		public void LateUpdate() {
 			
 			if (!initialized) {
@@ -131,15 +191,54 @@ namespace TwitchFX.Lights {
 			if (LightController.instance.lightshowController == this)
 				LightController.instance.lightshowController = null;
 			
-			if (!skipRestore) {
+			if (!skipRestoreColors && lightshowData.colorPreset != null) {
 				
-				if (lightshowData.colorPreset != null) {
+				ColorController.instance.StopIntercept();
+				
+				if (restoreSaberColorLeft.HasValue) {
+					
+					ColorController.instance.SetSaberColors(
+						restoreSaberColorLeft.Value,
+						restoreSaberColorRight.Value,
+						restoreSaberColorsAfter == -1f ? (float?) null : restoreSaberColorsAfter - Time.time
+					);
+					
+				} else {
+					
+					ColorController.instance.DisableSaberColors();
+					
+				}
+				
+				if (restoreNoteColorLeft.HasValue) {
+					
+					ColorController.instance.SetNoteColors(
+						restoreNoteColorLeft.Value,
+						restoreNoteColorRight.Value,
+						restoreNoteColorsAfter == -1f ? (float?) null : restoreNoteColorsAfter - Time.time
+					);
+					
+				} else {
 					
 					ColorController.instance.DisableNoteColors();
-					ColorController.instance.DisableSaberColors();
+					
+				}
+				
+				if (restoreWallColor.HasValue) {
+					
+					ColorController.instance.SetWallColor(
+						restoreWallColor.Value,
+						restoreWallColorAfter == -1f ? (float?) null : restoreWallColorAfter - Time.time
+					);
+					
+				} else {
+					
 					ColorController.instance.DisableWallColor();
 					
 				}
+				
+			}
+			
+			if (!skipRestoreMode) {
 				
 				if (restoreDefaultLightsAfter != -1f && Time.time > restoreDefaultLightsAfter) {
 					

@@ -1,6 +1,7 @@
 ﻿using IPA.Loader;
 using System;
 using System.Reflection;
+using TwitchFX.Lights;
 using UnityEngine;
 using Zenject;
 
@@ -36,6 +37,8 @@ namespace TwitchFX.Colors {
 		private float disableSaberColorsOn = -1f;
 		private float disableNoteColorsOn = -1f;
 		private float disableWallColorOn = -1f;
+		
+		private CustomLightshowController interceptingLightshow = null;
 		
 		[Inject]
 		public void Inject(
@@ -87,6 +90,14 @@ namespace TwitchFX.Colors {
 		
 		public void SetSaberColors(Color leftColor, Color rightColor, float? duration = null) {
 			
+			if (interceptingLightshow != null) {
+				
+				interceptingLightshow.OnInterceptedSaberColors(leftColor, rightColor, Time.time + duration ?? -1f);
+				
+				return;
+				
+			}
+			
 			saberColorLeft = leftColor;
 			saberColorRight = rightColor;
 			
@@ -104,6 +115,14 @@ namespace TwitchFX.Colors {
 		}
 		
 		public void DisableSaberColors() {
+			
+			if (interceptingLightshow != null) {
+				
+				interceptingLightshow.OnInterceptedSaberColors(null, null, -1f);
+				
+				return;
+				
+			}
 			
 			if (enabled) {
 				
@@ -286,6 +305,14 @@ namespace TwitchFX.Colors {
 		
 		public void SetNoteColors(Color leftColor, Color rightColor, float? duration = null) {
 			
+			if (interceptingLightshow != null) {
+				
+				interceptingLightshow.OnInterceptedNoteColors(leftColor, rightColor, Time.time + duration ?? -1f);
+				
+				return;
+				
+			}
+			
 			noteColorLeft = leftColor;
 			noteColorRight = rightColor;
 			
@@ -303,6 +330,14 @@ namespace TwitchFX.Colors {
 		}
 		
 		public void DisableNoteColors() {
+			
+			if (interceptingLightshow != null) {
+				
+				interceptingLightshow.OnInterceptedNoteColors(null, null, -1f);
+				
+				return;
+				
+			}
 			
 			if (enabled) {
 				
@@ -365,6 +400,14 @@ namespace TwitchFX.Colors {
 		
 		public void SetWallColor(Color color, float? duration = null) {
 			
+			if (interceptingLightshow != null) {
+				
+				interceptingLightshow.OnInterceptedWallColor(color, Time.time + duration ?? -1f);
+				
+				return;
+				
+			}
+			
 			customWallColor = color;
 			
 			useCustomWallColor = true;
@@ -378,6 +421,14 @@ namespace TwitchFX.Colors {
 		}
 		
 		public void DisableWallColor() {
+			
+			if (interceptingLightshow != null) {
+				
+				interceptingLightshow.OnInterceptedWallColor(null, -1f);
+				
+				return;
+				
+			}
 			
 			if (enabled) {
 				
@@ -406,6 +457,31 @@ namespace TwitchFX.Colors {
 				stretchable.SetSizeAndColor(frame.width, frame.height, frame.length, color);
 				
 			}
+			
+		}
+		
+		public void SetRestoreValues(CustomLightshowController lightshow) {
+			
+			if (useCustomSaberColors)
+				lightshow.OnInterceptedSaberColors(saberColorLeft, saberColorRight, disableSaberColorsOn);
+			
+			if (useCustomNoteColors)
+				lightshow.OnInterceptedNoteColors(noteColorLeft, noteColorRight, disableNoteColorsOn);
+			
+			if (useCustomWallColor)
+				lightshow.OnInterceptedWallColor(customWallColor, disableWallColorOn);
+			
+		}
+		
+		public void StartIntercept(CustomLightshowController lightshow) {
+			
+			interceptingLightshow = lightshow;
+			
+		}
+		
+		public void StopIntercept() {
+			
+			interceptingLightshow = null;
 			
 		}
 		
