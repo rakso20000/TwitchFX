@@ -156,7 +156,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat.cs" />
+    <Compile Include="ChatController.cs" />
     <Compile Include="Colors\RainbowController.cs" />
     <Compile Include="Injector.cs" />
     <Compile Include="Hooking\Attributes.cs" />
