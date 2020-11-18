@@ -174,6 +174,7 @@ namespace TwitchFX.Lights {
 			lastEventData = eventData;
 			
 			if (
+				executeEvent &&
 				eventData is CustomBeatmapEventData customEventData
 			) {
 				
