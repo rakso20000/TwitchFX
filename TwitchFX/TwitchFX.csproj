@@ -163,6 +163,8 @@
     <Compile Include="Hooking\Hook.cs" />
     <Compile Include="Hooking\HookBase.cs" />
     <Compile Include="Hooking\HookManager.cs" />
+    <Compile Include="Libs\EasingFunction.cs" />
+    <Compile Include="Lights\ColorGradient.cs" />
     <Compile Include="Lights\LightMode.cs" />
     <Compile Include="Colors\ColorPreset.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -191,8 +193,11 @@
     <Compile Include="LazyController.cs" />
     <Compile Include="Lights\LightController.cs" />
     <Compile Include="Lights\LightEffectController.cs" />
+    <Compile Include="Lights\LightPairRotationEffectController.cs" />
     <Compile Include="Lights\LightRotationController.cs" />
+    <Compile Include="Lights\LightRotationEffectController.cs" />
     <Compile Include="Lights\LightWithIdManagerWrapper.cs" />
+    <Compile Include="Lights\RingRotationEffectController.cs" />
     <Compile Include="PermissionsLevel.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />

@@ -27,6 +27,12 @@ If you encounter a bug, have a feature request, or need assistance with setup fe
 
 [open an issue]: https://github.com/rakso20000/TwitchFX/issues
 
+## License
+
+For the respective licenses of parts of this software, see [LICENSE].
+
+[LICENSE]: https://github.com/rakso20000/TwitchFX/blob/master/LICENSE
+
 ## Commands
 
 * `!setlightcolor <color>` Changes all lights to the specified color.  

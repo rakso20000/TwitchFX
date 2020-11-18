@@ -17,10 +17,10 @@ namespace TwitchFX.Lights {
 			offColor = new Color(0f, 0f, 0f, 0f);
 			
 			//accessible via colors
-			_colors = manager.colors;
+			Helper.SetValue<LightWithIdManager, Color?[]>(this, "_colors", manager.colors);
 			
 			//accessed by chroma and ClearLights
-			_lights = Helper.GetValue<List<LightWithId>[]>(manager, "_lights");
+			Helper.SetValue<LightWithIdManager, List<ILightWithId>[]>(this, "_lights", Helper.GetValue<List<ILightWithId>[]>(manager, "_lights"));
 			
 			manager.didSetColorForIdEvent += OnDidSetColorForIdEvent;
 			
@@ -45,8 +45,8 @@ namespace TwitchFX.Lights {
 				color = color.ColorWithAlpha(color.a > 0.5f ? 1 : color.a * 2f);
 			
 			manager.SetColorForId(id, color);
-			
-			_lastColorChangeFrameNum = manager.lastColorChangeFrameNum;
+
+			_didChangeSomeColorsThisFrame = true;
 			
 		}
 		
@@ -60,7 +60,7 @@ namespace TwitchFX.Lights {
 			
 			manager.SetColorForId(id, color);
 			
-			_lastColorChangeFrameNum = manager.lastColorChangeFrameNum;
+			_didChangeSomeColorsThisFrame = true;
 			
 		}
 		
@@ -70,13 +70,13 @@ namespace TwitchFX.Lights {
 			
 		}
 		
-		public override void RegisterLight(LightWithId light) {
+		public override void RegisterLight(ILightWithId light) {
 			
 			manager.RegisterLight(light);
 			
 		}
 		
-		public override void UnregisterLight(LightWithId light) {
+		public override void UnregisterLight(ILightWithId light) {
 			
 			manager.UnregisterLight(light);
 			

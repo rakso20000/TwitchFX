@@ -6,13 +6,16 @@ namespace TwitchFX.Lights {
 	
 	public class LightRotationController : LazyController<LightRotationController> {
 		
-		private event Action<BeatmapEventData> onPipedOrCustomBeatmapEvent;
+		private event Action<BeatmapEventData> onPipedBeatmapEvent;
 		
 		private BeatmapObjectCallbackController bocc;
 		
 		private LightRotationEventEffect[] rotationEffects;
 		private LightPairRotationEventEffect[] pairRotationEffects;
 		
+		private LightRotationEffectController[] rotationEffectControllers;
+		private LightPairRotationEffectController[] pairRotationEffectControllers;
+
 		private bool disablePipedBeatmapEvents = false;
 		
 		[Inject]
@@ -34,25 +37,35 @@ namespace TwitchFX.Lights {
 				return;
 			
 			bocc.beatmapEventDidTriggerEvent += OnBeatmapEvent;
-			CustomBeatmapEventManager.onCustomBeatmapEvent += OnCustomBeatmapEvent;
 			
-			foreach (LightRotationEventEffect rotationEffect in rotationEffects) {
+			rotationEffectControllers = new LightRotationEffectController[rotationEffects.Length];
+			pairRotationEffectControllers = new LightPairRotationEffectController[pairRotationEffects.Length];
+			
+			for (int i = 0; i < rotationEffects.Length; i++) {
 				
-				onPipedOrCustomBeatmapEvent += rotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				LightRotationEventEffect rotationEffect = rotationEffects[i];
+				
+				onPipedBeatmapEvent += rotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
 				bocc.beatmapEventDidTriggerEvent -= rotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				
+				LightRotationEffectController rotationEffectController = LightRotationEffectController.Create(rotationEffect);
+				CustomBeatmapEventManager.onCustomBeatmapEvent += rotationEffectController.OnEvent;
+				
+				rotationEffectControllers[i] = rotationEffectController;
 				
 			}
 			
-			foreach (LightPairRotationEventEffect pairRotationEffect in pairRotationEffects) {
+			for (int i = 0; i < pairRotationEffects.Length; i++) {
 				
-				object rotationDataL = Helper.GetValue<object>(pairRotationEffect, "_rotationDataL");
-				object rotationDataR = Helper.GetValue<object>(pairRotationEffect, "_rotationDataR");
+				LightPairRotationEventEffect pairRotationEffect = pairRotationEffects[i];
 				
-				if (rotationDataL == null || rotationDataR == null)
-					continue;
-				
-				onPipedOrCustomBeatmapEvent += pairRotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				onPipedBeatmapEvent += pairRotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
 				bocc.beatmapEventDidTriggerEvent -= pairRotationEffect.HandleBeatmapObjectCallbackControllerBeatmapEventDidTrigger;
+				
+				LightPairRotationEffectController pairRotationEffectController = LightPairRotationEffectController.Create(pairRotationEffect);
+				CustomBeatmapEventManager.onCustomBeatmapEvent += pairRotationEffectController.OnEvent;
+				
+				pairRotationEffectControllers[i] = pairRotationEffectController;
 				
 			}
 			
@@ -68,25 +81,28 @@ namespace TwitchFX.Lights {
 			
 			disablePipedBeatmapEvents = true;
 			
+			foreach (LightRotationEventEffect rotationEffect in rotationEffects)
+				rotationEffect.enabled = false;
+			
+			foreach (LightPairRotationEventEffect pairRotationEffect in pairRotationEffects)
+				pairRotationEffect.enabled = false;
+			
 		}
 		
-		public void ResetLightRotation() {
+		public void ResetCustomLightRotation() {
 			
-			onPipedOrCustomBeatmapEvent?.Invoke(new BeatmapEventData(0f, BeatmapEventType.Event12, 0));
-			onPipedOrCustomBeatmapEvent?.Invoke(new BeatmapEventData(0f, BeatmapEventType.Event13, 0));
+			foreach (LightRotationEffectController rotationEffectController in rotationEffectControllers)
+				rotationEffectController.Reset();
+			
+			foreach (LightPairRotationEffectController pairRotationEffectController in pairRotationEffectControllers)
+				pairRotationEffectController.Reset();
 			
 		}
 		
 		private void OnBeatmapEvent(BeatmapEventData eventData) {
 			
 			if (!disablePipedBeatmapEvents)
-				onPipedOrCustomBeatmapEvent?.Invoke(eventData);
-			
-		}
-		
-		private void OnCustomBeatmapEvent(BeatmapEventData eventData) {
-			
-			onPipedOrCustomBeatmapEvent?.Invoke(eventData);
+				onPipedBeatmapEvent?.Invoke(eventData);
 			
 		}
 		
@@ -95,7 +111,11 @@ namespace TwitchFX.Lights {
 			if (bocc != null)
 				bocc.beatmapEventDidTriggerEvent -= OnBeatmapEvent;
 			
-			CustomBeatmapEventManager.onCustomBeatmapEvent -= OnCustomBeatmapEvent;
+			foreach (LightRotationEffectController rotationEffectController in rotationEffectControllers)
+				CustomBeatmapEventManager.onCustomBeatmapEvent -= rotationEffectController.OnEvent;
+			
+			foreach (LightPairRotationEffectController pairRotationEffectController in pairRotationEffectControllers)
+				CustomBeatmapEventManager.onCustomBeatmapEvent -= pairRotationEffectController.OnEvent;
 			
 		}
 		

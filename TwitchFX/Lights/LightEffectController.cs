@@ -16,7 +16,8 @@ namespace TwitchFX.Lights {
 		public static LightEffectController CreateLightEffectController(
 			LightWithIdManagerWrapper lightManager,
 			LightMode activeOnMode,
-			LightSwitchEventEffect baseLight
+			LightSwitchEventEffect baseLight,
+			IAudioTimeSource timeSource
 		) {
 			
 			int id = Helper.GetValue<int>(baseLight, "_lightsID");
@@ -26,6 +27,7 @@ namespace TwitchFX.Lights {
 			
 			LightEffectController controller = new GameObject("TwitchFXLightEffectController").AddComponent<LightEffectController>();
 			
+			controller.timeSource = timeSource;
 			controller.lightManager = lightManager;
 			controller.activeOnMode = activeOnMode;
 			controller.id = id;
@@ -50,6 +52,8 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		private IAudioTimeSource timeSource;
+		
 		private LightWithIdManagerWrapper lightManager;
 		
 		private LightMode activeOnMode;
@@ -69,12 +73,25 @@ namespace TwitchFX.Lights {
 		private Color startColor;
 		private Color endColor;
 		
+		private float gradientStartTime;
+		private ColorGradient? gradient = null;
+		
 		private BeatmapEventData lastEventData;
 		private float transitionValue;
 		
 		private bool isLeftActive;
+		private bool isRightActive;
 		
 		public void Awake() {
+			
+			enabled = false;
+			
+		}
+		
+		public void Reset() {
+			
+			transitionValue = 0f;
+			gradient = null;
 			
 			enabled = false;
 			
@@ -175,9 +192,25 @@ namespace TwitchFX.Lights {
 			
 			lastEventData = eventData;
 			
-			isLeftActive = eventData.value >= 4;
+			if (
+				executeEvent &&
+				eventData is CustomBeatmapEventData customEventData
+			) {
+				
+				gradientStartTime = timeSource.songTime;
+				gradient = customEventData.colorGradient;
+				
+				isLeftActive = false;
+				isRightActive = false;
+				
+			} else {
+				
+				isLeftActive = eventData.value >= 4;
+				isRightActive = !isLeftActive;
+				
+			}
 			
-			if (rainbowLeft || rainbowRight)
+			if (gradient.HasValue || rainbowLeft || rainbowRight)
 				enabled = true;
 			
 		}
@@ -186,37 +219,50 @@ namespace TwitchFX.Lights {
 			
 			Color color;
 			
-			if (transitionValue > 0f) {
+			if (gradient.HasValue) {
 				
-				color = Color.Lerp(endColor, startColor, transitionValue);
+				ColorGradient grad = gradient.Value;
 				
-				transitionValue = Mathf.Lerp(transitionValue, 0f, Time.deltaTime * FADE_SPEED);
+				color = Color.Lerp(grad.endColor, grad.startColor, (timeSource.songTime - gradientStartTime) / grad.duration);
 				
-				if (transitionValue < 0.0001f) {
-					
-					transitionValue = 0f;
-					enabled = false;
-					
-					color = endColor;
-					
-				}
+				if (timeSource.songTime - gradientStartTime >= grad.duration)
+					gradient = null;
 				
 			} else {
 				
-				color = colorLeft;
+				if (transitionValue > 0f) {
+					
+					color = Color.Lerp(endColor, startColor, transitionValue);
+					
+					transitionValue = Mathf.Lerp(transitionValue, 0f, Time.deltaTime * FADE_SPEED);
+					
+					if (transitionValue < 0.0001f) {
+						
+						transitionValue = 0f;
+						enabled = false;
+						
+						color = endColor;
+						
+					}
+					
+				} else {
+					
+					color = colorLeft;
+					
+				}
 				
-			}
-			
-			if ((isLeftActive && rainbowLeft) || (!isLeftActive && rainbowRight)) {
-				
-				float alpha = color.a;
-				
-				if (isLeftActive)
-					color = RainbowController.instance.GetLeftColor();
-				else
-					color = RainbowController.instance.GetRightColor();
-				
-				color = color.ColorWithAlpha(alpha);
+				if ((isLeftActive && rainbowLeft) || (isRightActive && rainbowRight)) {
+					
+					float alpha = color.a;
+					
+					if (isLeftActive)
+						color = RainbowController.instance.GetLeftColor();
+					else
+						color = RainbowController.instance.GetRightColor();
+					
+					color = color.ColorWithAlpha(alpha);
+					
+				}
 				
 			}
 			
@@ -224,6 +270,7 @@ namespace TwitchFX.Lights {
 			
 			if (
 				transitionValue == 0f &&
+				!gradient.HasValue &&
 				!rainbowLeft &&
 				!rainbowRight
 			)
@@ -242,8 +289,8 @@ namespace TwitchFX.Lights {
 		
 		private Color GetColorForEvent(BeatmapEventData eventData, bool highlight) {
 			
-			if (eventData is CustomBeatmapEventData customEventData)
-				return customEventData.color;
+			if (eventData is CustomBeatmapEventData customEventData && customEventData.color.HasValue)
+				return customEventData.color.Value;
 			
 			if (eventData.value >= 4 && rainbowLeft)
 				return RainbowController.instance.GetLeftColor().ColorWithAlpha(highlight ? HIGHLIGHT_ALPHA : NORMAL_ALPHA);

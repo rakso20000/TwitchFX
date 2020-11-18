@@ -66,8 +66,8 @@ namespace TwitchFX.Lights {
 				
 				Helper.SetValue<LightWithIdManagerWrapper>(light, "_lightManager", managerWrapper);
 				
-				LightEffectController customLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.Custom, light);
-				LightEffectController lightshowLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.CustomLightshow, light);
+				LightEffectController customLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.Custom, light, timeSource);
+				LightEffectController lightshowLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.CustomLightshow, light, timeSource);
 				
 				bocc.beatmapEventDidTriggerEvent += customLight.OnEvent;
 				onLightModeUpdated += customLight.UpdateLightMode;
@@ -112,6 +112,9 @@ namespace TwitchFX.Lights {
 			
 			if (lightshowData == null)
 				return false;
+			
+			foreach (LightEffectController lightshowLightEffectController in lightshowLights)
+				lightshowLightEffectController.Reset();
 			
 			CustomLightshowController lightshowController = CustomLightshowController.CreateCustomLightshowController(
 				lightshowData,
@@ -167,7 +170,8 @@ namespace TwitchFX.Lights {
 				LightRotationController.instance.DisableDefaultLightRotationEvents();
 				RingController.instance.DisableDefaultRingEvents();
 				
-				LightRotationController.instance.ResetLightRotation();
+				LightRotationController.instance.ResetCustomLightRotation();
+				RingController.instance.ResetCustomRingRotation();
 				
 			}
 			
