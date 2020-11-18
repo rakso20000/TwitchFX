@@ -82,6 +82,13 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public void ResetCustomRingRotation() {
+			
+			foreach (RingRotationEffectController rotationController in rotationControllers)
+				rotationController.Reset();
+			
+		}
+		
 		private void OnBeatmapEvent(BeatmapEventData eventData) {
 			
 			if (!disablePipedBeatmapEvents)

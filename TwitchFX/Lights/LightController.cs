@@ -152,6 +152,9 @@ namespace TwitchFX.Lights {
 				break;
 			}
 			
+			foreach (LightEffectController lightshowLightEffectController in lightshowLights)
+				lightshowLightEffectController.Reset();
+			
 			CustomLightshowController lightshowController = CustomLightshowController.CreateCustomLightshowController(lightshowData, timeSource, prevMode, disableOn);
 			this.lightshowController?.Destroy(lightshowController);
 			
@@ -212,6 +215,7 @@ namespace TwitchFX.Lights {
 				RingController.instance.DisableDefaultRingEvents();
 				
 				LightRotationController.instance.ResetCustomLightRotation();
+				RingController.instance.ResetCustomRingRotation();
 				
 			}
 			

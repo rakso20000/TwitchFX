@@ -79,6 +79,12 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public void Reset() {
+			
+			activeRotationEffects.Clear();
+			
+		}
+		
 		public void OnEvent(BeatmapEventData eventData) {
 			
 			if (eventData.type != eventTypeForThisEffect)

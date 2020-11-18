@@ -78,6 +78,15 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public void Reset() {
+			
+			transitionValue = 0f;
+			gradient = null;
+			
+			enabled = false;
+			
+		}
+		
 		public void OnEvent(BeatmapEventData eventData) {
 			
 			if (eventData.type == eventTypeForThisLight)
