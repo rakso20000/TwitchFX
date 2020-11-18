@@ -11,7 +11,7 @@ namespace TwitchFX.Hooking {
 			if (ColorController.isNull || !ColorController.instance.useCustomWallColor)
 				return;
 			
-			Color color = ColorController.instance.customWallColor;
+			Color color = ColorController.instance.wallColor;
 			
 			if (Helper.IsRainbow(color))
 				color = RainbowController.instance.GetWallColor();

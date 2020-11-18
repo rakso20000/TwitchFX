@@ -66,8 +66,8 @@ namespace TwitchFX.Lights {
 				
 				Helper.SetValue<LightWithIdManagerWrapper>(light, "_lightManager", managerWrapper);
 				
-				LightEffectController customLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.Custom, light, timeSource);
-				LightEffectController lightshowLight = LightEffectController.CreateLightEffectController(managerWrapper, LightMode.CustomLightshow, light, timeSource);
+				LightEffectController customLight = LightEffectController.Create(managerWrapper, LightMode.Custom, light, timeSource);
+				LightEffectController lightshowLight = LightEffectController.Create(managerWrapper, LightMode.CustomLightshow, light, timeSource);
 				
 				bocc.beatmapEventDidTriggerEvent += customLight.OnEvent;
 				onLightModeUpdated += customLight.UpdateLightMode;
@@ -113,10 +113,10 @@ namespace TwitchFX.Lights {
 			if (lightshowData == null)
 				return false;
 			
-			foreach (LightEffectController lightshowLightEffectController in lightshowLights)
-				lightshowLightEffectController.Reset();
+			foreach (LightEffectController light in lightshowLights)
+				light.Reset();
 			
-			CustomLightshowController lightshowController = CustomLightshowController.CreateCustomLightshowController(
+			CustomLightshowController lightshowController = CustomLightshowController.Create(
 				lightshowData,
 				lightshowLights,
 				colorScheme,

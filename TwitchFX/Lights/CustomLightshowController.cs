@@ -6,7 +6,7 @@ namespace TwitchFX.Lights {
 	
 	public class CustomLightshowController : MonoBehavior {
 		
-		public static CustomLightshowController CreateCustomLightshowController(
+		public static CustomLightshowController Create(
 			CustomLightshowData lightshowData,
 			LightEffectController[] lights,
 			ColorScheme colorScheme,

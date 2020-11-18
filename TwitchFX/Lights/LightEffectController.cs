@@ -13,7 +13,7 @@ namespace TwitchFX.Lights {
 		
 		private static readonly Color offColor = new Color(0f, 0f, 0f, 0f);
 		
-		public static LightEffectController CreateLightEffectController(
+		public static LightEffectController Create(
 			LightWithIdManagerWrapper lightManager,
 			LightMode activeOnMode,
 			LightSwitchEventEffect baseLight,

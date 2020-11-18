@@ -150,9 +150,7 @@ namespace TwitchFX {
 				
 			} catch (Exception e) {
 				
-				InvalidCommandArgumentsException argsException = e as InvalidCommandArgumentsException;
-				
-				if (argsException != null) {
+				if (e is InvalidCommandArgumentsException argsException) {
 					
 					Send("Usage: " + argsException.usage[0]);
 					

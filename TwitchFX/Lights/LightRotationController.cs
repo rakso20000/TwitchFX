@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using Zenject;
 
 namespace TwitchFX.Lights {
@@ -15,7 +14,7 @@ namespace TwitchFX.Lights {
 		
 		private LightRotationEffectController[] rotationEffectControllers;
 		private LightPairRotationEffectController[] pairRotationEffectControllers;
-
+		
 		private bool disablePipedBeatmapEvents = false;
 		
 		[Inject]

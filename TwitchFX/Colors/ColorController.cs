@@ -20,7 +20,7 @@ namespace TwitchFX.Colors {
 		public Color noteColorRight { get; private set; }
 		
 		public bool useCustomWallColor { get; private set; } = false;
-		public Color customWallColor { get; private set; }
+		public Color wallColor { get; private set; }
 		
 		private ColorManager colorManager;
 		private ColorScheme colorScheme;
@@ -408,7 +408,7 @@ namespace TwitchFX.Colors {
 				
 			}
 			
-			customWallColor = color;
+			wallColor = color;
 			
 			useCustomWallColor = true;
 			
@@ -469,7 +469,7 @@ namespace TwitchFX.Colors {
 				lightshow.OnInterceptedNoteColors(noteColorLeft, noteColorRight, disableNoteColorsOn);
 			
 			if (useCustomWallColor)
-				lightshow.OnInterceptedWallColor(customWallColor, disableWallColorOn);
+				lightshow.OnInterceptedWallColor(wallColor, disableWallColorOn);
 			
 		}
 		
@@ -529,7 +529,7 @@ namespace TwitchFX.Colors {
 					Helper.IsRainbow(noteColorRight) ? RainbowController.instance.GetRightColor() : noteColorRight
 				);
 			
-			if (useCustomWallColor && Helper.IsRainbow(customWallColor))
+			if (useCustomWallColor && Helper.IsRainbow(wallColor))
 				UpdateWallColor(RainbowController.instance.GetWallColor());
 			
 			SetEnabled();
@@ -545,7 +545,7 @@ namespace TwitchFX.Colors {
 				Helper.IsRainbow(saberColorRight) ||
 				Helper.IsRainbow(noteColorLeft) ||
 				Helper.IsRainbow(noteColorRight) ||
-				Helper.IsRainbow(customWallColor);
+				Helper.IsRainbow(wallColor);
 			
 		}
 		
