@@ -118,7 +118,7 @@ namespace TwitchFX {
 				
 			}
 			
-			switch (colorStr) {
+			switch (colorStr.ToLower()) {
 			case "black":
 				color = Color.black;
 				return true;
