@@ -106,11 +106,8 @@ namespace TwitchFX.Lights {
 		
 		public void SetColors(Color leftColor, Color rightColor) {
 			
-			if (Helper.IsRainbow(leftColor))
-				rainbowLeft = true;
-			
-			if (Helper.IsRainbow(rightColor))
-				rainbowRight = true;
+			rainbowLeft = Helper.IsRainbow(leftColor);
+			rainbowRight = Helper.IsRainbow(rightColor);
 			
 			colorLeft = leftColor.ColorWithAlpha(NORMAL_ALPHA);
 			colorRight = rightColor.ColorWithAlpha(NORMAL_ALPHA);
