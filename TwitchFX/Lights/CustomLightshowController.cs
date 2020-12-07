@@ -86,6 +86,14 @@ namespace TwitchFX.Lights {
 		
 		public void Start() {
 			
+			foreach (LightEffectController light in lights)
+				light.Reset();
+			
+			LightController.instance.ClearLights();
+			
+			LightRotationController.instance.ResetCustomLightRotation();
+			RingController.instance.ResetCustomRingRotation();
+			
 			if (lightshowData.colorPreset != null) {
 				
 				if (!skipSetRestore)

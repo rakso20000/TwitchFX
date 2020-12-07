@@ -113,9 +113,6 @@ namespace TwitchFX.Lights {
 			if (lightshowData == null)
 				return false;
 			
-			foreach (LightEffectController light in lightshowLights)
-				light.Reset();
-			
 			CustomLightshowController lightshowController = CustomLightshowController.Create(
 				lightshowData,
 				lightshowLights,
@@ -155,13 +152,12 @@ namespace TwitchFX.Lights {
 			
 			UpdateLightMode();
 			
-			if (mode == LightMode.Disabled || mode == LightMode.CustomLightshow)
-				managerWrapper.ClearLights();
-			
 			if (mode == prevMode)
 				return;
 			
 			if (mode == LightMode.Disabled) {
+				
+				ClearLights();
 				
 				Helper.SetValue<float>(beatEffectSpawner, "_effectDuration", 0f);
 				
@@ -169,9 +165,6 @@ namespace TwitchFX.Lights {
 				
 				LightRotationController.instance.DisableDefaultLightRotationEvents();
 				RingController.instance.DisableDefaultRingEvents();
-				
-				LightRotationController.instance.ResetCustomLightRotation();
-				RingController.instance.ResetCustomRingRotation();
 				
 			}
 			
@@ -203,6 +196,12 @@ namespace TwitchFX.Lights {
 				}
 				
 			}
+			
+		}
+		
+		public void ClearLights() {
+			
+			managerWrapper.ClearLights();
 			
 		}
 		
