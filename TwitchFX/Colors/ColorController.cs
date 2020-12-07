@@ -1,9 +1,8 @@
 ﻿using IPA.Loader;
-using System;
-using System.Reflection;
 using TwitchFX.Lights;
 using UnityEngine;
 using Zenject;
+using SiraUtil.Interfaces;
 
 namespace TwitchFX.Colors {
 	
@@ -26,13 +25,11 @@ namespace TwitchFX.Colors {
 		private ColorScheme colorScheme;
 		
 		private SaberModelController[] sabers;
+		private SaberManager saberManager;
+		private SaberModelController leftSaberModel;
+		private SaberModelController rightSaberModel;
 		
-		/*
-		private MethodInfo customSabersApplyColorsMethod;
-		private object customSabersSaberScript;
-		*/
-		
-		private bool updateCustomSabers;
+		private bool siraSabersActive = false;
 		
 		private float disableSaberColorsOn = -1f;
 		private float disableNoteColorsOn = -1f;
@@ -44,47 +41,32 @@ namespace TwitchFX.Colors {
 		public void Inject(
 			ColorManager colorManager,
 			ColorScheme colorScheme,
-			SaberModelController[] sabers
+			SaberModelController[] sabers,
+			SaberManager saberManager
 		) {
 			
 			this.colorManager = colorManager;
 			this.colorScheme = colorScheme;
 			this.sabers = sabers;
+			this.saberManager = saberManager;
 			
 		}
 		
 		protected override void Init() {
 			
-			updateCustomSabers = PluginManager.GetPluginFromId("Custom Sabers") != null;
+			leftSaberModel = saberManager.leftSaber.GetComponentInChildren<SaberModelController>(true);
+			rightSaberModel = saberManager.rightSaber.GetComponentInChildren<SaberModelController>(true);
 			
-			if (updateCustomSabers)
-				InitCustomSabers();
+			if (PluginManager.GetPluginFromId("SiraUtil") != null)
+				CheckCustomSabers();
 			
 			enabled = false;
 			
 		}
 		
-		private void InitCustomSabers() {
+		private void CheckCustomSabers() {
 			
-			/*
-			try {
-				
-				Assembly customSabersAssembly = typeof(CustomSaber.Plugin).Assembly;
-				Type saberScriptType = customSabersAssembly.GetType("CustomSaber.Utilities.SaberScript", true);
-				
-				customSabersApplyColorsMethod = saberScriptType.GetMethod("ApplyColorsToSaber");
-				customSabersSaberScript = saberScriptType.GetField("instance").GetValue(null);
-				
-			} catch (Exception e) {
-				
-				Logger.log.Error("Error whilst trying to access Custom Sabers");
-				Logger.log.Error(e.GetType().Name + ": " + e.Message);
-				Logger.log.Error(e.StackTrace);
-				
-				updateCustomSabers = false;
-				
-			}
-			*/
+			siraSabersActive = leftSaberModel is IColorable || rightSaberModel is IColorable;
 			
 		}
 		
@@ -139,6 +121,14 @@ namespace TwitchFX.Colors {
 		}
 		
 		private void UpdateSaberColors(Color leftColor, Color rightColor) {
+			
+			if (siraSabersActive) {
+				
+				UpdateSiraSaberColors(leftColor, rightColor);
+				
+				return;
+				
+			}
 			
 			foreach (SaberModelController saber in sabers) {
 				
@@ -279,27 +269,12 @@ namespace TwitchFX.Colors {
 				
 			}
 			
-			/*
-			if (updateCustomSabers) {
-				
-				try {
-					
-					GameObject leftSaber = Helper.GetValue<GameObject>(customSabersSaberScript, "leftSaber");
-					GameObject rightSaber = Helper.GetValue<GameObject>(customSabersSaberScript, "rightSaber");
-					
-					customSabersApplyColorsMethod.Invoke(null, new object[] { leftSaber, leftColor });
-					customSabersApplyColorsMethod.Invoke(null, new object[] { rightSaber, rightColor });
-					
-				} catch (Exception e) {
-					
-					Logger.log.Error("Error whilst trying to update Custom Sabers");
-					Logger.log.Error(e.GetType().Name + ": " + e.Message);
-					Logger.log.Error(e.StackTrace);
-					
-				}
-				
-			}
-			*/
+		}
+		
+		private void UpdateSiraSaberColors(Color leftColor, Color rightColor) {
+			
+			(leftSaberModel as IColorable)?.SetColor(leftColor);
+			(rightSaberModel as IColorable)?.SetColor(rightColor);
 			
 		}
 		
