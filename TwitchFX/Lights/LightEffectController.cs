@@ -115,7 +115,7 @@ namespace TwitchFX.Lights {
 			highlightcolorLeft = leftColor.ColorWithAlpha(HIGHLIGHT_ALPHA);
 			highlightcolorRight = rightColor.ColorWithAlpha(HIGHLIGHT_ALPHA);
 			
-			if (rainbowLeft || rainbowRight)
+			if ((rainbowLeft && isLeftActive) || (rainbowRight && isRightActive))
 				enabled = true;
 			
 		}
@@ -207,7 +207,7 @@ namespace TwitchFX.Lights {
 				
 			}
 			
-			if (gradient.HasValue || rainbowLeft || rainbowRight)
+			if (gradient.HasValue || (rainbowLeft && isLeftActive) || (rainbowRight && isRightActive))
 				enabled = true;
 			
 		}
@@ -268,8 +268,8 @@ namespace TwitchFX.Lights {
 			if (
 				transitionValue == 0f &&
 				!gradient.HasValue &&
-				!rainbowLeft &&
-				!rainbowRight
+				!(rainbowLeft && isLeftActive) &&
+				!(rainbowRight && isRightActive)
 			)
 				enabled = false;
 			
