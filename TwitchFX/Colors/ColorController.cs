@@ -24,7 +24,6 @@ namespace TwitchFX.Colors {
 		private ColorManager colorManager;
 		private ColorScheme colorScheme;
 		
-		private SaberModelController[] sabers;
 		private SaberManager saberManager;
 		private SaberModelController leftSaberModel;
 		private SaberModelController rightSaberModel;
@@ -41,13 +40,11 @@ namespace TwitchFX.Colors {
 		public void Inject(
 			ColorManager colorManager,
 			ColorScheme colorScheme,
-			SaberModelController[] sabers,
 			SaberManager saberManager
 		) {
 			
 			this.colorManager = colorManager;
 			this.colorScheme = colorScheme;
-			this.sabers = sabers;
 			this.saberManager = saberManager;
 			
 		}
@@ -130,32 +127,8 @@ namespace TwitchFX.Colors {
 				
 			}
 			
-			foreach (SaberModelController saber in sabers) {
-				
-				if (Helper.GetValue<ColorManager>(saber, "_colorManager") == null)
-					continue;
-				
-				SetSaberGlowColor[] glowColors = Helper.GetValue<SetSaberGlowColor[]>(saber, "_setSaberGlowColors");
-				SetSaberFakeGlowColor[] fakeGlowColors = Helper.GetValue<SetSaberFakeGlowColor[]>(saber, "_setSaberFakeGlowColors");
-				
-				Color color = Helper.GetValue<SaberType>(glowColors[0], "_saberType") == SaberType.SaberA ? leftColor : rightColor;
-				
-				Color trailTintColor = Helper.GetValue<SaberModelController.InitData>(saber, "_initData").trailTintColor;
-				SaberTrail trail = Helper.GetValue<SaberTrail>(saber, "_saberTrail");
-				Helper.SetValue<Color>(trail, "_color", (color * trailTintColor).linear);
-				
-				TubeBloomPrePassLight light = Helper.GetValue<TubeBloomPrePassLight>(saber, "_saberLight");
-				
-				if (light != null)
-					light.color = color;
-				
-				foreach (SetSaberGlowColor glowColor in glowColors)
-					glowColor.SetColors();
-				
-				foreach (SetSaberFakeGlowColor fakeGlowColor in fakeGlowColors)
-					fakeGlowColor.SetColors();
-				
-			}
+			UpdateSaberColor(leftSaberModel, leftColor);
+			UpdateSaberColor(rightSaberModel, rightColor);
 			
 			SetPSSaberGlowColor[] psGlowColors = Resources.FindObjectsOfTypeAll<SetPSSaberGlowColor>();
 			
@@ -268,6 +241,28 @@ namespace TwitchFX.Colors {
 				main.startColor = clashColor;
 				
 			}
+			
+		}
+		
+		private void UpdateSaberColor(SaberModelController saberModel, Color color) {
+			
+			SetSaberGlowColor[] glowColors = Helper.GetValue<SetSaberGlowColor[]>(saberModel, "_setSaberGlowColors");
+			SetSaberFakeGlowColor[] fakeGlowColors = Helper.GetValue<SetSaberFakeGlowColor[]>(saberModel, "_setSaberFakeGlowColors");
+			
+			Color trailTintColor = Helper.GetValue<SaberModelController.InitData>(saberModel, "_initData").trailTintColor;
+			SaberTrail trail = Helper.GetValue<SaberTrail>(saberModel, "_saberTrail");
+			Helper.SetValue<Color>(trail, "_color", (color * trailTintColor).linear);
+			
+			TubeBloomPrePassLight light = Helper.GetValue<TubeBloomPrePassLight>(saberModel, "_saberLight");
+			
+			if (light != null)
+				light.color = color;
+			
+			foreach (SetSaberGlowColor glowColor in glowColors)
+				glowColor.SetColors();
+			
+			foreach (SetSaberFakeGlowColor fakeGlowColor in fakeGlowColors)
+				fakeGlowColor.SetColors();
 			
 		}
 		
