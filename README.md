@@ -68,7 +68,23 @@ The duration is given in seconds and does not have to be an integer.
 
 #### color
 
-Colors are given either as a [hex triplet] with a leading `#` or as one of the following presets: `red`, `green`, `blue`, `yellow`, `cyan`, `magenta`, `white`, `gray`, `grey`, `black`
+Colors are given either as a [hex triplet] with a leading `#` or as one of the following presets:
+
+* `red`: ![#ff0000](https://via.placeholder.com/15/ff0000/000000?text=+) `#ff0000`
+* `orange`: ![#ff7300](https://via.placeholder.com/15/ff7300/000000?text=+) `#ff7300`
+* `yellow`: ![#ffff00](https://via.placeholder.com/15/ffff00/000000?text=+) `#ffff00`
+* `lime`: ![#b3ff00](https://via.placeholder.com/15/b3ff00/000000?text=+) `#b3ff00`
+* `green`: ![#00ff00](https://via.placeholder.com/15/00ff00/000000?text=+) `#00ff00`
+* `springgreen`, `cyangreen`, `greencyan`: ![#00ff96](https://via.placeholder.com/15/00ff96/000000?text=+) `#00ff96`
+* `cyan`: ![#00ffff](https://via.placeholder.com/15/00ffff/000000?text=+) `#00ffff`
+* `blue`, `lightblue`: ![#008cff](https://via.placeholder.com/15/008cff/000000?text=+) `#008cff`
+* `darkblue`: ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) `#0000ff`
+* `purple`: ![#9600ff](https://via.placeholder.com/15/9600ff/000000?text=+) `#9600ff`
+* `magenta`: ![#ff00ff](https://via.placeholder.com/15/ff00ff/000000?text=+) `#ff00ff`
+* `pink`: ![#ff0080](https://via.placeholder.com/15/ff0080/000000?text=+) `#ff0080`
+* `white`: ![#ffffff](https://via.placeholder.com/15/ffffff/000000?text=+) `#ffffff`
+* `gray`, `grey`: ![#808080](https://via.placeholder.com/15/808080/000000?text=+) `#808080`
+* `black`: ![#000000](https://via.placeholder.com/15/000000/000000?text=+) `#000000`
 
 You can also pass `rainbow` instead of a color to get rainbow colors. The rainbow colors of left and right light, saber, and note colors are always on opposite sides of the color spectrum so you can easily differentiate between them. The rainbow colors for lights, sabers, and notes are synchronized so you can see which saber to use for a rainbow note by its color.
 

@@ -6,7 +6,14 @@ namespace TwitchFX {
 	
 	public class Helper {
 		
-		private static readonly Color rainbowColor = new Color(1337f, 420f, 69f);
+		private static readonly Color COLOR_RAINBOW = new Color(1337f, 420f, 69f);
+		
+		private static readonly Color COLOR_ORANGE = new Color(1f, 0.45098039215f, 0f);
+		private static readonly Color COLOR_LIME = new Color(0.70196078431f, 1f, 0f);
+		private static readonly Color COLOR_SPRING_GREEN = new Color(0f, 1f, 0.58823529411f);
+		private static readonly Color COLOR_LIGHT_BLUE = new Color(0f, 0.54901960784f, 1f);
+		private static readonly Color COLOR_PURPLE = new Color(0.58823529411f, 0f, 1f);
+		private static readonly Color COLOR_PINK = new Color(1f, 0f, 0.50196078431f);
 		
 		public static T GetValue<T>(object obj, string name) {
 			
@@ -62,15 +69,20 @@ namespace TwitchFX {
 		
 		public static bool IsRainbow(Color color) {
 			
-			return color.Equals(rainbowColor);
+			return color.Equals(COLOR_RAINBOW);
 			
 		}
 		
 		public static bool TryParseColor(string colorStr, out Color color) {
 			
-			if (colorStr.Equals("rainbow", StringComparison.OrdinalIgnoreCase)) {
+			if (
+				colorStr.Equals("rainbow", StringComparison.OrdinalIgnoreCase) ||
+				colorStr.Equals("gay", StringComparison.OrdinalIgnoreCase)
+			) {
 				
-				color = rainbowColor;
+				//gay lol
+				
+				color = COLOR_RAINBOW;
 				
 				return true;
 				
@@ -122,7 +134,8 @@ namespace TwitchFX {
 			case "black":
 				color = Color.black;
 				return true;
-			case "blue":
+			case "darkblue":
+			case "dark_blue":
 				color = Color.blue;
 				return true;
 			case "cyan":
@@ -146,6 +159,31 @@ namespace TwitchFX {
 				return true;
 			case "yellow":
 				color = Color.yellow;
+				return true;
+			case "orange":
+				color = COLOR_ORANGE;
+				return true;
+			case "lime":
+				color = COLOR_LIME;
+				return true;
+			case "springgreen":
+			case "spring_green":
+			case "cyangreen":
+			case "cyan_green":
+			case "greencyan":
+			case "green_cyan":
+				color = COLOR_SPRING_GREEN;
+				return true;
+			case "blue":
+			case "lightblue":
+			case "light_blue":
+				color = COLOR_LIGHT_BLUE;
+				return true;
+			case "purple":
+				color = COLOR_PURPLE;
+				return true;
+			case "pink":
+				color = COLOR_PINK;
 				return true;
 			}
 			
