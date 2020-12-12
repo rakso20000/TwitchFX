@@ -93,6 +93,11 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="SemVer">
+      <HintPath>$(BeatSaberDir)\Libs\SemVer.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="SiraUtil">
       <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
       <Private>False</Private>
@@ -158,6 +163,7 @@
   <ItemGroup>
     <Compile Include="ChatController.cs" />
     <Compile Include="Colors\RainbowController.cs" />
+    <Compile Include="Commands\CommandHelpTwitchFX.cs" />
     <Compile Include="Injector.cs" />
     <Compile Include="Hooking\Attributes.cs" />
     <Compile Include="Hooking\Hook.cs" />

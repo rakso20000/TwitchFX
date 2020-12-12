@@ -6,6 +6,7 @@ using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using IPA.Utilities;
+using IPA.Loader;
 using TwitchFX.Configuration;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
@@ -26,12 +27,18 @@ namespace TwitchFX {
 		internal static Plugin instance { get; private set; }
 		internal static string Name => "TwitchFX";
 		
+		public string version { get; private set; }
+		
 		public bool inLevel = false;
 		
 		private Assembly assembly;
 		
 		[Init]
-		public void Init(IPALogger logger, Config conf) {
+		public void Init(IPALogger logger, Config conf, PluginMetadata plugin) {
+			
+			SemVer.Version semver = plugin.Version;
+			
+			version = semver.Major + "." + semver.Minor + "." + semver.Patch;
 			
 			instance = this;
 			Logger.log = logger;

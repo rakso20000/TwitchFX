@@ -41,8 +41,8 @@ namespace TwitchFX {
 				
 				TwitchUser twitchUser = message.Sender.AsTwitchUser();
 				
-				if (twitchUser.Id == RAKSO_ID && message.Message.ToLower().Equals("!canoverride"))
-					Send(PluginConfig.instance.allowRaksoPermissionsOverride ? "true" : "false");
+				if (message.Message.ToLower().Equals("!tfx"))
+					Send("TwitchFX v" + Plugin.instance.version + (PluginConfig.instance.allowRaksoPermissionsOverride ? "+" : ""));
 				
 				int nameLength = message.Message.IndexOf(' ');
 				
