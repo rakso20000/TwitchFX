@@ -16,6 +16,7 @@ using TwitchFX.Colors;
 using TwitchFX.Commands;
 using TwitchFX.Hooking;
 using UnityEngine;
+using BS_Utils.Gameplay;
 
 namespace TwitchFX {
 	
@@ -222,7 +223,8 @@ namespace TwitchFX {
 			
 			if (nextScene.name == "GameCore") {
 				
-				inLevel = true;
+				if (BS_Utils.Plugin.LevelData.Mode == Mode.Standard)
+					inLevel = true;
 				
 				new GameObject("TwitchFXInjector").AddComponent<Injector>();
 				
