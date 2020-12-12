@@ -148,20 +148,18 @@ namespace TwitchFX {
 				
 				commandData.command.Execute(commandData.arguments);
 				
-			} catch (Exception e) {
+			} catch (Exception exception) {
 				
-				if (e is InvalidCommandArgumentsException argsException) {
+				if (exception is InvalidCommandExecutionException exectionException) {
 					
-					Send("Usage: " + argsException.usage[0]);
-					
-					for (int i = 1; i < argsException.usage.Length; i++)
-						Send(argsException.usage[i]);
+					for (int i = 0; i < exectionException.lines.Length; i++)
+						Send(exectionException.lines[i]);
 					
 				} else {
 					
 					Logger.log.Error("Error whilst trying to execute: " + commandData.commandMessage);
-					Logger.log.Error(e.GetType().Name + ": " + e.Message);
-					Logger.log.Error(e.StackTrace);
+					Logger.log.Error(exception.GetType().Name + ": " + exception.Message);
+					Logger.log.Error(exception.StackTrace);
 					
 				}
 				

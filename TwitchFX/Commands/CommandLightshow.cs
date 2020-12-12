@@ -6,18 +6,12 @@ namespace TwitchFX.Commands {
 		
 		public override void Execute(string argsStr) {
 			
+			RequireInLevel();
+			
 			SetUsage("<name>");
 			
 			string[] args = ParseArgs(argsStr, 1);
 			string name = args[0];
-			
-			if (!Plugin.instance.inLevel) {
-				
-				Plugin.chat.Send("Please use this command during a song");
-				
-				return;
-				
-			}
 			
 			bool success = LightController.instance.ShowCustomLightshow(name);
 			

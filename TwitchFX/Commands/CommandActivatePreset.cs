@@ -7,6 +7,8 @@ namespace TwitchFX.Commands {
 		
 		public override void Execute(string argsStr) {
 			
+			RequireInLevel();
+			
 			SetUsage("<preset> OR\n" +
 			"<preset> <duration in seconds>");
 			
@@ -14,14 +16,6 @@ namespace TwitchFX.Commands {
 			string name = args[0];
 			
 			float? duration = TryParseFloat(args, 1);
-			
-			if (!Plugin.instance.inLevel) {
-				
-				Plugin.chat.Send("Please use this command during a song");
-				
-				return;
-				
-			}
 			
 			ColorPreset preset = ColorPreset.GetColorPreset(name);
 			

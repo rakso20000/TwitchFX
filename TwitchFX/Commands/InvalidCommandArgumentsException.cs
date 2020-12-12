@@ -1,14 +1,10 @@
-﻿using System;
-
-namespace TwitchFX.Commands {
+﻿namespace TwitchFX.Commands {
 	
-	public class InvalidCommandArgumentsException : Exception {
+	public class InvalidCommandArgumentsException : InvalidCommandExecutionException {
 		
-		public readonly string[] usage;
-		
-		public InvalidCommandArgumentsException(string[] usage) {
+		public InvalidCommandArgumentsException(string[] usage) : base(usage) {
 			
-			this.usage = usage;
+			lines[0] = "Usage: " + lines[0];
 			
 		}
 		

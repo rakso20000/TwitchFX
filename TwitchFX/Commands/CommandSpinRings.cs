@@ -6,6 +6,8 @@ namespace TwitchFX.Commands {
 		
 		public override void Execute(string argsStr) {
 			
+			RequireInLevel();
+			
 			ParseArgs(argsStr, 0);
 			
 			RingController.instance.Spin();

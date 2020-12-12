@@ -163,6 +163,7 @@
   <ItemGroup>
     <Compile Include="ChatController.cs" />
     <Compile Include="Colors\RainbowController.cs" />
+    <Compile Include="Commands\InvalidCommandExecutionException.cs" />
     <Compile Include="Commands\CommandHelpTwitchFX.cs" />
     <Compile Include="Injector.cs" />
     <Compile Include="Hooking\Attributes.cs" />

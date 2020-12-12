@@ -92,6 +92,13 @@ namespace TwitchFX.Commands {
 			
 		}
 		
+		protected void RequireInLevel() {
+			
+			if (!Plugin.instance.inLevel)
+				throw new InvalidCommandExecutionException("Please use this command during a song");
+			
+		}
+		
 		//returns null if the index doesn't exist and throws if the index does exist but is not a float
 		protected float? TryParseFloat(string[] args, int index) {
 			

@@ -7,6 +7,8 @@ namespace TwitchFX.Commands {
 		
 		public override void Execute(string argsStr) {
 			
+			RequireInLevel();
+			
 			SetUsage("<left color> <right color> OR\n" +
 			"<left color> <right color> <duration in seconds>");
 			
@@ -16,14 +18,6 @@ namespace TwitchFX.Commands {
 			Color rightColor = ParseColor(args[1]);
 			
 			float? duration = TryParseFloat(args, 2);
-			
-			if (!Plugin.instance.inLevel) {
-				
-				Plugin.chat.Send("Please use this command during a song");
-				
-				return;
-				
-			}
 			
 			ColorController.instance.SetSaberColors(leftColor, rightColor, duration);
 			ColorController.instance.SetNoteColors(leftColor, rightColor, duration);

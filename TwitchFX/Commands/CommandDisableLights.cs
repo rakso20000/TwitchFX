@@ -6,20 +6,14 @@ namespace TwitchFX.Commands {
 		
 		public override void Execute(string argsStr) {
 			
+			RequireInLevel();
+			
 			SetUsage("OR\n" +
 			"<duration in seconds>");
 			
 			string[] args = ParseArgs(argsStr, 0, 1);
 			
 			float? duration = TryParseFloat(args, 0);
-			
-			if (!Plugin.instance.inLevel) {
-				
-				Plugin.chat.Send("Please use this command during a song");
-				
-				return;
-				
-			}
 			
 			LightController.instance.SetLightMode(LightMode.Disabled, duration);
 			
