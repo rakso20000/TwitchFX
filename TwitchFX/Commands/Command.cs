@@ -92,7 +92,16 @@ namespace TwitchFX.Commands {
 			
 		}
 		
+		protected void RequireEnabled() {
+			
+			if (!Plugin.instance.enabled)
+				throw new InvalidCommandExecutionException("TwitchFX is currently disabled");
+			
+		}
+		
 		protected void RequireInLevel() {
+			
+			RequireEnabled();
 			
 			if (!Plugin.instance.inLevel)
 				throw new InvalidCommandExecutionException("Please use this command during a song");

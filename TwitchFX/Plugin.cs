@@ -29,6 +29,7 @@ namespace TwitchFX {
 		
 		public string version { get; private set; }
 		
+		public bool enabled = true;
 		public bool inLevel = false;
 		
 		private Assembly assembly;
