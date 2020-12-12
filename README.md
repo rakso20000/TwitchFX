@@ -18,8 +18,10 @@ Commissioned by and developed in collaboration with [xariao].
 ### Dependencies
 
 * [ChatCore]
+* [BS Utils]
 
 [ChatCore]: https://github.com/brian91292/ChatCore
+[BS Utils]: https://github.com/Kylemc1413/Beat-Saber-Utils
 
 ## Feedback
 
