@@ -1,4 +1,6 @@
-﻿using IPA.Loader;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using IPA.Loader;
 using TwitchFX.Lights;
 using UnityEngine;
 using Zenject;
@@ -28,6 +30,10 @@ namespace TwitchFX.Colors {
 		private SaberModelController leftSaberModel;
 		private SaberModelController rightSaberModel;
 		
+		private BasicBeatmapObjectManager beatmapObjectManager;
+		
+		private ConditionalWeakTable<GameNoteController, ColorNoteVisuals> noteVisualsMap = new ConditionalWeakTable<GameNoteController, ColorNoteVisuals>();
+		
 		private bool siraSabersActive = false;
 		
 		private float disableSaberColorsOn = -1f;
@@ -40,12 +46,14 @@ namespace TwitchFX.Colors {
 		public void Inject(
 			ColorManager colorManager,
 			ColorScheme colorScheme,
-			SaberManager saberManager
+			SaberManager saberManager,
+			BasicBeatmapObjectManager beatmapObjectManager
 		) {
 			
 			this.colorManager = colorManager;
 			this.colorScheme = colorScheme;
 			this.saberManager = saberManager;
+			this.beatmapObjectManager = beatmapObjectManager;
 			
 		}
 		
@@ -211,20 +219,16 @@ namespace TwitchFX.Colors {
 		
 		private void UpdateNoteColors(Color leftColor, Color rightColor) {
 			
-			ColorNoteVisuals[] notes = Resources.FindObjectsOfTypeAll<ColorNoteVisuals>();
+			HashSet<GameNoteController> notes = Helper.GetValue<MonoMemoryPoolContainer<GameNoteController>>(beatmapObjectManager, "_gameNotePoolContainer").activeItems;
 			
-			foreach (ColorNoteVisuals note in notes) {
+			foreach (GameNoteController note in notes) {
 				
-				NoteData noteData = Helper.GetValue<NoteController>(note, "_noteController").noteData;
-				
-				if (noteData == null)
-					continue;
-				
-				ColorType colorType = noteData.colorType;
+				if (!noteVisualsMap.TryGetValue(note, out ColorNoteVisuals noteVisuals))
+					noteVisualsMap.Add(note, noteVisuals = note.GetComponent<ColorNoteVisuals>());
 				
 				Color color;
 				
-				switch (colorType) {
+				switch (note.noteData.colorType) {
 				case ColorType.ColorA:
 					color = leftColor;
 					break;
@@ -235,13 +239,13 @@ namespace TwitchFX.Colors {
 					continue;
 				}
 				
-				float arrowGlowIntensity = Helper.GetValue<float>(note, "_arrowGlowIntensity");
+				float arrowGlowIntensity = Helper.GetValue<float>(noteVisuals, "_arrowGlowIntensity");
 				
-				Helper.SetValue<Color>(note, "_noteColor", color);
-				Helper.GetValue<SpriteRenderer>(note, "_circleGlowSpriteRenderer").color = color;
-				Helper.GetValue<SpriteRenderer>(note, "_arrowGlowSpriteRenderer").color = color.ColorWithAlpha(arrowGlowIntensity);
+				Helper.SetValue<Color>(noteVisuals, "_noteColor", color);
+				Helper.GetValue<SpriteRenderer>(noteVisuals, "_circleGlowSpriteRenderer").color = color;
+				Helper.GetValue<SpriteRenderer>(noteVisuals, "_arrowGlowSpriteRenderer").color = color.ColorWithAlpha(arrowGlowIntensity);
 				
-				MaterialPropertyBlockController[] propertyBlockControllers = Helper.GetValue<MaterialPropertyBlockController[]>(note, "_materialPropertyBlockControllers");
+				MaterialPropertyBlockController[] propertyBlockControllers = Helper.GetValue<MaterialPropertyBlockController[]>(noteVisuals, "_materialPropertyBlockControllers");
 				
 				foreach (MaterialPropertyBlockController propertyBlockController in propertyBlockControllers) {
 					
@@ -302,9 +306,7 @@ namespace TwitchFX.Colors {
 		
 		private void UpdateWallColor(Color color) {
 			
-			ObstacleController[] walls = Resources.FindObjectsOfTypeAll<ObstacleController>();
-			
-			foreach (ObstacleController wall in walls) {
+			foreach (ObstacleController wall in beatmapObjectManager.activeObstacleControllers) {
 				
 				StretchableObstacle stretchable = Helper.GetValue<StretchableObstacle>(wall, "_stretchableObstacle");
 				
