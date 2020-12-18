@@ -40,7 +40,7 @@ namespace TwitchFX {
 			
 			SemVer.Version semver = plugin.Version;
 			
-			version = semver.Major + "." + semver.Minor + "." + semver.Patch;
+			version = semver.Major + "." + semver.Minor + "." + semver.Patch + (semver.PreRelease == null ? "" : "-pre-" + semver.PreRelease);
 			
 			instance = this;
 			Logger.log = logger;
