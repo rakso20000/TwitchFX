@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using IPA.Config.Stores;
 using IPA.Config.Stores.Attributes;
 using IPA.Config.Stores.Converters;
 
-[assembly: InternalsVisibleTo(GeneratedStore.AssemblyVisibilityTarget)]
-namespace TwitchFX.Configuration {
+namespace TwitchFX {
 	
-	internal class PluginConfig {
-		
-		public static PluginConfig instance { get; set; }
+	public class Config {
 		
 		[UseConverter(typeof(DictionaryConverter<string>))]
 		public virtual Dictionary<string, string> commands { get; set; } = new Dictionary<string, string>();
 		
-		[UseConverter(typeof(DictionaryConverter<string>))]
-		public virtual Dictionary<string, string> commandsRequiredPermissions { get; set; } = new Dictionary<string, string>();
+		[UseConverter(typeof(DictionaryConverter<PermissionsLevel, CaseInsensitiveEnumConverter<PermissionsLevel>>))]
+		public virtual Dictionary<string, PermissionsLevel> commandsRequiredPermissions { get; set; } = new Dictionary<string, PermissionsLevel>();
 		public virtual bool allowRaksoPermissionsOverride { get; set; } = true;
 		
 		public virtual IDisposable ChangeTransaction() {

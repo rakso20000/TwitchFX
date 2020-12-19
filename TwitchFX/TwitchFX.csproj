@@ -217,7 +217,7 @@
     <Compile Include="PermissionsLevel.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Configuration\PluginConfig.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lights\CustomBeatmapEventData.cs" />
     <Compile Include="Lights\RingController.cs" />

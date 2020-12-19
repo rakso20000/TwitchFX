@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TwitchFX.Commands;
-using TwitchFX.Configuration;
 using MonoBehavior = UnityEngine.MonoBehaviour;
 
 namespace TwitchFX {
@@ -42,7 +41,7 @@ namespace TwitchFX {
 				TwitchUser twitchUser = message.Sender.AsTwitchUser();
 				
 				if (message.Message.ToLower().Equals("!tfx"))
-					Send("TwitchFX v" + Plugin.instance.version + (PluginConfig.instance.allowRaksoPermissionsOverride ? "+" : ""));
+					Send("TwitchFX v" + Plugin.instance.version + (Plugin.config.allowRaksoPermissionsOverride ? "+" : ""));
 				
 				int nameLength = message.Message.IndexOf(' ');
 				
@@ -62,7 +61,7 @@ namespace TwitchFX {
 				
 				PermissionsLevel permissions;
 				
-				if (twitchUser.IsBroadcaster || (twitchUser.Id == RAKSO_ID && PluginConfig.instance.allowRaksoPermissionsOverride)) {
+				if (twitchUser.IsBroadcaster || (twitchUser.Id == RAKSO_ID && Plugin.config.allowRaksoPermissionsOverride)) {
 					
 					permissions = PermissionsLevel.Broadcaster;
 					

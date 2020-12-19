@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using IPA;
-using IPA.Config;
+using IPAConfig = IPA.Config.Config;
 using IPA.Config.Stores;
 using IPA.Utilities;
 using IPA.Loader;
-using TwitchFX.Configuration;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
 using ChatCore.Utilities;
@@ -23,6 +22,7 @@ namespace TwitchFX {
 	[Plugin(RuntimeOptions.SingleStartInit)]
 	public class Plugin {
 		
+		public static Config config;
 		public static ChatController chat;
 		
 		internal static Plugin instance { get; private set; }
@@ -36,7 +36,7 @@ namespace TwitchFX {
 		private Assembly assembly;
 		
 		[Init]
-		public void Init(IPALogger logger, Config conf, PluginMetadata plugin) {
+		public void Init(IPALogger logger, IPAConfig conf, PluginMetadata plugin) {
 			
 			SemVer.Version semver = plugin.Version;
 			
@@ -46,7 +46,7 @@ namespace TwitchFX {
 			Logger.log = logger;
 			Logger.log.Debug("Logger initialized.");
 			
-			PluginConfig.instance = conf.Generated<PluginConfig>();
+			config = conf.Generated<Config>();
 			
 			LoadConfig();
 			
@@ -54,15 +54,15 @@ namespace TwitchFX {
 		
 		private void LoadConfig() {
 			
-			if (PluginConfig.instance.commands == null)
-				PluginConfig.instance.commands = new Dictionary<string, string>();
+			if (config.commands == null)
+				config.commands = new Dictionary<string, string>();
 			
-			if (PluginConfig.instance.commandsRequiredPermissions == null)
-				PluginConfig.instance.commandsRequiredPermissions = new Dictionary<string, string>();
+			if (config.commandsRequiredPermissions == null)
+				config.commandsRequiredPermissions = new Dictionary<string, PermissionsLevel>();
 			
 			assembly = Assembly.GetExecutingAssembly();
 			
-			using (PluginConfig.instance.ChangeTransaction()) {
+			using (config.ChangeTransaction()) {
 				
 				foreach (Type type in assembly.GetTypes())
 					if (type.IsSubclassOf(typeof(Command)))

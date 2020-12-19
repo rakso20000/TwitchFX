@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchFX.Configuration;
 using UnityEngine;
 
 namespace TwitchFX.Commands {
@@ -30,36 +29,19 @@ namespace TwitchFX.Commands {
 			
 			string command = this.GetType().Name.Substring(7, this.GetType().Name.Length - 7).ToLower();
 			
-			if (!PluginConfig.instance.commands.ContainsKey(command))
-				PluginConfig.instance.commands[command] = command;
+			if (!Plugin.config.commands.ContainsKey(command))
+				Plugin.config.commands[command] = command;
 			
-			name = PluginConfig.instance.commands[command];
+			name = Plugin.config.commands[command];
 			
 			commands[name.ToLower()] = this;
 			
-			if (!PluginConfig.instance.commandsRequiredPermissions.ContainsKey(command))
-				PluginConfig.instance.commandsRequiredPermissions[command] = "everyone";
-			
-			switch (PluginConfig.instance.commandsRequiredPermissions[command].ToLower()) {
-			case "broadcaster":
-				requiredPermissions = PermissionsLevel.Broadcaster;
-				break;
-			case "moderator":
-				requiredPermissions = PermissionsLevel.Moderator;
-				break;
-			case "vip":
-				requiredPermissions = PermissionsLevel.VIP;
-				break;
-			case "subscriber":
-				requiredPermissions = PermissionsLevel.Subscriber;
-				break;
-			case "everyone":
+			if (!Plugin.config.commandsRequiredPermissions.TryGetValue(command, out requiredPermissions)) {
+				
+				Plugin.config.commandsRequiredPermissions[command] = PermissionsLevel.Everyone;
+				
 				requiredPermissions = PermissionsLevel.Everyone;
-				break;
-			default:
-				PluginConfig.instance.commandsRequiredPermissions[command] = "everyone";
-				requiredPermissions = PermissionsLevel.Everyone;
-				break;
+				
 			}
 			
 		}
