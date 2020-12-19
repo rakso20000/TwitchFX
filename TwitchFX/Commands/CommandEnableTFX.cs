@@ -1,6 +1,6 @@
 ﻿namespace TwitchFX.Commands {
 	
-	public class CommandEnableTwitchFX : Command {
+	public class CommandEnableTFX : Command {
 		
 		public override void Execute(string argsStr) {
 			

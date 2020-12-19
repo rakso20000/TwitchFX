@@ -37,11 +37,11 @@ For the respective licenses of parts of this software, see [LICENSE].
 
 ## Commands
 
-* `!helptwitchfx` Links to this list.
-* `!enabletwitchfx` Enables TwitchFX.
-* `!disabletwitchfx` Disables TwitchFX.
-* `!resettwitchfx` Resets all TwitchFX effects.
-* `!reloadtwitchfx` Reload TwitchFX config, [color preset], and [custom lightshow] files.
+* `!helptfx` Links to this list.
+* `!enabletfx` Enables TwitchFX.
+* `!disabletfx` Disables TwitchFX.
+* `!resettfx` Resets all TwitchFX effects.
+* `!reloadtfx` Reload TwitchFX config, [color preset], and [custom lightshow] files.
 * `!setlightcolor <color>` Changes all lights to the specified color.  
   `!setlightcolor <left color> <right color>`  Changes all lights to the specified colors. The left color replaces the lights that would be red by default and the right color replaces the lights that would be blue by default.  
   `!setlightcolor <left color> <right color> <duration>` Changes all lights to the specified colors for the specified duration. The duration is given in seconds and doesn't have to be an integer.
@@ -61,8 +61,8 @@ For the respective licenses of parts of this software, see [LICENSE].
   `!setwallcolor <color> <duration>` Changes walls to the specified color for the specified duration.
 * `!resetwallcolor` Resets walls to their default color.
 * `!spinrings` Makes the track lane rings spin.
-* `!activatepreset <name>` Activates the specified [color preset] to set light colors, note colors, saber colors, and wall color simultaneously.  
-  `!activatepreset <name> <duration>` Activates the specified [color preset] for the specified duration.
+* `!colorpreset <name>` Activates the specified [color preset] to set light colors, note colors, saber colors, and wall color simultaneously.  
+  `!colorpreset <name> <duration>` Activates the specified [color preset] for the specified duration.
 * `!lightshow <name>` Plays the specified [custom lightshow] effect.
 
 [custom lightshow]: https://github.com/rakso20000/TwitchFX#custom-lightshows
@@ -124,12 +124,12 @@ I, as the developer of TwitchFX, have added an override that lets me execute all
 ```json
 {
 	"commands": {
-		"helptwitchfx": "helptfx",
-		"enabletwitchfx": "enabletfx",
-		"disabletwitchfx": "disabletfx",
-		"resettwitchfx": "resettfx",
-		"reloadtwitchfx": "reloadtfx",
-		"activatepreset": "preset",
+		"helptfx": "helptfx",
+		"enabletfx": "enabletfx",
+		"disabletfx": "disabletfx",
+		"resettfx": "resettfx",
+		"reloadtfx": "reloadtfx",
+		"colorpreset": "preset",
 		"boostlights": "boost",
 		"disablelights": "disable",
 		"lightshow": "lightshow",
@@ -145,12 +145,12 @@ I, as the developer of TwitchFX, have added an override that lets me execute all
 		"restorelights": "restore"
 	},
 	"commandsRequiredPermissions": {
-		"helptwitchfx": "everyone",
-		"enabletwitchfx": "moderator",
-		"disabletwitchfx": "moderator",
-		"resettwitchfx": "subscriber",
-		"reloadtwitchfx": "moderator",
-		"activatepreset": "subscriber",
+		"helptfx": "everyone",
+		"enabletfx": "moderator",
+		"disabletfx": "moderator",
+		"resettfx": "subscriber",
+		"reloadtfx": "moderator",
+		"colorpreset": "subscriber",
 		"boostlights": "everyone",
 		"disablelights": "subscriber",
 		"lightshow": "everyone",

@@ -168,12 +168,12 @@
   <ItemGroup>
     <Compile Include="ChatController.cs" />
     <Compile Include="Colors\RainbowController.cs" />
-    <Compile Include="Commands\CommandDisableTwitchFX.cs" />
-    <Compile Include="Commands\CommandEnableTwitchFX.cs" />
-    <Compile Include="Commands\CommandReloadTwitchFX.cs" />
-    <Compile Include="Commands\CommandResetTwitchFX.cs" />
+    <Compile Include="Commands\CommandDisableTFX.cs" />
+    <Compile Include="Commands\CommandEnableTFX.cs" />
+    <Compile Include="Commands\CommandReloadTFX.cs" />
+    <Compile Include="Commands\CommandResetTFX.cs" />
     <Compile Include="Commands\InvalidCommandExecutionException.cs" />
-    <Compile Include="Commands\CommandHelpTwitchFX.cs" />
+    <Compile Include="Commands\CommandHelpTFX.cs" />
     <Compile Include="Injector.cs" />
     <Compile Include="Hooking\Attributes.cs" />
     <Compile Include="Hooking\Hook.cs" />
@@ -184,7 +184,7 @@
     <Compile Include="Lights\LightMode.cs" />
     <Compile Include="Colors\ColorPreset.cs" />
     <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\CommandActivatePreset.cs" />
+    <Compile Include="Commands\CommandColorPreset.cs" />
     <Compile Include="Commands\CommandBoostLights.cs" />
     <Compile Include="Commands\CommandDisableLights.cs" />
     <Compile Include="Commands\CommandLightshow.cs" />

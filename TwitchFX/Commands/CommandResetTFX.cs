@@ -3,7 +3,7 @@ using TwitchFX.Colors;
 
 namespace TwitchFX.Commands {
 	
-	public class CommandResetTwitchFX : Command {
+	public class CommandResetTFX : Command {
 		
 		public override void Execute(string argsStr) {
 			

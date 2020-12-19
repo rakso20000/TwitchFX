@@ -3,7 +3,7 @@ using TwitchFX.Colors;
 
 namespace TwitchFX.Commands {
 	
-	public class CommandDisableTwitchFX : Command {
+	public class CommandDisableTFX : Command {
 		
 		public override void Execute(string argsStr) {
 			
