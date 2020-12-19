@@ -15,6 +15,12 @@ namespace TwitchFX.Commands {
 			
 		}
 		
+		public static void ResetCommands() {
+			
+			commands.Clear();
+			
+		}
+		
 		private readonly PermissionsLevel requiredPermissions;
 		
 		private string name;

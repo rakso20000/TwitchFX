@@ -105,6 +105,12 @@ namespace TwitchFX.Colors {
 			
 		}
 		
+		public static void ResetColorPresets() {
+			
+			presets.Clear();
+			
+		}
+		
 		public readonly Color leftLightColor;
 		public readonly Color rightLightColor;
 		public readonly Color leftNoteColor;

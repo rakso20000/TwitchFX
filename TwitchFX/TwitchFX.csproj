@@ -170,6 +170,7 @@
     <Compile Include="Colors\RainbowController.cs" />
     <Compile Include="Commands\CommandDisableTwitchFX.cs" />
     <Compile Include="Commands\CommandEnableTwitchFX.cs" />
+    <Compile Include="Commands\CommandReloadTwitchFX.cs" />
     <Compile Include="Commands\CommandResetTwitchFX.cs" />
     <Compile Include="Commands\InvalidCommandExecutionException.cs" />
     <Compile Include="Commands\CommandHelpTwitchFX.cs" />

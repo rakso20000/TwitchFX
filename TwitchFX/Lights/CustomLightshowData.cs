@@ -286,6 +286,12 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public static void ResetLightshows() {
+			
+			lightshows.Clear();
+			
+		}
+		
 		private static bool TryParseColor(JSONNode colorJSON, out Color color) {
 			
 			if (

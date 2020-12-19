@@ -47,7 +47,12 @@ namespace TwitchFX {
 			Logger.log.Debug("Logger initialized.");
 			
 			PluginConfig.instance = conf.Generated<PluginConfig>();
-			Logger.log.Debug("Config loaded");
+			
+			LoadConfig();
+			
+		}
+		
+		private void LoadConfig() {
 			
 			if (PluginConfig.instance.commands == null)
 				PluginConfig.instance.commands = new Dictionary<string, string>();
@@ -202,6 +207,22 @@ namespace TwitchFX {
 			}
 			
 			Logger.log.Info(CustomLightshowData.GetLightshowDataCount() + " lightshows loaded from " + lightshowFolderPath);
+			
+		}
+		
+		public void Reload() {
+			
+			Logger.log.Notice("Reloading TwitchFX config");
+			
+			Command.ResetCommands();
+			
+			LoadConfig();
+			
+			ColorPreset.ResetColorPresets();
+			CustomLightshowData.ResetLightshows();
+			
+			LoadColorPresets(UnityGame.UserDataPath + "\\TwitchFX\\ColorPresets");
+			LoadLightshows(UnityGame.UserDataPath + "\\TwitchFX\\Lightshows");
 			
 		}
 		
