@@ -85,8 +85,14 @@ namespace TwitchFX {
 				
 				Command command = Command.GetCommand(name);
 				
-				if (command == null || !command.CanExecute(permissions))
+				if (command == null)
 					return;
+				
+				if (!command.CanExecute(permissions)) {
+					
+					Send("You're not allowed to use this command");
+					
+				}
 				
 				lock (queuedCommands) {
 					
