@@ -199,6 +199,15 @@ namespace TwitchFX.Lights {
 			
 		}
 		
+		public void Reset() {
+			
+			SetLightMode(LightMode.Default);
+			
+			if (lightshowController != null)
+				Destroy(lightshowController);
+			
+		}
+		
 		public void ClearLights() {
 			
 			managerWrapper.ClearLights();

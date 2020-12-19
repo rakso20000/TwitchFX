@@ -40,6 +40,7 @@ For the respective licenses of parts of this software, see [LICENSE].
 * `!helptwitchfx` Links to this list.
 * `!enabletwitchfx` Enables TwitchFX.
 * `!disabletwitchfx` Disables TwitchFX.
+* `!resettwitchfx` Resets all TwitchFX effects.
 * `!setlightcolor <color>` Changes all lights to the specified color.  
   `!setlightcolor <left color> <right color>`  Changes all lights to the specified colors. The left color replaces the lights that would be red by default and the right color replaces the lights that would be blue by default.  
   `!setlightcolor <left color> <right color> <duration>` Changes all lights to the specified colors for the specified duration. The duration is given in seconds and doesn't have to be an integer.

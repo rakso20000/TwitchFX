@@ -3,29 +3,19 @@ using TwitchFX.Colors;
 
 namespace TwitchFX.Commands {
 	
-	public class CommandDisableTwitchFX : Command {
+	public class CommandResetTwitchFX : Command {
 		
 		public override void Execute(string argsStr) {
 			
+			RequireInLevel();
+			
 			ParseArgs(argsStr, 0);
-			
-			if (!Plugin.instance.enabled) {
-				
-				Plugin.chat.Send("TwitchFX is already disabled");
-				
-				return;
-				
-			}
-			
-			Plugin.instance.enabled = false;
 			
 			if (!ColorController.isNull)
 				ColorController.instance.Reset();
 			
 			if (!LightController.isNull)
 				LightController.instance.Reset();
-			
-			Plugin.chat.Send("Disabled TwitchFX");
 			
 		}
 		

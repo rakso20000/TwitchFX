@@ -318,6 +318,14 @@ namespace TwitchFX.Colors {
 			
 		}
 		
+		public void Reset() {
+			
+			DisableSaberColors();
+			DisableNoteColors();
+			DisableWallColor();
+			
+		}
+		
 		public void SetRestoreValues(CustomLightshowController lightshow) {
 			
 			if (useCustomSaberColors)
