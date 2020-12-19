@@ -53,6 +53,9 @@ namespace TwitchFX.Lights {
 		
 		protected override void Init() {
 			
+			customColorLeft = colorScheme.environmentColor0;
+			customColorRight = colorScheme.environmentColor1;
+			
 			defaultBeatEffectDuration = Helper.GetValue<float>(beatEffectSpawner, "_effectDuration");
 			
 			customLights = new LightEffectController[defaultLights.Length];
@@ -96,13 +99,16 @@ namespace TwitchFX.Lights {
 			
 		}
 		
-		public void SetColors(Color leftColor, Color rightColor) {
+		public void SetColors(Color? leftColor, Color? rightColor) {
 			
-			customColorLeft = leftColor;
-			customColorRight = rightColor;
+			if (leftColor.HasValue)
+				customColorLeft = leftColor.Value;
+			
+			if (rightColor.HasValue)
+				customColorRight = rightColor.Value;
 			
 			foreach (LightEffectController light in customLights)
-				light.SetColors(leftColor, rightColor);
+				light.SetColors(customColorLeft, customColorRight);
 			
 		}
 		

@@ -27,12 +27,21 @@ namespace TwitchFX.Commands {
 				
 			}
 			
-			LightController.instance.SetColors(preset.leftLightColor, preset.rightLightColor);
-			LightController.instance.SetLightMode(LightMode.Custom, duration);
+			if (preset.leftLightColor.HasValue || preset.rightLightColor.HasValue) {
+				
+				LightController.instance.SetColors(preset.leftLightColor, preset.rightLightColor);
+				LightController.instance.SetLightMode(LightMode.Custom, duration);
+				
+			}
 			
-			ColorController.instance.SetNoteColors(preset.leftNoteColor, preset.rightNoteColor, duration);
-			ColorController.instance.SetSaberColors(preset.leftSaberColor, preset.rightSaberColor, duration);
-			ColorController.instance.SetWallColor(preset.wallColor, duration);
+			if (preset.leftNoteColor.HasValue || preset.rightNoteColor.HasValue)
+				ColorController.instance.SetNoteColors(preset.leftNoteColor, preset.rightNoteColor, duration);
+			
+			if (preset.leftSaberColor.HasValue || preset.rightSaberColor.HasValue)
+				ColorController.instance.SetSaberColors(preset.leftSaberColor, preset.rightSaberColor, duration);
+			
+			if (preset.wallColor.HasValue)
+				ColorController.instance.SetWallColor(preset.wallColor.Value, duration);
 			
 		}
 		

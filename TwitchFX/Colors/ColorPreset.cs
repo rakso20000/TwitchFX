@@ -23,54 +23,33 @@ namespace TwitchFX.Colors {
 			bool rightSaberColorExists = rootJSON.TryGetKey("rightSaberColor", out JSONNode rightSaberColorJSON);
 			bool wallColorExists = rootJSON.TryGetKey("wallColor", out JSONNode wallColorJSON);
 			
-			if (!leftLightColorExists)
-				throw new InvalidJSONException("Left light color is missing");
+			Color? leftLightColor = null;
+			Color? rightLightColor = null;
+			Color? leftNoteColor = null;
+			Color? rightNoteColor = null;
+			Color? leftSaberColor = null;
+			Color? rightSaberColor = null;
+			Color? wallColor = null;
 			
-			if (!rightLightColorExists)
-				throw new InvalidJSONException("Right light color is missing");
-			
-			if (!leftNoteColorExists)
-				throw new InvalidJSONException("Left note color is missing");
-			
-			if (!rightNoteColorExists)
-				throw new InvalidJSONException("Right note color is missing");
-			
-			if (!leftSaberColorExists)
-				throw new InvalidJSONException("Left saber color is missing");
-			
-			if (!rightSaberColorExists)
-				throw new InvalidJSONException("Right saber color is missing");
-			
-			if (!wallColorExists)
-				throw new InvalidJSONException("Wall color is missing");
-			
-			Color leftLightColor;
-			Color rightLightColor;
-			Color leftNoteColor;
-			Color rightNoteColor;
-			Color leftSaberColor;
-			Color rightSaberColor;
-			Color wallColor;
-			
-			if (!leftLightColorJSON.IsString || !Helper.TryParseColor(((JSONString) leftLightColorJSON).Value, out leftLightColor))
+			if (leftLightColorExists && (!leftLightColorJSON.IsString || !TryParseColor(((JSONString) leftLightColorJSON).Value, out leftLightColor)))
 				throw new InvalidJSONException("Left light color is invalid");
 			
-			if (!rightLightColorJSON.IsString || !Helper.TryParseColor(((JSONString) rightLightColorJSON).Value, out rightLightColor))
+			if (rightLightColorExists && (!rightLightColorJSON.IsString || !TryParseColor(((JSONString) rightLightColorJSON).Value, out rightLightColor)))
 				throw new InvalidJSONException("Right light color is invalid");
 			
-			if (!leftNoteColorJSON.IsString || !Helper.TryParseColor(((JSONString) leftNoteColorJSON).Value, out leftNoteColor))
+			if (leftNoteColorExists && (!leftNoteColorJSON.IsString || !TryParseColor(((JSONString) leftNoteColorJSON).Value, out leftNoteColor)))
 				throw new InvalidJSONException("Left note color is invalid");
 			
-			if (!rightNoteColorJSON.IsString || !Helper.TryParseColor(((JSONString) rightNoteColorJSON).Value, out rightNoteColor))
+			if (rightNoteColorExists && (!rightNoteColorJSON.IsString || !TryParseColor(((JSONString) rightNoteColorJSON).Value, out rightNoteColor)))
 				throw new InvalidJSONException("Right note color is invalid");
 			
-			if (!leftSaberColorJSON.IsString || !Helper.TryParseColor(((JSONString) leftSaberColorJSON).Value, out leftSaberColor))
+			if (leftSaberColorExists && (!leftSaberColorJSON.IsString || !TryParseColor(((JSONString) leftSaberColorJSON).Value, out leftSaberColor)))
 				throw new InvalidJSONException("Left saber color is invalid");
 			
-			if (!rightSaberColorJSON.IsString || !Helper.TryParseColor(((JSONString) rightSaberColorJSON).Value, out rightSaberColor))
+			if (rightSaberColorExists && (!rightSaberColorJSON.IsString || !TryParseColor(((JSONString) rightSaberColorJSON).Value, out rightSaberColor)))
 				throw new InvalidJSONException("Right saber color is invalid");
 			
-			if (!wallColorJSON.IsString || !Helper.TryParseColor(((JSONString) wallColorJSON).Value, out wallColor))
+			if (wallColorExists && (!wallColorJSON.IsString || !TryParseColor(((JSONString) wallColorJSON).Value, out wallColor)))
 				throw new InvalidJSONException("Wall color is invalid");
 			
 			ColorPreset preset = new ColorPreset(
@@ -84,6 +63,15 @@ namespace TwitchFX.Colors {
 			);
 			
 			return preset;
+			
+		}
+		
+		private static bool TryParseColor(string colorStr, out Color? color) {
+			
+			bool result = Helper.TryParseColor(colorStr, out Color c);
+			color = c;
+			
+			return result;
 			
 		}
 		
@@ -111,22 +99,22 @@ namespace TwitchFX.Colors {
 			
 		}
 		
-		public readonly Color leftLightColor;
-		public readonly Color rightLightColor;
-		public readonly Color leftNoteColor;
-		public readonly Color rightNoteColor;
-		public readonly Color leftSaberColor;
-		public readonly Color rightSaberColor;
-		public readonly Color wallColor;
+		public readonly Color? leftLightColor;
+		public readonly Color? rightLightColor;
+		public readonly Color? leftNoteColor;
+		public readonly Color? rightNoteColor;
+		public readonly Color? leftSaberColor;
+		public readonly Color? rightSaberColor;
+		public readonly Color? wallColor;
 		
 		private ColorPreset(
-			Color leftLightColor,
-			Color rightLightColor,
-			Color leftNoteColor,
-			Color rightNoteColor,
-			Color leftSaberColor,
-			Color rightSaberColor,
-			Color wallColor
+			Color? leftLightColor,
+			Color? rightLightColor,
+			Color? leftNoteColor,
+			Color? rightNoteColor,
+			Color? leftSaberColor,
+			Color? rightSaberColor,
+			Color? wallColor
 		) {
 			
 			this.leftLightColor = leftLightColor;

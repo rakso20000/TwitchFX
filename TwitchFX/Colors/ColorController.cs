@@ -59,6 +59,12 @@ namespace TwitchFX.Colors {
 		
 		protected override void Init() {
 			
+			saberColorLeft = colorScheme.saberAColor;
+			saberColorRight = colorScheme.saberBColor;
+			noteColorLeft = colorScheme.saberAColor;
+			noteColorRight = colorScheme.saberBColor;
+			wallColor = colorScheme.obstaclesColor;
+			
 			leftSaberModel = saberManager.leftSaber.GetComponentInChildren<SaberModelController>(true);
 			rightSaberModel = saberManager.rightSaber.GetComponentInChildren<SaberModelController>(true);
 			
@@ -75,7 +81,10 @@ namespace TwitchFX.Colors {
 			
 		}
 		
-		public void SetSaberColors(Color leftColor, Color rightColor, float? duration = null) {
+		public void SetSaberColors(Color? leftColorNullable, Color? rightColorNullable, float? duration = null) {
+			
+			Color leftColor = leftColorNullable ?? saberColorLeft;
+			Color rightColor = rightColorNullable ?? saberColorRight;
 			
 			if (interceptingLightshow != null) {
 				
@@ -167,7 +176,10 @@ namespace TwitchFX.Colors {
 			
 		}
 		
-		public void SetNoteColors(Color leftColor, Color rightColor, float? duration = null) {
+		public void SetNoteColors(Color? leftColorNullable, Color? rightColorNullable, float? duration = null) {
+			
+			Color leftColor = leftColorNullable ?? noteColorLeft;
+			Color rightColor = rightColorNullable ?? noteColorRight;
 			
 			if (interceptingLightshow != null) {
 				

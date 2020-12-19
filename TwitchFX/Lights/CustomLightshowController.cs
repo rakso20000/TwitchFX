@@ -94,21 +94,31 @@ namespace TwitchFX.Lights {
 			LightRotationController.instance.ResetCustomLightRotation();
 			RingController.instance.ResetCustomRingRotation();
 			
-			if (lightshowData.colorPreset != null) {
+			ColorPreset preset = lightshowData.colorPreset;
+			
+			if (preset != null) {
 				
 				if (!skipSetRestore)
 					ColorController.instance.SetRestoreValues(this);
 				
 				ColorController.instance.StopIntercept();
 				
-				ColorController.instance.SetNoteColors(lightshowData.colorPreset.leftNoteColor, lightshowData.colorPreset.rightNoteColor);
-				ColorController.instance.SetSaberColors(lightshowData.colorPreset.leftSaberColor, lightshowData.colorPreset.rightSaberColor);
-				ColorController.instance.SetWallColor(lightshowData.colorPreset.wallColor);
+				if (preset.leftNoteColor.HasValue || preset.rightNoteColor.HasValue)
+					ColorController.instance.SetNoteColors(preset.leftNoteColor, preset.rightNoteColor);
+				
+				if (preset.leftSaberColor.HasValue || preset.rightSaberColor.HasValue)
+					ColorController.instance.SetSaberColors(preset.leftSaberColor, preset.rightSaberColor);
+				
+				if (preset.wallColor.HasValue)
+					ColorController.instance.SetWallColor(preset.wallColor.Value);
 				
 				ColorController.instance.StartIntercept(this);
 				
+				Color leftColor = preset.leftLightColor ?? (restoreMode == LightMode.Custom ? LightController.instance.customColorLeft : colorScheme.environmentColor0);
+				Color rightColor = preset.rightLightColor ?? (restoreMode == LightMode.Custom ? LightController.instance.customColorRight : colorScheme.environmentColor1);
+				
 				foreach (LightEffectController light in lights)
-					light.SetColors(lightshowData.colorPreset.leftLightColor, lightshowData.colorPreset.rightLightColor);
+					light.SetColors(leftColor, rightColor);
 				
 			} else if (restoreMode == LightMode.Custom) {
 				
