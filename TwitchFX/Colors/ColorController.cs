@@ -33,8 +33,10 @@ namespace TwitchFX.Colors {
 		private BasicBeatmapObjectManager beatmapObjectManager;
 		
 		private ConditionalWeakTable<GameNoteController, ColorNoteVisuals> noteVisualsMap = new ConditionalWeakTable<GameNoteController, ColorNoteVisuals>();
+		private ConditionalWeakTable<GameNoteController, CustomNoteColorizer> customNoteColorizerMap = new ConditionalWeakTable<GameNoteController, CustomNoteColorizer>();
 		
 		private bool siraSabersActive = false;
+		private bool customNotesActive = false;
 		
 		private float disableSaberColorsOn = -1f;
 		private float disableNoteColorsOn = -1f;
@@ -70,6 +72,8 @@ namespace TwitchFX.Colors {
 			
 			if (PluginManager.GetPluginFromId("SiraUtil") != null)
 				CheckCustomSabers();
+			
+			customNotesActive = PluginManager.GetPluginFromId("Custom Notes") != null;
 			
 			enabled = false;
 			
@@ -238,6 +242,11 @@ namespace TwitchFX.Colors {
 				if (!noteVisualsMap.TryGetValue(note, out ColorNoteVisuals noteVisuals))
 					noteVisualsMap.Add(note, noteVisuals = note.GetComponent<ColorNoteVisuals>());
 				
+				CustomNoteColorizer customNoteColorizer = null;
+				
+				if (customNotesActive && !customNoteColorizerMap.TryGetValue(note, out customNoteColorizer))
+					customNoteColorizerMap.Add(note, customNoteColorizer = new CustomNoteColorizer(note));
+				
 				Color color;
 				
 				switch (note.noteData.colorType) {
@@ -265,6 +274,9 @@ namespace TwitchFX.Colors {
 					propertyBlockController.ApplyChanges();
 					
 				}
+				
+				if (customNotesActive)
+					customNoteColorizer.SetColor(color);
 				
 			}
 			
