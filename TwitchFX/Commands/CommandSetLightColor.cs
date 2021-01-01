@@ -5,15 +5,17 @@ namespace TwitchFX.Commands {
 	
 	public class CommandSetLightColor : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandSetLightColor() {
 			
-			RequireInLevel();
-			
-			SetUsage("<color> OR\n" +
+			usage = "<color> OR\n" +
 			"<left color> <right color> OR\n" +
-			"<left color> <right color> <duration in seconds>");
+			"<left color> <right color> <duration in seconds>";
 			
-			string[] args = ParseArgs(argsStr, 1, 3);
+			SetArgsCount(1, 3);
+			
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			Color leftColor = ParseColor(args[0]);
 			Color rightColor = args.Length > 1 ? ParseColor(args[1]) : leftColor;

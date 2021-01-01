@@ -2,9 +2,14 @@
 	
 	public class CommandEnableTFX : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandEnableTFX() {
 			
-			ParseArgs(argsStr, 0);
+			requireEnabled = false;
+			requireInLevel = false;
+			
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			if (Plugin.instance.enabled) {
 				

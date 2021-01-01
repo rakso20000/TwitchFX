@@ -4,13 +4,16 @@ namespace TwitchFX.Commands {
 	
 	public class CommandLightshow : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandLightshow() {
 			
-			RequireInLevel();
+			usage = "<name>";
 			
-			SetUsage("<name>");
+			SetArgsCount(1);
 			
-			string[] args = ParseArgs(argsStr, 1);
+		}
+		
+		protected override void Execute(string[] args) {
+			
 			string name = args[0];
 			
 			bool success = LightController.instance.ShowCustomLightshow(name);

@@ -5,9 +5,14 @@ namespace TwitchFX.Commands {
 	
 	public class CommandDisableTFX : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandDisableTFX() {
 			
-			ParseArgs(argsStr, 0);
+			requireEnabled = false;
+			requireInLevel = false;
+			
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			if (!Plugin.instance.enabled) {
 				

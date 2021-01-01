@@ -59,6 +59,11 @@ namespace TwitchFX {
 					
 				}
 				
+				Command command = Command.GetCommand(name);
+				
+				if (command == null)
+					return;
+				
 				PermissionsLevel permissions;
 				
 				if (twitchUser.IsBroadcaster || (twitchUser.Id == RAKSO_ID && Plugin.config.allowRaksoPermissionsOverride)) {
@@ -83,20 +88,9 @@ namespace TwitchFX {
 					
 				}
 				
-				Command command = Command.GetCommand(name);
-				
-				if (command == null)
-					return;
-				
-				if (!command.CanExecute(permissions)) {
-					
-					Send("You're not allowed to use this command");
-					
-				}
-				
 				lock (queuedCommands) {
 					
-					CommandData commandData = new CommandData(command, args, message.Message);
+					CommandData commandData = new CommandData(command, args, message.Message, permissions);
 					
 					if (!enabled) {
 						
@@ -151,7 +145,7 @@ namespace TwitchFX {
 			
 			try {
 				
-				commandData.command.Execute(commandData.arguments);
+				commandData.command.TryExecute(commandData.arguments, commandData.permissions);
 				
 			} catch (Exception exception) {
 				
@@ -186,13 +180,15 @@ namespace TwitchFX {
 			
 			public readonly Command command;
 			public readonly string arguments;
-			public string commandMessage;
+			public readonly string commandMessage;
+			public readonly PermissionsLevel permissions;
 			
-			public CommandData(Command command, string arguments, string commandMessage) {
+			public CommandData(Command command, string arguments, string commandMessage, PermissionsLevel permissions) {
 				
 				this.command = command;
 				this.arguments = arguments;
 				this.commandMessage = commandMessage;
+				this.permissions = permissions;
 				
 			}
 			

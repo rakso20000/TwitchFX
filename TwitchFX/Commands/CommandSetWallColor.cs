@@ -5,14 +5,16 @@ namespace TwitchFX.Commands {
 	
 	public class CommandSetWallColor : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandSetWallColor() {
 			
-			RequireInLevel();
+			usage = "<color> OR\n" +
+			"<color> <duration in seconds>";
 			
-			SetUsage("<color> OR\n" +
-			"<color> <duration in seconds>");
+			SetArgsCount(1, 2);
 			
-			string[] args = ParseArgs(argsStr, 1, 2);
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			Color color = ParseColor(args[0]);
 			

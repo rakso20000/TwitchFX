@@ -5,14 +5,16 @@ namespace TwitchFX.Commands {
 	
 	public class CommandSetNoteColor : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandSetNoteColor() {
 			
-			RequireInLevel();
+			usage = "<left color> <right color> OR\n" +
+			"<left color> <right color> <duration in seconds>";
 			
-			SetUsage("<left color> <right color> OR\n" +
-			"<left color> <right color> <duration in seconds>");
+			SetArgsCount(2, 3);
 			
-			string[] args = ParseArgs(argsStr, 2, 3);
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			Color leftColor = ParseColor(args[0]);
 			Color rightColor = ParseColor(args[1]);

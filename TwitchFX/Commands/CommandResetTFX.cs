@@ -5,11 +5,7 @@ namespace TwitchFX.Commands {
 	
 	public class CommandResetTFX : Command {
 		
-		public override void Execute(string argsStr) {
-			
-			RequireInLevel();
-			
-			ParseArgs(argsStr, 0);
+		protected override void Execute(string[] args) {
 			
 			if (!ColorController.isNull)
 				ColorController.instance.Reset();

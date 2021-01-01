@@ -4,14 +4,16 @@ namespace TwitchFX.Commands {
 	
 	public class CommandDisableLights : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandDisableLights() {
 			
-			RequireInLevel();
+			usage = "OR\n" +
+			"<duration in seconds>";
 			
-			SetUsage("OR\n" +
-			"<duration in seconds>");
+			SetArgsCount(0, 1);
 			
-			string[] args = ParseArgs(argsStr, 0, 1);
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			float? duration = TryParseFloat(args, 0);
 			

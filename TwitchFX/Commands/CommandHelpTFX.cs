@@ -2,9 +2,14 @@
 	
 	public class CommandHelpTFX : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandHelpTFX() {
 			
-			ParseArgs(argsStr, 0);
+			requireEnabled = false;
+			requireInLevel = false;
+			
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			Plugin.chat.Send("For a list of available TwitchFX commands, please refer to https://github.com/rakso20000/TwitchFX#commands");
 			

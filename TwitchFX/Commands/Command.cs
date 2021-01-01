@@ -21,13 +21,19 @@ namespace TwitchFX.Commands {
 		}
 		
 		private readonly PermissionsLevel requiredPermissions;
+		private readonly string name;
 		
-		private string name;
-		private string usage = "";
+		private int argsCount = 0;
+		private int minArgsCount = -1;
+		private int maxArgsCount = -1;
+		
+		protected string usage = "";
+		protected bool requireEnabled = true;
+		protected bool requireInLevel = true;
 		
 		protected Command() {
 			
-			string command = this.GetType().Name.Substring(7, this.GetType().Name.Length - 7).ToLower();
+			string command = GetType().Name.Substring(7, GetType().Name.Length - 7).ToLower();
 			
 			if (!Plugin.config.commands.ContainsKey(command))
 				Plugin.config.commands[command] = command;
@@ -36,25 +42,46 @@ namespace TwitchFX.Commands {
 			
 			commands[name.ToLower()] = this;
 			
-			if (!Plugin.config.commandsRequiredPermissions.TryGetValue(command, out requiredPermissions)) {
+			if (!Plugin.config.commandsRequiredPermissions.TryGetValue(command, out requiredPermissions))
+				Plugin.config.commandsRequiredPermissions[command] = requiredPermissions = PermissionsLevel.Everyone;
+			
+		}
+		
+		public void TryExecute(string argsStr, PermissionsLevel permissions) {
+			
+			if (permissions < requiredPermissions)
+				throw new InvalidCommandExecutionException("You're not allowed to use this command");
+			
+			if (requireEnabled && !Plugin.instance.enabled)
+				throw new InvalidCommandExecutionException("TwitchFX is currently disabled");
+			
+			if (requireInLevel && !Plugin.instance.inLevel)
+				throw new InvalidCommandExecutionException("Please use this command during a song");
+			
+			string[] args = argsStr.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+			
+			int length = args.Length;
+			
+			if (argsCount != -1 && length != argsCount || minArgsCount != -1 && length < minArgsCount || maxArgsCount != -1 && length > maxArgsCount)
+				throw CreateInvalidArgs();
+			
+			Execute(args);
+			
+		}
+		
+		protected void SetArgsCount(int minArgsCount, int maxArgsCount = -1) {
+			
+			if (maxArgsCount != -1) {
 				
-				Plugin.config.commandsRequiredPermissions[command] = PermissionsLevel.Everyone;
+				argsCount = -1;
+				this.minArgsCount = minArgsCount;
+				this.maxArgsCount = maxArgsCount;
 				
-				requiredPermissions = PermissionsLevel.Everyone;
+				return;
 				
 			}
 			
-		}
-		
-		public bool CanExecute(PermissionsLevel permissions) {
-			
-			return permissions >= requiredPermissions;
-			
-		}
-		
-		protected void SetUsage(string usage) {
-			
-			this.usage = usage;
+			argsCount = minArgsCount;
 			
 		}
 		
@@ -66,33 +93,6 @@ namespace TwitchFX.Commands {
 				lines[i] = "!" + name + " " + lines[i];
 			
 			throw new InvalidCommandArgumentsException(lines);
-			
-		}
-		
-		protected string[] ParseArgs(string argsStr, int expectedMin = -1, int expectedMax = -1) {
-			
-			string[] args = argsStr.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
-			
-			if (expectedMin != -1 && (args.Length < expectedMin || args.Length > (expectedMax != -1 ? expectedMax : expectedMin)))
-				throw CreateInvalidArgs();
-			
-			return args;
-			
-		}
-		
-		protected void RequireEnabled() {
-			
-			if (!Plugin.instance.enabled)
-				throw new InvalidCommandExecutionException("TwitchFX is currently disabled");
-			
-		}
-		
-		protected void RequireInLevel() {
-			
-			RequireEnabled();
-			
-			if (!Plugin.instance.inLevel)
-				throw new InvalidCommandExecutionException("Please use this command during a song");
 			
 		}
 		
@@ -118,7 +118,7 @@ namespace TwitchFX.Commands {
 			
 		}
 		
-		public abstract void Execute(string argsStr);
+		protected abstract void Execute(string[] args);
 		
 	}
 	

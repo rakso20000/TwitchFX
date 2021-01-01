@@ -2,9 +2,14 @@
 	
 	public class CommandReloadTFX : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandReloadTFX() {
 			
-			ParseArgs(argsStr, 0);
+			requireEnabled = false;
+			requireInLevel = false;
+			
+		}
+		
+		protected override void Execute(string[] args) {
 			
 			Plugin.instance.Reload();
 			

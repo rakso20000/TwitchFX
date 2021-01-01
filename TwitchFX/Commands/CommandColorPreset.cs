@@ -5,14 +5,17 @@ namespace TwitchFX.Commands {
 	
 	public class CommandColorPreset : Command {
 		
-		public override void Execute(string argsStr) {
+		public CommandColorPreset() {
 			
-			RequireInLevel();
+			usage = "<preset> OR\n" +
+			"<preset> <duration in seconds>";
 			
-			SetUsage("<preset> OR\n" +
-			"<preset> <duration in seconds>");
+			SetArgsCount(1, 2);
 			
-			string[] args = ParseArgs(argsStr, 1, 2);
+		}
+		
+		protected override void Execute(string[] args) {
+			
 			string name = args[0];
 			
 			float? duration = TryParseFloat(args, 1);
