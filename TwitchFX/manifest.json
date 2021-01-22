@@ -3,13 +3,12 @@
 	"id": "TwitchFX",
 	"name": "TwitchFX",
 	"author": "rakso20000",
-	"version": "1.5.5-0",
+	"version": "1.5.5",
 	"description": "",
-	"gameVersion": "1.13.0",
+	"gameVersion": "1.13.2",
 	"dependsOn": {
 		"BSIPA": "^4.0.5",
-		"ChatCore": "^2.1.2",
-		"BS Utils": "^1.6.5"
+		"ChatCore": "^2.1.2"
 	},
 	"features": []
 }

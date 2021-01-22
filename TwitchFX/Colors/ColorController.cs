@@ -4,7 +4,7 @@ using IPA.Loader;
 using TwitchFX.Lights;
 using UnityEngine;
 using Zenject;
-using SiraUtil.Interfaces;
+//using SiraUtil.Interfaces;
 
 namespace TwitchFX.Colors {
 	
@@ -81,7 +81,7 @@ namespace TwitchFX.Colors {
 		
 		private void CheckCustomSabers() {
 			
-			siraSabersActive = leftSaberModel is IColorable || rightSaberModel is IColorable;
+			//siraSabersActive = leftSaberModel is IColorable || rightSaberModel is IColorable;
 			
 		}
 		
@@ -175,8 +175,10 @@ namespace TwitchFX.Colors {
 		
 		private void UpdateSiraSaberColors(Color leftColor, Color rightColor) {
 			
+			/*
 			(leftSaberModel as IColorable)?.SetColor(leftColor);
 			(rightSaberModel as IColorable)?.SetColor(rightColor);
+			*/
 			
 		}
 		
