@@ -63,6 +63,11 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Colors.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CustomNotes">
+      <HintPath>$(BeatSaberDir)\Plugins\CustomNotes.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="GameplayCore">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
       <Private>False</Private>
@@ -95,6 +100,11 @@
     </Reference>
     <Reference Include="SemVer">
       <HintPath>$(BeatSaberDir)\Libs\SemVer.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="SiraUtil">
+      <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>

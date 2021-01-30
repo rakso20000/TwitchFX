@@ -1,42 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-/*
 using CustomNotes;
 using CustomNotes.Data;
 using CustomNotes.Managers;
 using CustomNotes.Overrides;
-*/
 
 namespace TwitchFX.Colors {
 	
 	public class CustomNoteColorizer {
 		
-		/*
 		private static ConditionalWeakTable<GameObject, ActiveNoteColorizer> activeNoteColorizerMap = new ConditionalWeakTable<GameObject, ActiveNoteColorizer>();
 		
 		private readonly CustomNoteController customNote;
 		
 		private readonly CustomNoteColorNoteVisuals customNoteVisuals;
 		private readonly float colorStrength;
-		*/
 		
 		public CustomNoteColorizer(GameNoteController note) {
 			
 			Logger.log.Notice("CustomNoteColorizer created");
 			
-			/*
 			customNote = note.gameObject.GetComponent<CustomNoteController>();
 			
 			customNoteVisuals = Helper.GetValue<CustomNoteColorNoteVisuals>(customNote, "_customNoteColorNoteVisuals");
 			colorStrength = Helper.GetValue<CustomNote>(customNote, "_customNote").Descriptor.NoteColorStrength;
-			*/
 			
 		}
 		
 		public void SetColor(Color color) {
 			
-			/*
 			customNoteVisuals.SetColor(color, true);
 			
 			GameObject activeNote = Helper.GetValue<GameObject>(customNote, "activeNote");
@@ -45,11 +38,9 @@ namespace TwitchFX.Colors {
 				activeNoteColorizerMap.Add(activeNote, activeNoteColorizer = new ActiveNoteColorizer(activeNote));
 			
 			activeNoteColorizer.SetColor(color, colorStrength);
-			*/
 			
 		}
 		
-		/*
 		private class ActiveNoteColorizer {
 			
 			private readonly Renderer[] renderers;
@@ -94,7 +85,6 @@ namespace TwitchFX.Colors {
 			}
 			
 		}
-		*/
 		
 	}
 	
