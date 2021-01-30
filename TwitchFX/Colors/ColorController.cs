@@ -5,6 +5,7 @@ using TwitchFX.Lights;
 using UnityEngine;
 using Zenject;
 using SiraUtil.Interfaces;
+using CustomNotes.Managers;
 
 namespace TwitchFX.Colors {
 	
@@ -70,10 +71,13 @@ namespace TwitchFX.Colors {
 			leftSaberModel = saberManager.leftSaber.GetComponentInChildren<SaberModelController>(true);
 			rightSaberModel = saberManager.rightSaber.GetComponentInChildren<SaberModelController>(true);
 			
+			//Custom sabers and note checks are in separate methods so this will still run without their assemblies loaded
+			
 			if (PluginManager.GetPluginFromId("SiraUtil") != null)
 				CheckCustomSabers();
 			
-			customNotesActive = PluginManager.GetPluginFromId("Custom Notes") != null;
+			if (PluginManager.GetPluginFromId("Custom Notes") != null)
+				CheckCustomNotes();
 			
 			enabled = false;
 			
@@ -82,6 +86,14 @@ namespace TwitchFX.Colors {
 		private void CheckCustomSabers() {
 			
 			siraSabersActive = leftSaberModel is IColorable || rightSaberModel is IColorable;
+			
+		}
+		
+		private void CheckCustomNotes() {
+			
+			NoteAssetLoader noteAssetLoader = Injector.instance.Resolve<NoteAssetLoader>();
+			
+			customNotesActive = noteAssetLoader.SelectedNote != 0;
 			
 		}
 		

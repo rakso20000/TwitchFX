@@ -34,6 +34,12 @@ namespace TwitchFX {
 			
 		}
 		
+		public Type Resolve<Type>() {
+			
+			return container.Resolve<Type>();
+			
+		}
+		
 		public bool HasBinding<Type>() {
 			
 			return container.HasBinding<Type>();
