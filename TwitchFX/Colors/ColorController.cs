@@ -254,11 +254,6 @@ namespace TwitchFX.Colors {
 				if (!noteVisualsMap.TryGetValue(note, out ColorNoteVisuals noteVisuals))
 					noteVisualsMap.Add(note, noteVisuals = note.GetComponent<ColorNoteVisuals>());
 				
-				CustomNoteColorizer customNoteColorizer = null;
-				
-				if (customNotesActive && !customNoteColorizerMap.TryGetValue(note, out customNoteColorizer))
-					customNoteColorizerMap.Add(note, customNoteColorizer = new CustomNoteColorizer(note));
-				
 				Color color;
 				
 				switch (note.noteData.colorType) {
@@ -288,9 +283,18 @@ namespace TwitchFX.Colors {
 				}
 				
 				if (customNotesActive)
-					customNoteColorizer.SetColor(color);
+					UpdateCustomNote(note, color);
 				
 			}
+			
+		}
+		
+		private void UpdateCustomNote(GameNoteController note, Color color) {
+			
+			if (!customNoteColorizerMap.TryGetValue(note, out CustomNoteColorizer customNoteColorizer))
+				customNoteColorizerMap.Add(note, customNoteColorizer = new CustomNoteColorizer(note));
+			
+			customNoteColorizer.SetColor(color);
 			
 		}
 		
