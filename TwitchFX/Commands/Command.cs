@@ -118,6 +118,22 @@ namespace TwitchFX.Commands {
 			
 		}
 		
+		protected void CheckMinColorDiff(Color colorA, Color colorB, float minDiff) {
+			
+			if (Helper.IsRainbow(colorA) || Helper.IsRainbow(colorB))
+				return;
+			
+			float dr = colorA.r - colorB.r;
+			float dg = colorA.g - colorB.g;
+			float db = colorA.b - colorB.b;
+			
+			float colorDiffSquared = (dr * dr + dg * dg + db * db) / 3;
+			
+			if (colorDiffSquared < minDiff * minDiff)
+				throw new InvalidCommandExecutionException("Colors are too similar");
+			
+		}
+		
 		protected abstract void Execute(string[] args);
 		
 	}

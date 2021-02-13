@@ -101,6 +101,10 @@ You can also pass `rainbow` instead of a color to get rainbow colors. The rainbo
 
 The config file is located at `Beat Saber\UserData\TwitchFX.json` and follows the [JSON] format.
 
+### Color difference
+
+`minNoteColorDiff`, `minSaberColorDiff`, and `minLightColorDiff` are numbers from 0 to 1 and control how similar the left and right colors for the respective commands are allowed to be. A value of 0 will allow all colors whilst a value of 1 will only allow colors that are the most different from each other (e.g. black and white).
+
 ### Command names
 
 In the `commands` object you can change the names of commands.
@@ -123,6 +127,9 @@ I, as the developer of TwitchFX, have added an override that lets me execute all
 
 ```json
 {
+	"minNoteColorDiff": 0.6,
+	"minSaberColorDiff": 0.2,
+	"minLightColorDiff": 0.0,
 	"commands": {
 		"helptfx": "helptfx",
 		"enabletfx": "enabletfx",

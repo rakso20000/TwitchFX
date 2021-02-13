@@ -21,6 +21,11 @@ namespace TwitchFX.Commands {
 			
 			float? duration = TryParseFloat(args, 2);
 			
+			float saberMinDiff = Plugin.config.minSaberColorDiff;
+			float noteMinDiff = Plugin.config.minNoteColorDiff;
+			
+			CheckMinColorDiff(leftColor, rightColor, saberMinDiff > noteMinDiff ? saberMinDiff : noteMinDiff);
+			
 			ColorController.instance.SetSaberColors(leftColor, rightColor, duration);
 			ColorController.instance.SetNoteColors(leftColor, rightColor, duration);
 			

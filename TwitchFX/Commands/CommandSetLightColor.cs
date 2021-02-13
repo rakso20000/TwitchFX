@@ -22,6 +22,8 @@ namespace TwitchFX.Commands {
 			
 			float? duration = TryParseFloat(args, 2);
 			
+			CheckMinColorDiff(leftColor, rightColor, Plugin.config.minLightColorDiff);
+			
 			LightController.instance.SetColors(leftColor, rightColor);
 			LightController.instance.SetLightMode(LightMode.Custom, duration);
 			
