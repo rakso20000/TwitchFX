@@ -19,7 +19,7 @@ namespace TwitchFX.Colors {
 		
 		public CustomNoteColorizer(GameNoteController note) {
 			
-			Logger.log.Notice("CustomNoteColorizer created");
+			Logger.log.Debug("CustomNoteColorizer created");
 			
 			customNote = note.gameObject.GetComponent<CustomNoteController>();
 			
@@ -48,7 +48,7 @@ namespace TwitchFX.Colors {
 			
 			public ActiveNoteColorizer(GameObject activeNote) {
 				
-				Logger.log.Notice("ActiveNoteColorizer created");
+				Logger.log.Debug("ActiveNoteColorizer created");
 				
 				List<Renderer> rendererList = new List<Renderer>();
 				
