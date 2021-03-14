@@ -7,8 +7,8 @@ namespace TwitchFX {
 	
 	public class Config {
 		
-		public virtual float minNoteColorDiff { get; set; } = 0.2f;
-		public virtual float minSaberColorDiff { get; set; } = 0.2f;
+		public virtual float minNoteColorDiff { get; set; } = 0f;
+		public virtual float minSaberColorDiff { get; set; } = 0f;
 		public virtual float minLightColorDiff { get; set; } = 0f;
 		
 		[UseConverter(typeof(DictionaryConverter<string>))]
