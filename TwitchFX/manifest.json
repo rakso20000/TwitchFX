@@ -3,9 +3,9 @@
 	"id": "TwitchFX",
 	"name": "TwitchFX",
 	"author": "rakso20000",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"description": "",
-	"gameVersion": "1.13.4",
+	"gameVersion": "1.13.5",
 	"dependsOn": {
 		"BSIPA": "^4.0.5",
 		"ChatCore": "^2.1.2",
