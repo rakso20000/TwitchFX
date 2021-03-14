@@ -247,7 +247,7 @@ namespace TwitchFX.Colors {
 		
 		private void UpdateNoteColors(Color leftColor, Color rightColor) {
 			
-			HashSet<GameNoteController> notes = Helper.GetValue<MonoMemoryPoolContainer<GameNoteController>>(beatmapObjectManager, "_gameNotePoolContainer").activeItems;
+			List<GameNoteController> notes = Helper.GetValue<MemoryPoolContainer<GameNoteController>>(beatmapObjectManager, "_gameNotePoolContainer").activeItems;
 			
 			foreach (GameNoteController note in notes) {
 				
